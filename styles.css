@@ -741,3 +741,96 @@ ul {
   text-transform: uppercase;
   letter-spacing: 0.14em;
 }
+
+/* --------------------------------------------------------------------------
+   12. Движение
+   Только реакции на наведение и плавная прокрутка. Появление при скролле
+   и hero — в animations.js через Motion. Ничего из разделов 1–11 не изменено.
+   -------------------------------------------------------------------------- */
+
+/* Плавная прокрутка к якорям — отключается системной настройкой */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* Карточки: мягкий подъём и усиление тени */
+.card {
+  transition: transform 250ms ease-out, box-shadow 250ms ease-out,
+    border-color 250ms ease-out;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.38);
+  border-color: #3a4d64;
+}
+
+/* Кнопки: к смене фона добавляется еле заметный подъём */
+.btn {
+  transition: background-color 200ms ease-out, color 200ms ease-out,
+    border-color 200ms ease-out, transform 200ms ease-out;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+}
+
+.btn:active {
+  transform: translateY(0);
+}
+
+/* Фото: приближение внутри рамки.
+   Кадр масштабируется отдельным слоем, поэтому рамка остаётся на месте.
+   Пока стоят серые плейсхолдеры, приближение почти не видно — эффект
+   заработает в полную силу, когда появятся настоящие снимки. */
+.ph {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  transition: border-color 250ms ease-out;
+}
+
+.ph::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-color: inherit;
+  background-size: cover;
+  background-position: center;
+  transform: scale(1);
+  transition: transform 450ms ease-out;
+}
+
+.gallery .ph:hover,
+.split .ph:hover,
+.grid .ph:hover {
+  border-color: #3a4d64;
+}
+
+.gallery .ph:hover::before,
+.split .ph:hover::before,
+.grid .ph:hover::before {
+  transform: scale(1.045);
+}
+
+/* Ссылки в навигации и контактах */
+.nav a,
+.contact-list a,
+.footer a {
+  transition: color 200ms ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card:hover,
+  .btn:hover {
+    transform: none;
+  }
+  .gallery .ph:hover::before,
+  .split .ph:hover::before,
+  .grid .ph:hover::before {
+    transform: none;
+  }
+}
