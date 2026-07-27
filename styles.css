@@ -60,15 +60,14 @@
   --section-gap-key: var(--space-96);
   --heading-gap: var(--space-24);
 
-  /* Радиусы — единый 12px, 20px только для крупных медиа */
+  /* Радиус — единый по всей странице */
   --radius: 12px;
-  --radius-lg: 20px;
 
   /* Раскладка */
   --container: 1200px;
   --measure: 620px;
   --gutter: 20px;
-  --header-height: 116px;
+  --header-height: 72px;
 }
 
 @media (min-width: 768px) {
@@ -281,6 +280,11 @@ ul {
   line-height: 1.5;
 }
 
+/* Точечные отступы — только значения из шкалы */
+.u-mt-32 { margin-top: var(--space-32); }
+.u-mt-48 { margin-top: var(--space-48); }
+.u-mb-48 { margin-bottom: var(--space-48); }
+
 /* Короткие ёмкие строки вместо абзаца */
 .lines {
   font-size: var(--text-lead);
@@ -451,6 +455,9 @@ ul {
 }
 
 .contact-list a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;              /* тач-зона */
   color: var(--foreground);
   text-decoration: none;
 }
@@ -485,25 +492,16 @@ ul {
   aspect-ratio: 4 / 3;
 }
 
-.ph--lg {
-  border-radius: var(--radius-lg);
-}
-
 /* --------------------------------------------------------------------------
    8. Шапка
    -------------------------------------------------------------------------- */
 
 .header {
+  position: sticky;
+  top: 0;
   z-index: 100;
   background-color: var(--background);
   border-bottom: 1px solid var(--border);
-}
-
-@media (min-width: 1024px) {
-  .header {
-    position: sticky;
-    top: 0;
-  }
 }
 
 .header__inner {
@@ -511,12 +509,16 @@ ul {
   align-items: center;
   justify-content: space-between;
   gap: var(--space-16);
-  flex-wrap: wrap;
-  padding-top: var(--space-16);
-  padding-bottom: var(--space-16);
+  min-height: var(--header-height);
+  padding-top: var(--space-12);
+  padding-bottom: var(--space-12);
 }
 
 .header__brand {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 44px;              /* тач-зона */
   font-family: var(--font-display);
   font-size: 1.125rem;
   font-weight: 400;
@@ -529,59 +531,171 @@ ul {
 }
 
 .header__brand span {
-  display: block;
   font-size: 0.625rem;
   letter-spacing: 0.2em;
   color: var(--muted-foreground);
-  margin-top: var(--space-8);
+  margin-top: var(--space-4);
+}
+
+/* --- Кнопка-бургер --- */
+
+.nav-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  flex: none;
+  padding: 0;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--foreground);
+  cursor: pointer;
+  transition: border-color 200ms ease-out, background-color 200ms ease-out;
+}
+
+.nav-toggle:hover {
+  border-color: var(--primary);
+}
+
+.nav-toggle:active {
+  background-color: rgba(236, 232, 225, 0.06);
+}
+
+/* Три полосы: средняя — сам элемент, крайние — псевдоэлементы */
+.nav-toggle__bars,
+.nav-toggle__bars::before,
+.nav-toggle__bars::after {
+  display: block;
+  width: 18px;
+  height: 1.5px;
+  background-color: currentColor;
+}
+
+.nav-toggle__bars {
+  position: relative;
+}
+
+.nav-toggle__bars::before,
+.nav-toggle__bars::after {
+  content: "";
+  position: absolute;
+  left: 0;
+}
+
+.nav-toggle__bars::before { top: -6px; }
+.nav-toggle__bars::after  { top: 6px; }
+
+/* Раскрытое состояние: полосы складываются в крестик */
+.header.is-nav-open .nav-toggle__bars {
+  background-color: transparent;
+}
+
+.header.is-nav-open .nav-toggle__bars::before {
+  top: 0;
+  transform: rotate(45deg);
+}
+
+.header.is-nav-open .nav-toggle__bars::after {
+  top: 0;
+  transform: rotate(-45deg);
+}
+
+/* --- Панель --- */
+
+.header__panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+
+/* Свёрнутое состояние включается только при работающем JS */
+.js .header__panel {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  display: none;
+  padding: var(--space-8) var(--gutter) var(--space-24);
+  background-color: var(--background);
+  border-bottom: 1px solid var(--border);
+}
+
+.js .header.is-nav-open .header__panel {
+  display: flex;
 }
 
 .nav {
   display: flex;
-  gap: var(--space-24);
-  order: 3;
-  width: 100%;
-  /* на мобильном — одна прокручиваемая строка, чтобы шапка не росла вверх */
-  overflow-x: auto;
-  padding-bottom: var(--space-4);
-  scrollbar-width: none;
-}
-
-.nav::-webkit-scrollbar {
-  display: none;
+  flex-direction: column;
 }
 
 .nav a {
+  display: flex;
+  align-items: center;
+  min-height: 48px;              /* тач-зона */
+  min-width: 44px;
   font-family: var(--font-display);
-  font-size: 0.75rem;
+  font-size: 0.8125rem;
   font-weight: 400;
   text-transform: uppercase;
   letter-spacing: 0.14em;
   color: var(--muted-foreground);
   text-decoration: none;
   white-space: nowrap;
-  padding: var(--space-4) 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.nav a:last-child {
+  border-bottom: none;
 }
 
 .nav a:hover {
   color: var(--primary);
 }
 
-.header .btn {
-  min-height: 44px;
-  padding: var(--space-8) var(--space-24);
+.header__panel .btn {
+  min-height: 48px;
+  margin-top: var(--space-16);
   font-size: 0.75rem;
 }
 
+/* --- Десктоп: одна строка, бургер не нужен --- */
+
 @media (min-width: 1024px) {
-  .header__inner {
-    flex-wrap: nowrap;
+  .nav-toggle {
+    display: none;
   }
+
+  .js .header__panel,
+  .header__panel {
+    position: static;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: var(--space-32);
+    padding: 0;
+    background: none;
+    border-bottom: none;
+  }
+
   .nav {
-    order: 0;
-    width: auto;
-    overflow-x: visible;
-    padding-bottom: 0;
+    flex-direction: row;
+    gap: var(--space-24);
+  }
+
+  .nav a {
+    min-height: 44px;
+    min-width: 44px;
+    justify-content: center;
+    border-bottom: none;
+  }
+
+  .header__panel .btn {
+    min-height: 44px;
+    margin-top: 0;
+    padding: var(--space-8) var(--space-24);
   }
 }
 
@@ -694,6 +808,12 @@ ul {
   text-decoration: none;
 }
 
+.footer__contacts a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;              /* тач-зона */
+}
+
 .footer a:hover {
   color: var(--primary);
 }
@@ -731,11 +851,11 @@ ul {
   text-transform: uppercase;
 }
 
-.footer .nav-list li {
-  margin-bottom: var(--space-12);
-}
-
 .footer .nav-list a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;              /* тач-зона */
+  min-width: 44px;
   font-family: var(--font-display);
   font-size: 0.75rem;
   text-transform: uppercase;
