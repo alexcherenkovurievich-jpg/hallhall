@@ -6,9 +6,12 @@
   <title>Юго Запад Hall — загородный дом в аренду в Ульяновске: баня, чан, два бассейна</title>
   <meta name="description" content="Дом на компанию до 12 человек в Ульяновске. Баня и чан на дровах без ограничения по времени, два бассейна, веранда, мангальная зона. Работает круглый год, к заезду всё готово.">
   <meta name="theme-color" content="#0E1725">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+  <!-- Шрифты локальные, стороннего CDN нет. Заранее тянем кириллицу
+       тех начертаний, что участвуют в первом экране, — так подмена
+       шрифта происходит до отрисовки и вёрстка не дёргается. -->
+  <link rel="preload" href="fonts/jost-300-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/jost-500-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/inter-400-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
