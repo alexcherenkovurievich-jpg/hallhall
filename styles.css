@@ -1,6 +1,8 @@
 /* ==========================================================================
-   Юго Запад Hall — дизайн-система
-   Каркас страницы. Без анимаций, без сторонних компонентов.
+   Юго Запад Hall — тёмная тема
+   Токены названы по конвенции shadcn (background / foreground / card / muted /
+   primary / border / ring), чтобы систему можно было позже перенести
+   в React-проект без переименования. Без React и без анимаций.
    ========================================================================== */
 
 /* --------------------------------------------------------------------------
@@ -8,39 +10,41 @@
    -------------------------------------------------------------------------- */
 
 :root {
-  /* Цвет — основной */
-  --color-primary: #2e3a31;        /* хвойный тёмный: текст, тёмные секции */
+  /* Фоны */
+  --background: #0e1725;        /* полуночный синий — основной фон */
+  --card: #1d2d3e;              /* поверхность: карточки, секции-чередование */
+  --border: #2c3e54;
 
-  /* Цвет — акцент */
-  --color-accent: #a1651f;         /* тёплая охра: заливка кнопок */
-  --color-accent-strong: #8f5a18;  /* охра тёмная: акцентный текст (AA на светлом) */
-  --color-accent-hover: #8a5615;
+  /* Текст */
+  --foreground: #ece8e1;        /* мягкий тёплый белый — 14.72:1 на фоне */
+  --muted-foreground: #9ba8b8;  /* вторичный — 7.44:1 на фоне */
 
-  /* Цвет — нейтральные */
-  --color-bg: #faf7f2;             /* крем: основной фон */
-  --color-bg-alt: #f0e9df;         /* песочный: чередующиеся секции, карточки */
-  --color-text-muted: #6f675c;     /* тёплый серо-коричневый: вторичный текст */
-
-  /* Цвет — служебные */
-  --color-border: #e3dacc;
-  --color-on-dark: #faf7f2;
-  --color-on-dark-muted: #d9cfbf;
-  --color-placeholder: #e0d8cb;
+  /* Акцент — латунь. На ней ТОЛЬКО тёмный текст: белый даёт 2.54:1 */
+  --primary: #c89b4f;
+  --primary-foreground: #0e1725; /* 7.07:1 */
+  --primary-hover: #d6ac63;
+  --ring: #c89b4f;
 
   /* Шрифты */
-  --font-heading: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+  --font-display: "Jost", "Futura", "Century Gothic", sans-serif;
   --font-body: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 
-  /* Типографическая шкала */
-  --text-h1: clamp(2.5rem, 7vw, 4.5rem);      /* 40 → 72 */
-  --text-h2: clamp(1.875rem, 4.5vw, 3rem);    /* 30 → 48 */
-  --text-h3: clamp(1.375rem, 2.4vw, 1.75rem); /* 22 → 28 */
-  --text-lead: clamp(1.125rem, 2vw, 1.3125rem); /* 18 → 21 */
-  --text-body: clamp(1.0625rem, 1.2vw, 1.125rem); /* 17 → 18 */
-  --text-small: 0.9375rem;                    /* 15 */
-  --text-label: 0.8125rem;                    /* 13 */
+  /* Типографическая шкала — под ПРОПИСНЫЕ, поэтому размеры ниже обычных */
+  --text-h1: clamp(2rem, 5.5vw, 3.75rem);        /* 32 → 60 */
+  --text-h2: clamp(1.5rem, 3.4vw, 2.375rem);     /* 24 → 38 */
+  --text-h3: clamp(1.0625rem, 1.6vw, 1.3125rem); /* 17 → 21 */
+  --text-label: 0.75rem;                         /* 12 */
+  --text-lead: clamp(1.125rem, 1.8vw, 1.25rem);  /* 18 → 20 */
+  --text-body: clamp(1rem, 1.1vw, 1.0625rem);    /* 16 → 17 */
+  --text-small: 0.875rem;                        /* 14 */
 
-  /* Отступы — шаг 4px */
+  /* Межбуквенный интервал: чем крупнее кегль, тем плотнее трекинг */
+  --tracking-h1: 0.08em;
+  --tracking-h2: 0.1em;
+  --tracking-h3: 0.12em;
+  --tracking-label: 0.2em;
+
+  /* Отступы — без изменений с прошлой версии */
   --space-4: 4px;
   --space-8: 8px;
   --space-12: 12px;
@@ -52,21 +56,19 @@
   --space-96: 96px;
   --space-128: 128px;
 
-  /* Вертикальный ритм секций (мобильные значения, десктоп — ниже) */
   --section-gap: var(--space-64);
   --section-gap-key: var(--space-96);
   --heading-gap: var(--space-24);
 
-  /* Радиусы */
-  --radius: 4px;
-  --radius-lg: 8px;
-  --radius-pill: 999px;
+  /* Радиусы — единый 12px, 20px только для крупных медиа */
+  --radius: 12px;
+  --radius-lg: 20px;
 
   /* Раскладка */
   --container: 1200px;
-  --measure: 680px;
+  --measure: 620px;
   --gutter: 20px;
-  --header-height: 68px;
+  --header-height: 116px;
 }
 
 @media (min-width: 768px) {
@@ -75,7 +77,12 @@
     --section-gap-key: var(--space-128);
     --heading-gap: var(--space-48);
     --gutter: 48px;
-    --header-height: 76px;
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --header-height: 84px;
   }
 }
 
@@ -91,42 +98,49 @@
 
 html {
   -webkit-text-size-adjust: 100%;
+  background-color: var(--background);
 }
 
 body {
   margin: 0;
-  background-color: var(--color-bg);
-  color: var(--color-primary);
+  background-color: var(--background);
+  color: var(--foreground);
   font-family: var(--font-body);
   font-size: var(--text-body);
-  line-height: 1.65;
+  /* на тёмном фоне светлый текст оптически тяжелее — держим 400 и не ниже */
   font-weight: 400;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
 }
 
 h1,
 h2,
 h3 {
-  font-family: var(--font-heading);
-  font-weight: 500;
+  font-family: var(--font-display);
+  text-transform: uppercase;
   margin: 0;
-  color: var(--color-primary);
+  color: var(--foreground);
 }
 
 h1 {
   font-size: var(--text-h1);
-  line-height: 1.05;
-  letter-spacing: -0.02em;
+  font-weight: 300;
+  line-height: 1.1;
+  letter-spacing: var(--tracking-h1);
 }
 
 h2 {
   font-size: var(--text-h2);
-  line-height: 1.15;
-  letter-spacing: -0.01em;
+  font-weight: 300;
+  line-height: 1.2;
+  letter-spacing: var(--tracking-h2);
 }
 
 h3 {
   font-size: var(--text-h3);
-  line-height: 1.3;
+  font-weight: 500;
+  line-height: 1.35;
+  letter-spacing: var(--tracking-h3);
 }
 
 p {
@@ -139,7 +153,8 @@ p:last-child {
 }
 
 a {
-  color: var(--color-accent-strong);
+  color: var(--primary);
+  cursor: pointer;
 }
 
 ul {
@@ -148,14 +163,16 @@ ul {
   list-style: none;
 }
 
-img {
-  max-width: 100%;
-  display: block;
+:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+  border-radius: var(--radius);
 }
 
-:focus-visible {
-  outline: 2px solid var(--color-accent);
-  outline-offset: 2px;
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+  }
 }
 
 /* --------------------------------------------------------------------------
@@ -173,7 +190,6 @@ img {
 .section {
   padding-top: var(--section-gap);
   padding-bottom: var(--section-gap);
-  /* компенсация закреплённой шапки при переходе по якорю */
   scroll-margin-top: var(--header-height);
 }
 
@@ -183,21 +199,7 @@ img {
 }
 
 .section--alt {
-  background-color: var(--color-bg-alt);
-}
-
-.section--dark {
-  background-color: var(--color-primary);
-  color: var(--color-on-dark);
-}
-
-.section--dark h2,
-.section--dark h3 {
-  color: var(--color-on-dark);
-}
-
-.section--dark .text-muted {
-  color: var(--color-on-dark-muted);
+  background-color: var(--card);
 }
 
 .section__head {
@@ -212,7 +214,6 @@ img {
   max-width: var(--measure);
 }
 
-/* Сетки */
 .grid {
   display: grid;
   gap: var(--space-24);
@@ -257,16 +258,13 @@ img {
    -------------------------------------------------------------------------- */
 
 .label {
+  font-family: var(--font-display);
   font-size: var(--text-label);
   font-weight: 500;
-  letter-spacing: 0.12em;
+  letter-spacing: var(--tracking-label);
   text-transform: uppercase;
-  color: var(--color-text-muted);
+  color: var(--primary);
   margin: 0 0 var(--space-16);
-}
-
-.section--dark .label {
-  color: var(--color-on-dark-muted);
 }
 
 .lead {
@@ -275,12 +273,28 @@ img {
 }
 
 .text-muted {
-  color: var(--color-text-muted);
+  color: var(--muted-foreground);
 }
 
 .text-small {
   font-size: var(--text-small);
   line-height: 1.5;
+}
+
+/* Короткие ёмкие строки вместо абзаца */
+.lines {
+  font-size: var(--text-lead);
+  line-height: 1.5;
+}
+
+.lines li {
+  padding: var(--space-12) 0;
+  border-bottom: 1px solid var(--border);
+  max-width: var(--measure);
+}
+
+.lines li:last-child {
+  border-bottom: none;
 }
 
 /* --------------------------------------------------------------------------
@@ -295,10 +309,12 @@ img {
   padding: var(--space-12) var(--space-32);
   border: 1px solid transparent;
   border-radius: var(--radius);
-  font-family: var(--font-body);
-  font-size: 1rem;
+  font-family: var(--font-display);
+  font-size: var(--text-small);
   font-weight: 500;
   line-height: 1.2;
+  letter-spacing: var(--tracking-h3);
+  text-transform: uppercase;
   text-decoration: none;
   cursor: pointer;
   transition: background-color 200ms ease-out, color 200ms ease-out,
@@ -312,33 +328,23 @@ img {
 }
 
 .btn--primary {
-  background-color: var(--color-accent);
-  color: #ffffff;
+  background-color: var(--primary);
+  color: var(--primary-foreground);
 }
 
 .btn--primary:hover {
-  background-color: var(--color-accent-hover);
+  background-color: var(--primary-hover);
 }
 
 .btn--secondary {
   background-color: transparent;
-  border-color: var(--color-primary);
-  color: var(--color-primary);
+  border-color: rgba(236, 232, 225, 0.35);
+  color: var(--foreground);
 }
 
 .btn--secondary:hover {
-  background-color: var(--color-primary);
-  color: var(--color-on-dark);
-}
-
-.section--dark .btn--secondary {
-  border-color: var(--color-on-dark);
-  color: var(--color-on-dark);
-}
-
-.section--dark .btn--secondary:hover {
-  background-color: var(--color-on-dark);
-  color: var(--color-primary);
+  border-color: var(--foreground);
+  background-color: rgba(236, 232, 225, 0.08);
 }
 
 .btn-row {
@@ -352,8 +358,8 @@ img {
    -------------------------------------------------------------------------- */
 
 .card {
-  background-color: var(--color-bg-alt);
-  border: 1px solid var(--color-border);
+  background-color: var(--card);
+  border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: var(--space-24);
 }
@@ -364,15 +370,16 @@ img {
   }
 }
 
+/* внутри уже светлой секции карточка поднимается ещё на шаг */
 .section--alt .card {
-  background-color: #ffffff;
+  background-color: #24374b;
 }
 
 .card > * + * {
   margin-top: var(--space-16);
 }
 
-/* Список фактов */
+/* Сводка фактов */
 .facts {
   display: grid;
   gap: var(--space-24);
@@ -393,23 +400,29 @@ img {
 
 .facts li {
   padding-top: var(--space-16);
-  border-top: 1px solid var(--color-border);
+  border-top: 1px solid var(--border);
 }
 
 .facts strong {
   display: block;
-  font-family: var(--font-heading);
+  font-family: var(--font-display);
   font-size: var(--text-h3);
   font-weight: 500;
-  line-height: 1.3;
-  margin-bottom: var(--space-4);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-h3);
+  line-height: 1.35;
+  margin-bottom: var(--space-8);
+}
+
+.facts span {
+  font-size: var(--text-small);
 }
 
 /* Маркированный список */
 .list li {
   position: relative;
   padding-left: var(--space-24);
-  margin-bottom: var(--space-16);
+  margin-bottom: var(--space-12);
 }
 
 .list li:last-child {
@@ -420,21 +433,17 @@ img {
   content: "";
   position: absolute;
   left: 0;
-  top: 0.7em;
-  width: 6px;
-  height: 6px;
-  border-radius: var(--radius-pill);
-  background-color: var(--color-accent);
+  top: 0.65em;
+  width: 5px;
+  height: 5px;
+  border-radius: 999px;
+  background-color: var(--primary);
 }
 
 /* Контакты */
 .contact-list li {
   padding: var(--space-16) 0;
-  border-bottom: 1px solid var(--color-border);
-}
-
-.section--dark .contact-list li {
-  border-color: rgba(250, 247, 242, 0.2);
+  border-bottom: 1px solid var(--border);
 }
 
 .contact-list li:first-child {
@@ -442,7 +451,12 @@ img {
 }
 
 .contact-list a {
-  color: inherit;
+  color: var(--foreground);
+  text-decoration: none;
+}
+
+.contact-list a:hover {
+  color: var(--primary);
 }
 
 /* --------------------------------------------------------------------------
@@ -453,12 +467,12 @@ img {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: var(--color-placeholder);
-  border: 1px dashed #c4b8a6;
+  background-color: #33414f;
+  border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: var(--space-16);
   text-align: center;
-  color: #6f675c;
+  color: #aab5c2;
   font-size: var(--text-small);
   line-height: 1.4;
 }
@@ -471,10 +485,6 @@ img {
   aspect-ratio: 4 / 3;
 }
 
-.ph--3x4 {
-  aspect-ratio: 3 / 4;
-}
-
 .ph--lg {
   border-radius: var(--radius-lg);
 }
@@ -485,12 +495,10 @@ img {
 
 .header {
   z-index: 100;
-  background-color: var(--color-bg);
-  border-bottom: 1px solid var(--color-border);
+  background-color: var(--background);
+  border-bottom: 1px solid var(--border);
 }
 
-/* Закрепляем шапку только там, где она в одну строку.
-   На мобильном навигация переносится и заняла бы четверть экрана. */
 @media (min-width: 1024px) {
   .header {
     position: sticky;
@@ -503,57 +511,66 @@ img {
   align-items: center;
   justify-content: space-between;
   gap: var(--space-16);
-  min-height: var(--header-height);
   flex-wrap: wrap;
-  padding-top: var(--space-12);
-  padding-bottom: var(--space-12);
+  padding-top: var(--space-16);
+  padding-bottom: var(--space-16);
 }
 
 .header__brand {
-  font-family: var(--font-heading);
-  font-size: 1.5rem;
-  font-weight: 500;
+  font-family: var(--font-display);
+  font-size: 1.125rem;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
   line-height: 1.2;
-  color: var(--color-primary);
+  color: var(--foreground);
   text-decoration: none;
   white-space: nowrap;
 }
 
 .header__brand span {
   display: block;
-  font-family: var(--font-body);
-  font-size: var(--text-label);
-  font-weight: 400;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--color-text-muted);
-  margin-top: var(--space-4);
+  font-size: 0.625rem;
+  letter-spacing: 0.2em;
+  color: var(--muted-foreground);
+  margin-top: var(--space-8);
 }
 
 .nav {
   display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-16) var(--space-24);
+  gap: var(--space-24);
   order: 3;
   width: 100%;
+  /* на мобильном — одна прокручиваемая строка, чтобы шапка не росла вверх */
+  overflow-x: auto;
+  padding-bottom: var(--space-4);
+  scrollbar-width: none;
+}
+
+.nav::-webkit-scrollbar {
+  display: none;
 }
 
 .nav a {
-  color: var(--color-primary);
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--muted-foreground);
   text-decoration: none;
-  font-size: var(--text-small);
+  white-space: nowrap;
   padding: var(--space-4) 0;
 }
 
 .nav a:hover {
-  color: var(--color-accent-strong);
-  text-decoration: underline;
+  color: var(--primary);
 }
 
 .header .btn {
   min-height: 44px;
   padding: var(--space-8) var(--space-24);
-  font-size: var(--text-small);
+  font-size: 0.75rem;
 }
 
 @media (min-width: 1024px) {
@@ -563,32 +580,72 @@ img {
   .nav {
     order: 0;
     width: auto;
-    flex-wrap: nowrap;
+    overflow-x: visible;
+    padding-bottom: 0;
   }
 }
 
 /* --------------------------------------------------------------------------
-   9. Первый экран
+   9. Первый экран — фото на весь экран
    -------------------------------------------------------------------------- */
 
 .hero {
-  padding-top: var(--space-64);
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  min-height: calc(100svh - var(--header-height));
+  padding-top: var(--space-96);
   padding-bottom: var(--space-64);
+  overflow: hidden;
 }
 
 @media (min-width: 768px) {
   .hero {
-    padding-top: var(--space-96);
     padding-bottom: var(--space-96);
   }
 }
 
+/* серый плейсхолдер вместо кадра */
+.hero__bg {
+  position: absolute;
+  inset: 0;
+  background-color: #46525c;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: var(--space-24);
+  text-align: center;
+  /* подпись прижата к верху и приглушена, чтобы не спорить с заголовком */
+  color: rgba(236, 232, 225, 0.45);
+  font-size: var(--text-small);
+}
+
+/* затемнение: 55% минимум, к низу плотнее — под текст */
+.hero__bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(14, 23, 37, 0.94) 0%,
+    rgba(14, 23, 37, 0.72) 45%,
+    rgba(14, 23, 37, 0.55) 100%
+  );
+}
+
+.hero__inner {
+  position: relative;
+  z-index: 1;
+}
+
 .hero__title {
-  max-width: 16ch;
+  /* прописные занимают больше места — даём заголовку лечь в 3–4 строки */
+  max-width: 26ch;
 }
 
 .hero__lead {
-  margin-top: var(--space-32);
+  margin-top: var(--space-24);
+  max-width: 46ch;
 }
 
 .hero__actions {
@@ -597,16 +654,6 @@ img {
 
 .hero__note {
   margin-top: var(--space-16);
-}
-
-.hero__media {
-  margin-top: var(--space-48);
-}
-
-@media (min-width: 768px) {
-  .hero__media {
-    margin-top: var(--space-64);
-  }
 }
 
 /* --------------------------------------------------------------------------
@@ -636,14 +683,19 @@ img {
    -------------------------------------------------------------------------- */
 
 .footer {
-  background-color: var(--color-primary);
-  color: var(--color-on-dark);
+  background-color: var(--card);
+  border-top: 1px solid var(--border);
   padding-top: var(--space-64);
   padding-bottom: var(--space-48);
 }
 
 .footer a {
-  color: var(--color-on-dark);
+  color: var(--foreground);
+  text-decoration: none;
+}
+
+.footer a:hover {
+  color: var(--primary);
 }
 
 .footer__grid {
@@ -659,18 +711,24 @@ img {
 }
 
 .footer__brand {
-  font-family: var(--font-heading);
-  font-size: 1.75rem;
-  font-weight: 500;
-  line-height: 1.2;
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  line-height: 1.3;
+  margin-bottom: var(--space-8);
 }
 
 .footer__bottom {
   margin-top: var(--space-48);
   padding-top: var(--space-24);
-  border-top: 1px solid rgba(250, 247, 242, 0.2);
-  color: var(--color-on-dark-muted);
+  border-top: 1px solid var(--border);
+  color: var(--muted-foreground);
   font-size: var(--text-small);
+  font-family: var(--font-display);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
 }
 
 .footer .nav-list li {
@@ -678,9 +736,8 @@ img {
 }
 
 .footer .nav-list a {
-  text-decoration: none;
-}
-
-.footer .nav-list a:hover {
-  text-decoration: underline;
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
 }
