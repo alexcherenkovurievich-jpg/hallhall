@@ -376,8 +376,8 @@
     </section>
 
     <!-- ============================================================
-         ЗАЯВКА И КОНТАКТЫ
-         Форма собрана в карточку. Подключена к Netlify Forms
+         КОНТАКТЫ
+         Сюда ведут все кнопки «Обсудить проект» на странице
          ============================================================ -->
     <section class="section" id="contact">
       <div class="container">
@@ -387,39 +387,14 @@
         </div>
 
         <div class="contact" data-stagger>
-          <div class="form-card reveal">
-            <form class="form" name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field">
-              <!-- Служебные поля Netlify Forms -->
-              <input type="hidden" name="form-name" value="contact">
-              <p class="form__hp"><label>Не заполняйте: <input name="bot-field"></label></p>
+          <p class="contact__note reveal">Напишите в Telegram или позвоните — отвечаю в течение дня.</p>
 
-              <div class="field">
-                <label class="field__label" for="name">Имя</label>
-                <input class="field__input" type="text" id="name" name="name" autocomplete="name" required>
-              </div>
-
-              <div class="field">
-                <label class="field__label" for="contact-way">Телефон или мессенджер</label>
-                <input class="field__input" type="text" id="contact-way" name="contact" autocomplete="tel" required>
-              </div>
-
-              <div class="field">
-                <label class="field__label" for="task">Пара слов о задаче</label>
-                <textarea class="field__input field__input--area" id="task" name="task" rows="3"></textarea>
-              </div>
-
-              <button class="btn btn--primary btn--lg form__submit" type="submit">Отправить</button>
-            </form>
+          <div class="contact__links reveal">
+            <a class="btn btn--primary btn--lg" href="https://t.me/Alexcherenkovv" target="_blank" rel="noopener">Написать в Telegram</a>
+            <a class="btn btn--ghost btn--lg" href="tel:+79176358265">Позвонить</a>
           </div>
 
-          <aside class="contact__side reveal">
-            <p class="contact__note">Или напишите напрямую — отвечаю в течение дня.</p>
-            <div class="contact__links">
-              <a class="btn btn--ghost" href="https://t.me/Alexcherenkovv" target="_blank" rel="noopener">Написать в Telegram</a>
-              <a class="btn btn--ghost" href="tel:+79176358265">Позвонить</a>
-            </div>
-            <p class="contact__phone">8 917 635 82 65</p>
-          </aside>
+          <p class="contact__phone reveal">8 917 635 82 65</p>
         </div>
       </div>
     </section>
