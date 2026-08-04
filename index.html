@@ -12,6 +12,11 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Manrope:wght@600;700&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="css/styles.css">
+
+  <!-- Помечаем страницу как «с JS» до первой отрисовки: только при этом
+       классе CSS прячет блоки под анимацию появления. Если JS отключён —
+       контент виден сразу. -->
+  <script>document.documentElement.className += " js";</script>
 </head>
 <body>
 
@@ -43,10 +48,10 @@
          Намеренно пустой: заголовок, подзаголовок, одна кнопка
          ============================================================ -->
     <section class="hero">
-      <div class="container hero__inner">
-        <h1 class="hero__title">Сайт, который делает ваш бизнес серьёзным в глазах клиента.</h1>
-        <p class="hero__subtitle">Без сайта продукт не воспринимают всерьёз. С сайтом — вам начинают доверять.</p>
-        <a class="btn btn--primary btn--lg" href="#contact">Обсудить проект</a>
+      <div class="container hero__inner" data-stagger>
+        <h1 class="hero__title reveal">Сайт, который делает ваш бизнес серьёзным в глазах клиента.</h1>
+        <p class="hero__subtitle reveal">Без сайта продукт не воспринимают всерьёз. С сайтом — вам начинают доверять.</p>
+        <a class="btn btn--primary btn--lg reveal" href="#contact">Обсудить проект</a>
       </div>
     </section>
 
@@ -56,10 +61,10 @@
          ============================================================ -->
     <section class="section" id="audience">
       <div class="container">
-        <div class="prose">
-          <p class="eyebrow">Для кого</p>
-          <h2 class="section__title">Небольшой бизнес, которому важно, чтобы выбрали именно его</h2>
-          <p>Работаю с небольшим бизнесом: мастера, локальные услуги, нишевые проекты. Не сети, не крупные компании. Там, где сайт нужен не для галочки, а чтобы вас выбирали.</p>
+        <div class="prose" data-stagger>
+          <p class="eyebrow reveal">Для кого</p>
+          <h2 class="section__title reveal">Небольшой бизнес, которому важно, чтобы выбрали именно его</h2>
+          <p class="reveal">Работаю с небольшим бизнесом: мастера, локальные услуги, нишевые проекты. Не сети, не крупные компании. Там, где сайт нужен не для галочки, а чтобы вас выбирали.</p>
         </div>
       </div>
     </section>
@@ -69,11 +74,11 @@
          ============================================================ -->
     <section class="section" id="problem">
       <div class="container">
-        <div class="prose">
-          <p class="eyebrow">Проблема</p>
-          <h2 class="section__title">Клиент не скажет, что не доверяет. Он просто уйдёт.</h2>
-          <p>Без сайта продукт игнорируют или не воспринимают всерьёз. Клиент не скажет об этом — но уйдёт к тому, кто вызывает больше доверия.</p>
-          <p>Сайт закрывает разрыв: показывает продукт со всех сторон, отвечает на вопросы заранее, создаёт доверие. На нём строятся продажи.</p>
+        <div class="prose" data-stagger>
+          <p class="eyebrow reveal">Проблема</p>
+          <h2 class="section__title reveal">Клиент не скажет, что не доверяет. Он просто уйдёт.</h2>
+          <p class="reveal">Без сайта продукт игнорируют или не воспринимают всерьёз. Клиент не скажет об этом — но уйдёт к тому, кто вызывает больше доверия.</p>
+          <p class="reveal">Сайт закрывает разрыв: показывает продукт со всех сторон, отвечает на вопросы заранее, создаёт доверие. На нём строятся продажи.</p>
         </div>
       </div>
     </section>
@@ -83,11 +88,11 @@
          ============================================================ -->
     <section class="section" id="services">
       <div class="container">
-        <div class="prose">
-          <p class="eyebrow">Подход</p>
-          <h2 class="section__title">Каждый сайт решает <span class="accent">задачу</span>, а не просто существует</h2>
-          <p>Не собираю сайты по шаблону ради картинки. Каждый сайт решает задачу: снять сомнения, показать продукт, привести заявки.</p>
-          <p>Работаю с разным уровнем сложности — от аккуратной визитки до многостраничного сайта. Два формата ниже.</p>
+        <div class="prose" data-stagger>
+          <p class="eyebrow reveal">Подход</p>
+          <h2 class="section__title reveal">Каждый сайт решает <span class="accent">задачу</span>, а не просто существует</h2>
+          <p class="reveal">Не собираю сайты по шаблону ради картинки. Каждый сайт решает задачу: снять сомнения, показать продукт, привести заявки.</p>
+          <p class="reveal">Работаю с разным уровнем сложности — от аккуратной визитки до многостраничного сайта. Два формата ниже.</p>
         </div>
       </div>
     </section>
@@ -98,15 +103,15 @@
          ============================================================ -->
     <section class="section" id="packages">
       <div class="container">
-        <div class="prose section__head">
-          <p class="eyebrow">Пакеты</p>
-          <h2 class="section__title">Два формата работы</h2>
+        <div class="prose section__head" data-stagger>
+          <p class="eyebrow reveal">Пакеты</p>
+          <h2 class="section__title reveal">Два формата работы</h2>
         </div>
 
-        <div class="packages">
+        <div class="packages" data-stagger>
 
           <!-- Карточка 1: Визитка -->
-          <article class="package">
+          <article class="package reveal">
             <h3 class="package__name">Визитка</h3>
             <p class="package__price">15 000–25 000 ₽</p>
             <p class="package__desc">Одностраничный сайт: всё главное на одном экране.</p>
@@ -120,7 +125,7 @@
           </article>
 
           <!-- Карточка 2: Стандарт -->
-          <article class="package">
+          <article class="package reveal">
             <h3 class="package__name">Стандарт</h3>
             <p class="package__price">30 000–50 000 ₽</p>
             <p class="package__desc">Многостраничный сайт для бизнеса с несколькими продуктами.</p>
@@ -135,7 +140,7 @@
 
         </div>
 
-        <div class="packages__footer">
+        <div class="packages__footer reveal">
           <a class="btn btn--primary btn--lg" href="#contact">Обсудить проект</a>
         </div>
       </div>
@@ -146,17 +151,17 @@
          ============================================================ -->
     <section class="section" id="price">
       <div class="container">
-        <div class="prose">
-          <p class="eyebrow">Цена</p>
-          <h2 class="section__title">Как строится цена</h2>
-          <p>Цена зависит от объёма работы:</p>
-          <ul class="list">
+        <div class="prose" data-stagger>
+          <p class="eyebrow reveal">Цена</p>
+          <h2 class="section__title reveal">Как строится цена</h2>
+          <p class="reveal">Цена зависит от объёма работы:</p>
+          <ul class="list reveal">
             <li>сколько продуктов и страниц;</li>
             <li>готовы ли тексты и фото;</li>
             <li>нужно ли продвижение в поиске;</li>
             <li>насколько срочно.</li>
           </ul>
-          <p>Точную цену называю в разговоре, после нескольких вопросов. Ни к чему не обязывает.</p>
+          <p class="reveal">Точную цену называю в разговоре, после нескольких вопросов. Ни к чему не обязывает.</p>
         </div>
       </div>
     </section>
@@ -167,41 +172,41 @@
          ============================================================ -->
     <section class="section" id="process">
       <div class="container">
-        <div class="prose section__head">
-          <p class="eyebrow">Процесс</p>
-          <h2 class="section__title">Этапы работы</h2>
+        <div class="prose section__head" data-stagger>
+          <p class="eyebrow reveal">Процесс</p>
+          <h2 class="section__title reveal">Этапы работы</h2>
         </div>
 
-        <ol class="steps">
-          <li class="step">
+        <ol class="steps" data-stagger>
+          <li class="step reveal">
             <span class="step__num" aria-hidden="true">1</span>
             <div class="step__body">
               <h3 class="step__title">Заявка</h3>
               <p class="step__text">С сайта или в Telegram.</p>
             </div>
           </li>
-          <li class="step">
+          <li class="step reveal">
             <span class="step__num" aria-hidden="true">2</span>
             <div class="step__body">
               <h3 class="step__title">Обсуждение</h3>
               <p class="step__text">Уточняю детали, называю цену и сроки, предоплата 50%.</p>
             </div>
           </li>
-          <li class="step">
+          <li class="step reveal">
             <span class="step__num" aria-hidden="true">3</span>
             <div class="step__body">
               <h3 class="step__title">Сборка</h3>
               <p class="step__text">Делаю сайт.</p>
             </div>
           </li>
-          <li class="step">
+          <li class="step reveal">
             <span class="step__num" aria-hidden="true">4</span>
             <div class="step__body">
               <h3 class="step__title">Правки</h3>
               <p class="step__text">В рамках пакета.</p>
             </div>
           </li>
-          <li class="step">
+          <li class="step reveal">
             <span class="step__num" aria-hidden="true">5</span>
             <div class="step__body">
               <h3 class="step__title">Публикация</h3>
@@ -218,13 +223,13 @@
          ============================================================ -->
     <section class="section" id="contact">
       <div class="container">
-        <div class="prose section__head">
-          <p class="eyebrow">Контакты</p>
-          <h2 class="section__title">Обсудим ваш проект</h2>
+        <div class="prose section__head" data-stagger>
+          <p class="eyebrow reveal">Контакты</p>
+          <h2 class="section__title reveal">Обсудим ваш проект</h2>
         </div>
 
-        <div class="contact">
-          <form class="form" name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+        <div class="contact" data-stagger>
+          <form class="form reveal" name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field">
             <!-- Служебные поля Netlify Forms -->
             <input type="hidden" name="form-name" value="contact">
             <p class="form__hp"><label>Не заполняйте: <input name="bot-field"></label></p>
@@ -247,7 +252,7 @@
             <button class="btn btn--primary btn--lg form__submit" type="submit">Отправить</button>
           </form>
 
-          <aside class="contact__side">
+          <aside class="contact__side reveal">
             <p class="contact__note">Или напишите напрямую — отвечаю в течение дня.</p>
             <div class="contact__links">
               <a class="btn btn--ghost" href="https://t.me/Alexcherenkovv" target="_blank" rel="noopener">Написать в Telegram</a>
