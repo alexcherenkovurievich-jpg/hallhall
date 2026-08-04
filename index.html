@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BrandPrime — сайты для небольшого бизнеса</title>
+  <meta name="description" content="Сайт, который делает ваш бизнес серьёзным в глазах клиента. Одностраничные и многостраничные сайты для мастеров, локальных услуг и нишевых проектов.">
+
+  <!-- Шрифты: Manrope (заголовки) + Inter (текст) + Playfair Display Italic (акцентные слова) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Manrope:wght@600;700;800&family=Playfair+Display:ital,wght@1,500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/styles.css">
+
+  <!-- Помечаем страницу как «с JS» до первой отрисовки: только при этом
+       классе CSS прячет блоки под анимацию появления. Если JS отключён —
+       контент виден сразу. -->
+  <script>document.documentElement.className += " js";</script>
+</head>
+<body>
+
+  <!-- ============================================================
+       ШАПКА
+       Тонкая, прозрачная. Фон появляется при прокрутке (js/main.js)
+       ============================================================ -->
+  <header class="header" id="header">
+    <div class="container header__inner">
+      <a class="header__logo" href="#top">BrandPrime</a>
+
+      <nav class="nav" aria-label="Основная навигация">
+        <ul class="nav__list">
+          <li><a class="nav__link" href="#services">Услуги</a></li>
+          <li><a class="nav__link" href="#packages">Пакеты</a></li>
+          <li><a class="nav__link" href="#price">Цена</a></li>
+          <li><a class="nav__link" href="#contact">Контакты</a></li>
+        </ul>
+      </nav>
+
+      <a class="btn btn--primary header__cta" href="#contact">Обсудить проект</a>
+    </div>
+  </header>
+
+  <main id="top">
+
+    <!-- ============================================================
+         ПЕРВЫЙ ЭКРАН
+         Слова заголовка проявляются по очереди слева направо
+         ============================================================ -->
+    <section class="hero">
+      <div class="container hero__inner">
+        <h1 class="hero__title" data-stagger="0.055">
+          <span class="word reveal">Сайт,</span>
+          <span class="word reveal">который</span>
+          <span class="word reveal">делает</span>
+          <span class="word reveal">ваш</span>
+          <span class="word reveal">бизнес</span>
+          <span class="word reveal"><em class="accent-word">серьёзным</em></span>
+          <span class="word reveal">в</span>
+          <span class="word reveal">глазах</span>
+          <span class="word reveal">клиента.</span>
+        </h1>
+        <div data-stagger="0.12">
+          <p class="hero__subtitle reveal">Без сайта продукт не воспринимают всерьёз. С сайтом — вам начинают доверять.</p>
+          <p class="reveal"><a class="btn btn--primary btn--lg" href="#contact">Обсудить проект</a></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         ДЛЯ КОГО
+         Короткая вводная + три пункта с иконками
+         ============================================================ -->
+    <section class="section" id="audience">
+      <div class="container">
+        <div class="prose" data-stagger>
+          <p class="eyebrow reveal">Для кого</p>
+          <h2 class="section__title reveal">Небольшой бизнес, которому важно, чтобы вас <em class="accent-word">выбирали</em></h2>
+          <p class="reveal">Работаю с небольшим бизнесом. Не сети, не крупные компании. Там, где сайт нужен не для галочки, а чтобы вас выбирали.</p>
+        </div>
+
+        <ul class="features" data-stagger>
+          <li class="feature reveal">
+            <span class="feature__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="8" r="3.5"/><path d="M5 20c0-3.5 3.1-6 7-6s7 2.5 7 6"/>
+              </svg>
+            </span>
+            <span class="feature__text">Мастера и частные специалисты</span>
+          </li>
+          <li class="feature reveal">
+            <span class="feature__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 21s6-5.3 6-10a6 6 0 1 0-12 0c0 4.7 6 10 6 10Z"/><circle cx="12" cy="11" r="2.2"/>
+              </svg>
+            </span>
+            <span class="feature__text">Локальные услуги</span>
+          </li>
+          <li class="feature reveal">
+            <span class="feature__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/>
+              </svg>
+            </span>
+            <span class="feature__text">Нишевые проекты</span>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         ПРОБЛЕМА — тёмная секция
+         Ключевая фраза вынесена крупно, ниже три пункта
+         ============================================================ -->
+    <section class="section section--dark" id="problem">
+      <div class="container">
+        <div class="prose" data-stagger>
+          <p class="eyebrow reveal">Проблема</p>
+          <h2 class="statement reveal">Клиент просто <em class="accent-word">уйдёт</em></h2>
+        </div>
+
+        <ul class="points" data-stagger>
+          <li class="point reveal">Продукт игнорируют или не воспринимают всерьёз</li>
+          <li class="point reveal">Клиент не скажет — уйдёт к тому, кто вызывает больше доверия</li>
+          <li class="point reveal">Сайт показывает продукт со всех сторон и отвечает на вопросы заранее</li>
+        </ul>
+
+        <p class="prose closing reveal">Сайт закрывает разрыв и создаёт доверие. На нём строятся продажи.</p>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         ПОДХОД (пункт меню «Услуги»)
+         ============================================================ -->
+    <section class="section" id="services">
+      <div class="container">
+        <div class="prose" data-stagger>
+          <p class="eyebrow reveal">Подход</p>
+          <h2 class="section__title reveal">Каждый сайт решает <em class="accent-word">задачу</em>, а не просто существует</h2>
+          <p class="reveal">Не собираю сайты по шаблону ради картинки. Каждый сайт делает три вещи:</p>
+        </div>
+
+        <ul class="features" data-stagger>
+          <li class="feature reveal">
+            <span class="feature__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 3l7 3v5c0 4.4-3 8.2-7 10-4-1.8-7-5.6-7-10V6l7-3Z"/><path d="m9 12 2.2 2.2L15.5 10"/>
+              </svg>
+            </span>
+            <span class="feature__text">Снимает сомнения</span>
+          </li>
+          <li class="feature reveal">
+            <span class="feature__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M2.5 12S6 6.5 12 6.5 21.5 12 21.5 12 18 17.5 12 17.5 2.5 12 2.5 12Z"/><circle cx="12" cy="12" r="2.8"/>
+              </svg>
+            </span>
+            <span class="feature__text">Показывает продукт</span>
+          </li>
+          <li class="feature reveal">
+            <span class="feature__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3.5 13.5V19A1.5 1.5 0 0 0 5 20.5h14a1.5 1.5 0 0 0 1.5-1.5v-5.5"/><path d="M12 3.5v9"/><path d="M8.5 9.5 12 13l3.5-3.5"/>
+              </svg>
+            </span>
+            <span class="feature__text">Приводит заявки</span>
+          </li>
+        </ul>
+
+        <p class="prose closing reveal">Работаю с разным уровнем сложности — от аккуратной визитки до многостраничного сайта. Два формата ниже.</p>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         ЦИТАТА-РАЗДЕЛИТЕЛЬ
+         ============================================================ -->
+    <section class="quote" aria-label="Цитата">
+      <div class="container">
+        <p class="quote__text reveal">Доверие начинается с первого взгляда</p>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         ПАКЕТЫ — подложка чуть темнее, чтобы белые карточки всплывали
+         ============================================================ -->
+    <section class="section section--tinted" id="packages">
+      <div class="container">
+        <div class="prose section__head" data-stagger>
+          <p class="eyebrow reveal">Пакеты</p>
+          <h2 class="section__title reveal">Два формата работы</h2>
+        </div>
+
+        <div class="packages" data-stagger>
+
+          <!-- Карточка 1: Визитка -->
+          <article class="package reveal">
+            <!-- Золотая обводка по контуру при наведении -->
+            <svg class="package__trace" aria-hidden="true">
+              <rect x="0.5" y="0.5" rx="1"/>
+            </svg>
+            <h3 class="package__name">Визитка</h3>
+            <p class="package__price"><span class="count">15 000</span>–<span class="count">25 000</span> ₽</p>
+            <p class="package__desc">Одностраничный сайт: всё главное на одном экране.</p>
+            <ul class="package__list">
+              <li>Продукт, преимущества, цены, фото</li>
+              <li>Форма заявки</li>
+              <li>Работает на телефоне</li>
+              <li>Подключён к вашему домену</li>
+            </ul>
+            <a class="btn btn--ghost package__btn" href="#contact">Обсудить проект</a>
+          </article>
+
+          <!-- Карточка 2: Стандарт — выделенная -->
+          <article class="package package--featured reveal">
+            <svg class="package__trace" aria-hidden="true">
+              <rect x="0.5" y="0.5" rx="1"/>
+            </svg>
+            <p class="package__badge">Полное решение</p>
+            <h3 class="package__name">Стандарт</h3>
+            <p class="package__price"><span class="count">30 000</span>–<span class="count">50 000</span> ₽</p>
+            <p class="package__desc">Многостраничный сайт для бизнеса с несколькими продуктами.</p>
+            <ul class="package__list">
+              <li>Отдельная страница под каждый продукт</li>
+              <li>Описание, фото и цены на каждой</li>
+              <li>Продвижение в поиске</li>
+              <li>Аналитика</li>
+            </ul>
+            <a class="btn btn--primary package__btn" href="#contact">Обсудить проект</a>
+          </article>
+
+        </div>
+
+        <div class="packages__footer reveal">
+          <a class="btn btn--primary btn--lg" href="#contact">Обсудить проект</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         КАК СТРОИТСЯ ЦЕНА — четыре карточки-фактора
+         ============================================================ -->
+    <section class="section" id="price">
+      <div class="container">
+        <div class="prose section__head" data-stagger>
+          <p class="eyebrow reveal">Цена</p>
+          <h2 class="section__title reveal">Как строится цена</h2>
+          <p class="reveal">Цена зависит от объёма работы:</p>
+        </div>
+
+        <ul class="factors" data-stagger>
+          <li class="factor reveal">
+            <span class="factor__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m12 3 8.5 4.5L12 12 3.5 7.5 12 3Z"/><path d="m3.5 12.5 8.5 4.5 8.5-4.5"/>
+              </svg>
+            </span>
+            <h3 class="factor__title">Объём</h3>
+            <p class="factor__text">Сколько продуктов и страниц</p>
+          </li>
+          <li class="factor reveal">
+            <span class="factor__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3.5" y="4.5" width="17" height="15" rx="1.5"/><circle cx="8.5" cy="9.5" r="1.5"/><path d="m4 16.5 4.5-4 4 3.5 3-2.5 4.5 4"/>
+              </svg>
+            </span>
+            <h3 class="factor__title">Материалы</h3>
+            <p class="factor__text">Готовы ли тексты и фото</p>
+          </li>
+          <li class="factor reveal">
+            <span class="factor__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/>
+              </svg>
+            </span>
+            <h3 class="factor__title">Продвижение</h3>
+            <p class="factor__text">Нужно ли продвижение в поиске</p>
+          </li>
+          <li class="factor reveal">
+            <span class="factor__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="8.5"/><path d="M12 7v5.2l3.3 2"/>
+              </svg>
+            </span>
+            <h3 class="factor__title">Срочность</h3>
+            <p class="factor__text">Насколько срочно нужен сайт</p>
+          </li>
+        </ul>
+
+        <p class="prose closing reveal">Точную цену называю в разговоре, после нескольких вопросов. Ни к чему не обязывает.</p>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         ЭТАПЫ РАБОТЫ — тёмная секция, гигантские номера за текстом
+         ============================================================ -->
+    <section class="section section--dark" id="process">
+      <div class="container">
+        <div class="prose section__head" data-stagger>
+          <p class="eyebrow reveal">Процесс</p>
+          <h2 class="section__title reveal">Этапы работы</h2>
+        </div>
+
+        <ol class="steps" data-stagger="0.12">
+          <li class="step reveal">
+            <span class="step__num" aria-hidden="true">01</span>
+            <div class="step__body">
+              <h3 class="step__title">
+                <span class="step__icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 4 3 11l7 2.8L13 21l8-17Z"/><path d="m10 13.8 3-3"/>
+                  </svg>
+                </span>
+                Заявка
+              </h3>
+              <p class="step__text">С сайта или в Telegram.</p>
+            </div>
+          </li>
+          <li class="step reveal">
+            <span class="step__num" aria-hidden="true">02</span>
+            <div class="step__body">
+              <h3 class="step__title">
+                <span class="step__icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20.5 12c0 3.6-3.4 6.5-7.5 6.5-1 0-2-.2-2.9-.5L5.5 19.5l1.2-3.3C5.6 15.1 5 13.6 5 12c0-3.6 3.4-6.5 8-6.5s7.5 2.9 7.5 6.5Z"/>
+                  </svg>
+                </span>
+                Обсуждение
+              </h3>
+              <p class="step__text">Уточняю детали, называю цену и сроки, предоплата 50%.</p>
+            </div>
+          </li>
+          <li class="step reveal">
+            <span class="step__num" aria-hidden="true">03</span>
+            <div class="step__body">
+              <h3 class="step__title">
+                <span class="step__icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3.5" y="3.5" width="7" height="7" rx="1"/><rect x="13.5" y="3.5" width="7" height="7" rx="1"/><rect x="3.5" y="13.5" width="7" height="7" rx="1"/><rect x="13.5" y="13.5" width="7" height="7" rx="1"/>
+                  </svg>
+                </span>
+                Сборка
+              </h3>
+              <p class="step__text">Делаю сайт.</p>
+            </div>
+          </li>
+          <li class="step reveal">
+            <span class="step__num" aria-hidden="true">04</span>
+            <div class="step__body">
+              <h3 class="step__title">
+                <span class="step__icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 20h4L18 10a2.8 2.8 0 1 0-4-4L4 16v4Z"/><path d="m13.5 6.5 4 4"/>
+                  </svg>
+                </span>
+                Правки
+              </h3>
+              <p class="step__text">В рамках пакета.</p>
+            </div>
+          </li>
+          <li class="step reveal">
+            <span class="step__num" aria-hidden="true">05</span>
+            <div class="step__body">
+              <h3 class="step__title">
+                <span class="step__icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17"/><path d="M12 3.5c2.2 2.4 3.3 5.3 3.3 8.5S14.2 18.1 12 20.5c-2.2-2.4-3.3-5.3-3.3-8.5S9.8 5.9 12 3.5Z"/>
+                  </svg>
+                </span>
+                Публикация
+              </h3>
+              <p class="step__text">Подключаю домен, сайт в работе.</p>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         ЗАЯВКА И КОНТАКТЫ
+         Форма собрана в карточку. Подключена к Netlify Forms
+         ============================================================ -->
+    <section class="section" id="contact">
+      <div class="container">
+        <div class="prose section__head" data-stagger>
+          <p class="eyebrow reveal">Контакты</p>
+          <h2 class="section__title reveal">Обсудим ваш проект</h2>
+        </div>
+
+        <div class="contact" data-stagger>
+          <div class="form-card reveal">
+            <form class="form" name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+              <!-- Служебные поля Netlify Forms -->
+              <input type="hidden" name="form-name" value="contact">
+              <p class="form__hp"><label>Не заполняйте: <input name="bot-field"></label></p>
+
+              <div class="field">
+                <label class="field__label" for="name">Имя</label>
+                <input class="field__input" type="text" id="name" name="name" autocomplete="name" required>
+              </div>
+
+              <div class="field">
+                <label class="field__label" for="contact-way">Телефон или мессенджер</label>
+                <input class="field__input" type="text" id="contact-way" name="contact" autocomplete="tel" required>
+              </div>
+
+              <div class="field">
+                <label class="field__label" for="task">Пара слов о задаче</label>
+                <textarea class="field__input field__input--area" id="task" name="task" rows="3"></textarea>
+              </div>
+
+              <button class="btn btn--primary btn--lg form__submit" type="submit">Отправить</button>
+            </form>
+          </div>
+
+          <aside class="contact__side reveal">
+            <p class="contact__note">Или напишите напрямую — отвечаю в течение дня.</p>
+            <div class="contact__links">
+              <a class="btn btn--ghost" href="https://t.me/Alexcherenkovv" target="_blank" rel="noopener">Написать в Telegram</a>
+              <a class="btn btn--ghost" href="tel:+79176358265">Позвонить</a>
+            </div>
+            <p class="contact__phone">8 917 635 82 65</p>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============================================================
+       ФУТЕР
+       ============================================================ -->
+  <footer class="footer">
+    <div class="container">
+      <p class="footer__text">
+        BrandPrime · <a href="tel:+79176358265">8 917 635 82 65</a> ·
+        <a href="https://t.me/Alexcherenkovv" target="_blank" rel="noopener">t.me/Alexcherenkovv</a> · © 2026
+      </p>
+    </div>
+  </footer>
+
+  <script src="js/main.js" defer></script>
+</body>
+</html>
