@@ -704,85 +704,33 @@ html:not(.js) .accent-word::after { transform: scaleX(1); }
 
 
 /* ------------------------------------------------------------
-   14. ФОРМА И КОНТАКТЫ
-   Форма собрана в карточку, поля — только нижняя линия
+   14. КОНТАКТЫ
+   Сюда ведут все кнопки «Обсудить проект»
    ------------------------------------------------------------ */
-.contact {
-  display: grid;
-  gap: 40px;
-}
-
-.form-card {
-  background: var(--card);
-  border: 1px solid var(--line);
-  border-radius: 2px;
-  box-shadow: var(--shadow);
-  padding: 36px 24px;
-}
-
-/* Ловушка для спам-ботов (Netlify honeypot) — скрыта от людей */
-.form__hp { display: none; }
-
-.field { margin-bottom: 32px; }
-
-.field__label {
-  display: block;
-  margin-bottom: 8px;
-  font-size: 13px;
-  letter-spacing: .12em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-}
-
-.field__input {
-  width: 100%;
-  padding: 10px 2px;
-  border: 0;
-  border-bottom: 1px solid var(--line);
-  border-radius: 0;
-  background: transparent;
-  color: var(--text);
-  font-family: var(--font-body);
-  font-size: 17px;
-  line-height: 1.6;
-  transition: border-color .2s var(--ease);
-}
-
-.field__input:hover { border-bottom-color: var(--text-muted); }
-
-.field__input:focus {
-  outline: none;
-  border-bottom-color: var(--gold);
-}
-
-.field__input--area {
-  resize: vertical;
-  min-height: 84px;
-}
-
-.form__submit {
-  margin-top: 8px;
-  width: 100%;
-}
+.contact { max-width: 56ch; }
 
 .contact__note {
+  font-size: clamp(18px, 2.4vw, 21px);
+  line-height: 1.55;
   color: var(--text-muted);
-  font-size: 16px;
   max-width: 34ch;
 }
 
 .contact__links {
-  margin-top: 20px;
+  margin-top: 32px;
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: 14px;
 }
 
+/* На узком экране кнопки во всю ширину — так в них проще попасть */
+.contact__links .btn { flex: 1 1 100%; }
+
 .contact__phone {
-  margin-top: 24px;
+  margin-top: 32px;
   font-family: var(--font-head);
   font-weight: 700;
-  font-size: 20px;
+  font-size: 22px;
   letter-spacing: -.01em;
 }
 
@@ -864,9 +812,8 @@ html:not(.js) .accent-word::after { transform: scaleX(1); }
 
   .package__badge { left: 40px; }
 
-  .form-card { padding: 44px 40px; }
-
-  .form__submit { width: auto; }
+  /* С планшета кнопки встают в ряд по своей ширине */
+  .contact__links .btn { flex: 0 0 auto; }
 
   .steps { padding-left: 88px; }
 
@@ -926,14 +873,6 @@ html:not(.js) .accent-word::after { transform: scaleX(1); }
   .step { padding-bottom: 64px; }
 
   .step:last-child { padding-bottom: 44px; }
-
-  /* Карточку формы не растягиваем на всю ширину — строки полей
-     не должны быть длиннее, чем удобно читать */
-  .contact {
-    grid-template-columns: minmax(0, 600px) 300px;
-    gap: 64px;
-    align-items: start;
-  }
 
   .section__head { margin-bottom: 64px; }
 }
