@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BrandPrime — сайты для небольшого бизнеса</title>
+  <meta name="description" content="Сайт, который делает ваш бизнес серьёзным в глазах клиента. Одностраничные и многостраничные сайты для мастеров, локальных услуг и нишевых проектов.">
+
+  <!-- Шрифты: Manrope (заголовки) + Inter (текст) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Manrope:wght@600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- ============================================================
+       ШАПКА
+       Тонкая, прозрачная. Фон появляется при прокрутке (js/main.js)
+       ============================================================ -->
+  <header class="header" id="header">
+    <div class="container header__inner">
+      <a class="header__logo" href="#top">BrandPrime</a>
+
+      <nav class="nav" aria-label="Основная навигация">
+        <ul class="nav__list">
+          <li><a class="nav__link" href="#services">Услуги</a></li>
+          <li><a class="nav__link" href="#packages">Пакеты</a></li>
+          <li><a class="nav__link" href="#price">Цена</a></li>
+          <li><a class="nav__link" href="#contact">Контакты</a></li>
+        </ul>
+      </nav>
+
+      <a class="btn btn--primary header__cta" href="#contact">Обсудить проект</a>
+    </div>
+  </header>
+
+  <main id="top">
+
+    <!-- ============================================================
+         ПЕРВЫЙ ЭКРАН
+         Намеренно пустой: заголовок, подзаголовок, одна кнопка
+         ============================================================ -->
+    <section class="hero">
+      <div class="container hero__inner">
+        <h1 class="hero__title">Сайт, который делает ваш бизнес серьёзным в глазах клиента.</h1>
+        <p class="hero__subtitle">Без сайта продукт не воспринимают всерьёз. С сайтом — вам начинают доверять.</p>
+        <a class="btn btn--primary btn--lg" href="#contact">Обсудить проект</a>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         ДЛЯ КОГО
+         Узкая текстовая колонка, выравнивание влево
+         ============================================================ -->
+    <section class="section" id="audience">
+      <div class="container">
+        <div class="prose">
+          <p class="eyebrow">Для кого</p>
+          <h2 class="section__title">Небольшой бизнес, которому важно, чтобы выбрали именно его</h2>
+          <p>Работаю с небольшим бизнесом: мастера, локальные услуги, нишевые проекты. Не сети, не крупные компании. Там, где сайт нужен не для галочки, а чтобы вас выбирали.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         ПРОБЛЕМА
+         ============================================================ -->
+    <section class="section" id="problem">
+      <div class="container">
+        <div class="prose">
+          <p class="eyebrow">Проблема</p>
+          <h2 class="section__title">Клиент не скажет, что не доверяет. Он просто уйдёт.</h2>
+          <p>Без сайта продукт игнорируют или не воспринимают всерьёз. Клиент не скажет об этом — но уйдёт к тому, кто вызывает больше доверия.</p>
+          <p>Сайт закрывает разрыв: показывает продукт со всех сторон, отвечает на вопросы заранее, создаёт доверие. На нём строятся продажи.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         ПОДХОД (пункт меню «Услуги»)
+         ============================================================ -->
+    <section class="section" id="services">
+      <div class="container">
+        <div class="prose">
+          <p class="eyebrow">Подход</p>
+          <h2 class="section__title">Каждый сайт решает <span class="accent">задачу</span>, а не просто существует</h2>
+          <p>Не собираю сайты по шаблону ради картинки. Каждый сайт решает задачу: снять сомнения, показать продукт, привести заявки.</p>
+          <p>Работаю с разным уровнем сложности — от аккуратной визитки до многостраничного сайта. Два формата ниже.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         ПАКЕТЫ
+         Две белые карточки. Центр страницы — здесь дизайн оживает
+         ============================================================ -->
+    <section class="section" id="packages">
+      <div class="container">
+        <div class="prose section__head">
+          <p class="eyebrow">Пакеты</p>
+          <h2 class="section__title">Два формата работы</h2>
+        </div>
+
+        <div class="packages">
+
+          <!-- Карточка 1: Визитка -->
+          <article class="package">
+            <h3 class="package__name">Визитка</h3>
+            <p class="package__price">15 000–25 000 ₽</p>
+            <p class="package__desc">Одностраничный сайт: всё главное на одном экране.</p>
+            <ul class="package__list">
+              <li>Продукт, преимущества, цены, фото</li>
+              <li>Форма заявки</li>
+              <li>Работает на телефоне</li>
+              <li>Подключён к вашему домену</li>
+            </ul>
+            <a class="btn btn--ghost package__btn" href="#contact">Обсудить проект</a>
+          </article>
+
+          <!-- Карточка 2: Стандарт -->
+          <article class="package">
+            <h3 class="package__name">Стандарт</h3>
+            <p class="package__price">30 000–50 000 ₽</p>
+            <p class="package__desc">Многостраничный сайт для бизнеса с несколькими продуктами.</p>
+            <ul class="package__list">
+              <li>Отдельная страница под каждый продукт</li>
+              <li>Описание, фото и цены на каждой</li>
+              <li>Продвижение в поиске</li>
+              <li>Аналитика</li>
+            </ul>
+            <a class="btn btn--ghost package__btn" href="#contact">Обсудить проект</a>
+          </article>
+
+        </div>
+
+        <div class="packages__footer">
+          <a class="btn btn--primary btn--lg" href="#contact">Обсудить проект</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         КАК СТРОИТСЯ ЦЕНА
+         ============================================================ -->
+    <section class="section" id="price">
+      <div class="container">
+        <div class="prose">
+          <p class="eyebrow">Цена</p>
+          <h2 class="section__title">Как строится цена</h2>
+          <p>Цена зависит от объёма работы:</p>
+          <ul class="list">
+            <li>сколько продуктов и страниц;</li>
+            <li>готовы ли тексты и фото;</li>
+            <li>нужно ли продвижение в поиске;</li>
+            <li>насколько срочно.</li>
+          </ul>
+          <p>Точную цену называю в разговоре, после нескольких вопросов. Ни к чему не обязывает.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         ЭТАПЫ РАБОТЫ
+         Вертикальная линия слева, пять пронумерованных точек
+         ============================================================ -->
+    <section class="section" id="process">
+      <div class="container">
+        <div class="prose section__head">
+          <p class="eyebrow">Процесс</p>
+          <h2 class="section__title">Этапы работы</h2>
+        </div>
+
+        <ol class="steps">
+          <li class="step">
+            <span class="step__num" aria-hidden="true">1</span>
+            <div class="step__body">
+              <h3 class="step__title">Заявка</h3>
+              <p class="step__text">С сайта или в Telegram.</p>
+            </div>
+          </li>
+          <li class="step">
+            <span class="step__num" aria-hidden="true">2</span>
+            <div class="step__body">
+              <h3 class="step__title">Обсуждение</h3>
+              <p class="step__text">Уточняю детали, называю цену и сроки, предоплата 50%.</p>
+            </div>
+          </li>
+          <li class="step">
+            <span class="step__num" aria-hidden="true">3</span>
+            <div class="step__body">
+              <h3 class="step__title">Сборка</h3>
+              <p class="step__text">Делаю сайт.</p>
+            </div>
+          </li>
+          <li class="step">
+            <span class="step__num" aria-hidden="true">4</span>
+            <div class="step__body">
+              <h3 class="step__title">Правки</h3>
+              <p class="step__text">В рамках пакета.</p>
+            </div>
+          </li>
+          <li class="step">
+            <span class="step__num" aria-hidden="true">5</span>
+            <div class="step__body">
+              <h3 class="step__title">Публикация</h3>
+              <p class="step__text">Подключаю домен, сайт в работе.</p>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         ЗАЯВКА И КОНТАКТЫ
+         Поля — только нижняя линия. Форма подключена к Netlify Forms
+         ============================================================ -->
+    <section class="section" id="contact">
+      <div class="container">
+        <div class="prose section__head">
+          <p class="eyebrow">Контакты</p>
+          <h2 class="section__title">Обсудим ваш проект</h2>
+        </div>
+
+        <div class="contact">
+          <form class="form" name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+            <!-- Служебные поля Netlify Forms -->
+            <input type="hidden" name="form-name" value="contact">
+            <p class="form__hp"><label>Не заполняйте: <input name="bot-field"></label></p>
+
+            <div class="field">
+              <label class="field__label" for="name">Имя</label>
+              <input class="field__input" type="text" id="name" name="name" autocomplete="name" required>
+            </div>
+
+            <div class="field">
+              <label class="field__label" for="contact-way">Телефон или мессенджер</label>
+              <input class="field__input" type="text" id="contact-way" name="contact" autocomplete="tel" required>
+            </div>
+
+            <div class="field">
+              <label class="field__label" for="task">Пара слов о задаче</label>
+              <textarea class="field__input field__input--area" id="task" name="task" rows="3"></textarea>
+            </div>
+
+            <button class="btn btn--primary btn--lg form__submit" type="submit">Отправить</button>
+          </form>
+
+          <aside class="contact__side">
+            <p class="contact__note">Или напишите напрямую — отвечаю в течение дня.</p>
+            <div class="contact__links">
+              <a class="btn btn--ghost" href="https://t.me/Alexcherenkovv" target="_blank" rel="noopener">Написать в Telegram</a>
+              <a class="btn btn--ghost" href="tel:+79176358265">Позвонить</a>
+            </div>
+            <p class="contact__phone">8 917 635 82 65</p>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============================================================
+       ФУТЕР
+       ============================================================ -->
+  <footer class="footer">
+    <div class="container">
+      <p class="footer__text">
+        BrandPrime · <a href="tel:+79176358265">8 917 635 82 65</a> ·
+        <a href="https://t.me/Alexcherenkovv" target="_blank" rel="noopener">t.me/Alexcherenkovv</a> · © 2026
+      </p>
+    </div>
+  </footer>
+
+  <script src="js/main.js" defer></script>
+</body>
+</html>
