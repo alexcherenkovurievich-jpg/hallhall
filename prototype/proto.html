@@ -145,6 +145,16 @@ section{padding:var(--sec-y) var(--pad);position:relative}
   max-width:84%;text-align:center;line-height:1.4;
   backdrop-filter:blur(2px);background:rgba(26,22,17,.22);
 }
+/* реальные фото в тех же рамках, что и заглушки */
+.ph--photo{background:#e2d8c4}
+.ph--photo::after{content:none}          /* подпись-заглушка не нужна */
+.ph--photo::before{opacity:.07}          /* зерно поверх фото — чуть слабее */
+.ph img{
+  position:absolute;inset:0;display:block;
+  width:100%;height:100%;object-fit:cover;
+  object-position:var(--pos,center);
+}
+
 /* тональные варианты «фото» */
 .t-forest{--ph:
   radial-gradient(60% 55% at 20% 15%, rgba(122,143,104,.85), transparent 70%),
@@ -387,8 +397,14 @@ section{padding:var(--sec-y) var(--pad);position:relative}
 /* ============================================================
    7. ГАЛЕРЕЯ
    ============================================================ */
-.masonry{columns:3;column-gap:clamp(14px,1.7vw,24px)}
-.masonry .ph{break-inside:avoid;margin-bottom:clamp(14px,1.7vw,24px)}
+/* Ровная сетка вместо masonry: 10 ячеек делятся без остатка только
+   на 2 и на 5, поэтому 5 в ряд на десктопе и 2 на мобильном —
+   при 3 колонках последняя всегда свисала, а в соседних зияли дыры. */
+.masonry{
+  display:grid;grid-template-columns:repeat(5,1fr);
+  gap:clamp(14px,1.7vw,24px);
+}
+.masonry .ph{--ar:4/5}
 
 /* ============================================================
    8. ОТЗЫВЫ
@@ -454,6 +470,7 @@ section{padding:var(--sec-y) var(--pad);position:relative}
   padding:32px;background:#EFE7D8;
 }
 .map__fallback p{margin:0;color:var(--ink-2);line-height:1.7}
+.map__actions{margin-top:clamp(20px,2.4vw,28px);display:flex;justify-content:center}
 /* балун Яндекса приводим к типографике сайта */
 .map .ymaps-2-1-79-balloon__content,
 .map .ymaps-2-1-79-hint__text{font-family:var(--sans)!important}
@@ -514,7 +531,7 @@ section{padding:var(--sec-y) var(--pad);position:relative}
   .zone .ph{order:-1}
   .prose p{font-size:1rem;line-height:1.8}
   .cards{grid-template-columns:1fr}
-  .masonry{columns:2;column-gap:14px}
+  .masonry{grid-template-columns:repeat(2,1fr);gap:12px}
   .mini{gap:12px}
   .fire{margin-top:72px;padding:64px var(--pad)}
   .contacts__cta .btn{width:100%}
@@ -573,13 +590,22 @@ section{padding:var(--sec-y) var(--pad);position:relative}
       <h2>Целая территория — <em class="acc">только ваша</em></h2>
     </div>
 
-    <figure class="ph t-forest" style="--ar:16/9" data-label="ФОТО · ворота, въезд на территорию"></figure>
+    <figure class="ph ph--photo" style="--ar:16/9;--pos:center 78%">
+      <picture>
+        <source type="image/webp" sizes="(max-width:860px) 100vw, 1240px"
+          srcset="../public/images/processed/03-gates-480.webp 480w,
+                  ../public/images/processed/03-gates-800.webp 800w,
+                  ../public/images/processed/03-gates-1125.webp 1125w">
+        <img src="../public/images/processed/03-gates-800.jpg" loading="lazy" decoding="async"
+             width="1125" height="1500"
+             alt="Ворота из горбыля на въезде на территорию, за ними дорожка к баням и беседке">
+      </picture>
+    </figure>
 
     <div class="prose">
-      <p>Мы не делим площадку между гостями и не подселяем соседей: с момента заезда
-        и до выезда здесь только ваш круг. Дом, двор и все зоны отдыха переходят
-        в ваше распоряжение целиком — в любое время года. За воротами остаётся город,
-        внутри — тишина, которую слышно.</p>
+      <p>Здесь вся территория принадлежит только вам — свой мир, где рядом лишь близкие.
+        Тёплый дом, живой огонь, вечера без спешки. Место, где время замедляется,
+        в любое время года.</p>
     </div>
 
     <div class="audience">
@@ -675,7 +701,16 @@ section{padding:var(--sec-y) var(--pad);position:relative}
 
     <div class="cards">
       <article class="card">
-        <figure class="ph t-steam" style="--ar:4/3" data-label="ФОТО · русская баня"></figure>
+        <figure class="ph ph--photo" style="--ar:4/3;--pos:center 74%">
+          <picture>
+            <source type="image/webp" sizes="(max-width:860px) 100vw, 400px"
+              srcset="../public/images/processed/05-sauna-480.webp 480w,
+                      ../public/images/processed/05-sauna-800.webp 800w">
+            <img src="../public/images/processed/05-sauna-480.jpg" loading="lazy" decoding="async"
+                 width="1125" height="1500"
+                 alt="Баня-бочка из светлого дерева с дровником рядом">
+          </picture>
+        </figure>
         <div class="card__body">
           <h3>Русская баня</h3>
           <ul class="card__list">
@@ -686,7 +721,16 @@ section{padding:var(--sec-y) var(--pad);position:relative}
         </div>
       </article>
       <article class="card">
-        <figure class="ph t-ember" style="--ar:4/3" data-label="ФОТО · банный чан"></figure>
+        <figure class="ph ph--photo" style="--ar:4/3;--pos:center 68%">
+          <picture>
+            <source type="image/webp" sizes="(max-width:860px) 100vw, 400px"
+              srcset="../public/images/processed/01-chan-480.webp 480w,
+                      ../public/images/processed/01-chan-800.webp 800w">
+            <img src="../public/images/processed/01-chan-480.jpg" loading="lazy" decoding="async"
+                 width="1125" height="1500"
+                 alt="Банный чан в деревянной обвязке, вода с кленовыми листьями">
+          </picture>
+        </figure>
         <div class="card__body">
           <h3>Банный чан</h3>
           <ul class="card__list">
@@ -696,7 +740,16 @@ section{padding:var(--sec-y) var(--pad);position:relative}
         </div>
       </article>
       <article class="card">
-        <figure class="ph t-water" style="--ar:4/3" data-label="ФОТО · бассейны"></figure>
+        <figure class="ph ph--photo" style="--ar:4/3;--pos:center 62%">
+          <picture>
+            <source type="image/webp" sizes="(max-width:860px) 100vw, 400px"
+              srcset="../public/images/processed/04-pool-480.webp 480w,
+                      ../public/images/processed/04-pool-800.webp 800w">
+            <img src="../public/images/processed/04-pool-480.jpg" loading="lazy" decoding="async"
+                 width="1125" height="1066"
+                 alt="Бассейн с голубой водой, деревянный настил, шезлонги и пергола">
+          </picture>
+        </figure>
         <div class="card__body">
           <h3>Бассейны</h3>
           <ul class="card__list">
@@ -719,15 +772,61 @@ section{padding:var(--sec-y) var(--pad);position:relative}
       <p class="sub">Загляните — и почувствуете, каким будет ваш день.</p>
     </div>
     <div class="masonry">
-      <figure class="ph t-forest" style="--ar:4/5" data-label="фото 01"></figure>
-      <figure class="ph t-wood"   style="--ar:4/3" data-label="фото 02"></figure>
-      <figure class="ph t-linen"  style="--ar:1/1" data-label="фото 03"></figure>
-      <figure class="ph t-water"  style="--ar:3/4" data-label="фото 04"></figure>
-      <figure class="ph t-ember"  style="--ar:4/3" data-label="фото 05"></figure>
-      <figure class="ph t-night"  style="--ar:1/1" data-label="фото 06"></figure>
-      <figure class="ph t-steam"  style="--ar:4/5" data-label="фото 07"></figure>
-      <figure class="ph t-linen"  style="--ar:4/3" data-label="фото 08"></figure>
-      <figure class="ph t-forest" style="--ar:3/4" data-label="фото 09"></figure>
+      <figure class="ph ph--photo" >
+        <picture>
+          <source type="image/webp" sizes="(max-width:860px) 50vw, 400px"
+            srcset="../public/images/processed/01-chan-480.webp 480w,
+                    ../public/images/processed/01-chan-800.webp 800w">
+          <img src="../public/images/processed/01-chan-480.jpg" loading="lazy" decoding="async"
+               width="1125" height="1500"
+               alt="Банный чан с водой и кленовыми листьями">
+        </picture>
+      </figure>
+      <figure class="ph t-wood"    data-label="фото 02"></figure>
+      <figure class="ph ph--photo" style="--pos:center 62%">
+        <picture>
+          <source type="image/webp" sizes="(max-width:860px) 50vw, 400px"
+            srcset="../public/images/processed/04-pool-480.webp 480w,
+                    ../public/images/processed/04-pool-800.webp 800w">
+          <img src="../public/images/processed/04-pool-480.jpg" loading="lazy" decoding="async"
+               width="1125" height="1066"
+               alt="Бассейн и шезлонги под перголой">
+        </picture>
+      </figure>
+      <figure class="ph ph--photo" >
+        <picture>
+          <source type="image/webp" sizes="(max-width:860px) 50vw, 400px"
+            srcset="../public/images/processed/02-deck-480.webp 480w,
+                    ../public/images/processed/02-deck-800.webp 800w">
+          <img src="../public/images/processed/02-deck-480.jpg" loading="lazy" decoding="async"
+               width="1125" height="1500"
+               alt="Деревянный настил с шар-фонарями вдоль забора, высокие деревья над ним">
+        </picture>
+      </figure>
+      <figure class="ph t-ember"   data-label="фото 05"></figure>
+      <figure class="ph t-night"   data-label="фото 06"></figure>
+      <figure class="ph ph--photo" style="--pos:center 72%">
+        <picture>
+          <source type="image/webp" sizes="(max-width:860px) 50vw, 400px"
+            srcset="../public/images/processed/05-sauna-480.webp 480w,
+                    ../public/images/processed/05-sauna-800.webp 800w">
+          <img src="../public/images/processed/05-sauna-480.jpg" loading="lazy" decoding="async"
+               width="1125" height="1500"
+               alt="Баня-бочка с дровником">
+        </picture>
+      </figure>
+      <figure class="ph t-linen"   data-label="фото 08"></figure>
+      <figure class="ph ph--photo" style="--pos:center 78%">
+        <picture>
+          <source type="image/webp" sizes="(max-width:860px) 50vw, 400px"
+            srcset="../public/images/processed/03-gates-480.webp 480w,
+                    ../public/images/processed/03-gates-800.webp 800w">
+          <img src="../public/images/processed/03-gates-480.jpg" loading="lazy" decoding="async"
+               width="1125" height="1500"
+               alt="Въезд на территорию через ворота из горбыля">
+        </picture>
+      </figure>
+      <figure class="ph t-steam"   data-label="фото 10"></figure>
     </div>
   </div>
 </section>
@@ -769,9 +868,13 @@ section{padding:var(--sec-y) var(--pad);position:relative}
       <div class="map__fallback" id="ymapFallback" hidden>
         <p class="eyebrow">Мы здесь</p>
         <p>Ульяновск, Засвияжье,<br>ул. Авиационная, <span class="nb">2 «А»</span></p>
-        <a class="btn btn--ghost" target="_blank" rel="noopener"
-           href="https://yandex.ru/maps/?pt=48.248568,54.272215&amp;z=16&amp;l=map">Открыть в Яндекс.Картах</a>
       </div>
+    </div>
+
+    <!-- в ссылке Яндекса порядок обратный карте: долгота, широта -->
+    <div class="map__actions">
+      <a class="btn btn--ghost" target="_blank" rel="noopener"
+         href="https://yandex.ru/maps/?pt=48.248568,54.272215&amp;z=16&amp;l=map">Открыть в Яндекс.Картах</a>
     </div>
   </div>
 </section>
