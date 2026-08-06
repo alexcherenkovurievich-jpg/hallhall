@@ -131,6 +131,12 @@
   --col:        680px;
   --sec-y:      clamp(80px, 12vw, 200px);
 
+  /* один источник скругления на весь сайт */
+  --radius:     24px;
+  --radius-sm:  calc(var(--radius) * .58);   /* кнопки, мелкие элементы */
+  --radius-lg:  calc(var(--radius) * 1.25);  /* карточки, крупные блоки */
+  --radius-pill: 999px;                      /* иконки соцсетей, пилюли меню */
+
   --display: 'Fraunces', Georgia, serif;
   --sans:    'Manrope', system-ui, sans-serif;
 }
@@ -165,7 +171,13 @@ h1,h2,h3{
   font-variation-settings:'opsz' 120,'SOFT' 0,'WONK' 0;
   margin:0;
   color:inherit;
+  /* переносим только между словами, никогда посреди слова */
+  text-wrap:balance;
+  hyphens:manual;
 }
+/* страховка от горизонтального скролла: длинное слово ломается,
+   но только если иначе оно вылезет за экран */
+body,p,li,a{overflow-wrap:break-word}
 h1{font-size:clamp(2.75rem,7vw,6rem);line-height:1.05;letter-spacing:-.02em}
 h2{font-size:clamp(2rem,4vw,3.25rem);line-height:1.1;letter-spacing:-.015em}
 h3{font-size:clamp(1.35rem,2vw,1.75rem);line-height:1.2;letter-spacing:-.01em;
@@ -183,6 +195,8 @@ em.acc{
   margin:24px 0 0;max-width:var(--col);font-weight:400;
 }
 .lead{max-width:var(--col);color:var(--ink-2);margin:0}
+/* составные названия не рвём по дефису */
+.nb{white-space:nowrap}
 .on-dark  {color:var(--on-dark)}
 .on-dark-2{color:var(--on-dark-2)}
 
@@ -202,7 +216,7 @@ section{padding:var(--sec-y) var(--pad);position:relative}
 .btn{
   display:inline-flex;align-items:center;justify-content:center;gap:10px;
   font-family:var(--sans);font-size:.95rem;font-weight:500;letter-spacing:.04em;
-  padding:17px 34px;border-radius:2px;text-decoration:none;cursor:pointer;
+  padding:17px 34px;border-radius:var(--radius-sm);text-decoration:none;cursor:pointer;
   border:1px solid var(--brass);white-space:nowrap;line-height:1;
 }
 .btn--solid{background:var(--brass);color:#FBF7F0;border-color:var(--brass)}
@@ -215,6 +229,7 @@ section{padding:var(--sec-y) var(--pad);position:relative}
    ============================================================ */
 .ph{
   position:relative;margin:0;width:100%;overflow:hidden;
+  border-radius:var(--radius);
   aspect-ratio:var(--ar,4/3);
   background:var(--ph,linear-gradient(#cbbfa8,#a08f74));
   isolation:isolate;
@@ -230,7 +245,8 @@ section{padding:var(--sec-y) var(--pad);position:relative}
   font-size:.62rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;
   color:rgba(255,250,240,.82);
   padding:9px 16px;border:1px solid rgba(255,250,240,.4);
-  white-space:nowrap;text-align:center;line-height:1.4;
+  border-radius:var(--radius-pill);
+  max-width:84%;text-align:center;line-height:1.4;
   backdrop-filter:blur(2px);background:rgba(26,22,17,.22);
 }
 /* тональные варианты «фото» */
@@ -271,26 +287,39 @@ section{padding:var(--sec-y) var(--pad);position:relative}
 /* ============================================================
    1. ШАПКА
    ============================================================ */
+/* липкая, во всю ширину: боковые поля уже, чем у секций */
 .hdr{
   position:fixed;top:0;left:0;right:0;z-index:50;
-  display:flex;align-items:center;justify-content:space-between;gap:32px;
-  padding:26px var(--pad);
+  display:flex;align-items:center;justify-content:space-between;
+  gap:clamp(16px,2.5vw,40px);
+  padding:16px clamp(20px,3vw,44px);
+  background:rgba(26,22,17,.55);
+  backdrop-filter:blur(14px) saturate(1.1);
+  -webkit-backdrop-filter:blur(14px) saturate(1.1);
   border-bottom:1px solid rgba(241,233,218,.10);
 }
 .hdr__brand{
   font-family:var(--display);font-weight:600;font-size:1.0625rem;letter-spacing:.01em;
   color:var(--on-dark);text-decoration:none;font-variation-settings:'opsz' 30;
-  white-space:nowrap;
+  white-space:nowrap;flex:0 0 auto;
 }
-.hdr__nav{display:flex;gap:34px;align-items:center}
+.hdr__nav{
+  display:flex;align-items:center;justify-content:flex-end;
+  gap:clamp(4px,.6vw,10px);flex-wrap:wrap;flex:1 1 auto;
+}
 .hdr__nav a{
-  font-size:.9rem;font-weight:500;color:rgba(241,233,218,.82);text-decoration:none;
-  letter-spacing:.01em;
+  font-size:.875rem;font-weight:500;color:rgba(241,233,218,.82);text-decoration:none;
+  letter-spacing:.01em;white-space:nowrap;
+  padding:10px clamp(10px,1.1vw,18px);border-radius:var(--radius-pill);
+  border:1px solid transparent;line-height:1;
 }
-.hdr .btn{padding:13px 26px;font-size:.875rem;color:var(--on-dark);border-color:rgba(169,131,79,.85)}
-.burger{display:none;flex-direction:column;gap:5px;width:26px}
-.burger span{display:block;height:1px;background:var(--on-dark);width:100%}
-.burger span:last-child{width:65%}
+.hdr__nav a:hover,.hdr__nav a:focus-visible{
+  color:var(--on-dark);border-color:rgba(241,233,218,.22);background:rgba(241,233,218,.06);
+}
+.hdr .btn{
+  padding:11px 22px;font-size:.85rem;color:var(--on-dark);
+  border-color:rgba(169,131,79,.85);flex:0 0 auto;
+}
 
 /* ============================================================
    2. ПЕРВЫЙ ЭКРАН
@@ -314,17 +343,8 @@ section{padding:var(--sec-y) var(--pad);position:relative}
 .hero__inner{position:relative;z-index:2;width:100%;padding:0 var(--pad) clamp(88px,11vw,150px)}
 .hero__grid{max-width:var(--maxw);margin:0 auto}
 .hero h1{color:var(--on-dark);max-width:15ch}
-.hero .eyebrow{margin-bottom:26px}
 .hero .sub{color:var(--on-dark-2);max-width:44ch;margin-top:24px}
 .hero__cta{margin-top:clamp(40px,4.5vw,56px)}
-.hero__scroll{
-  position:absolute;left:50%;bottom:38px;transform:translateX(-50%);z-index:3;
-  display:flex;flex-direction:column;align-items:center;gap:14px;
-  font-size:.66rem;letter-spacing:.22em;text-transform:uppercase;font-weight:600;
-  color:rgba(183,172,156,.75);
-}
-.hero__scroll i{display:block;width:1px;height:56px;
-  background:linear-gradient(to bottom,rgba(169,131,79,.9),transparent)}
 
 /* ============================================================
    3. О МЕСТЕ
@@ -393,6 +413,7 @@ section{padding:var(--sec-y) var(--pad);position:relative}
   margin-top:clamp(90px,10vw,150px);
   padding:clamp(88px,9vw,140px) var(--pad);
   margin-left:calc(-1 * var(--pad));margin-right:calc(-1 * var(--pad));
+  border-radius:var(--radius-lg) var(--radius-lg) 0 0;
   position:relative;overflow:hidden;
 }
 .fire::before{
@@ -410,7 +431,7 @@ section{padding:var(--sec-y) var(--pad);position:relative}
 .services{background:var(--cream-alt)}
 .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(22px,2.6vw,34px)}
 .card{
-  background:#FAF6EF;border-radius:16px;overflow:hidden;
+  background:#FAF6EF;border-radius:var(--radius-lg);overflow:hidden;
   box-shadow:0 1px 2px rgba(34,29,23,.04), 0 18px 46px -22px rgba(34,29,23,.18);
   display:flex;flex-direction:column;
 }
@@ -473,12 +494,27 @@ section{padding:var(--sec-y) var(--pad);position:relative}
 .clist a{color:var(--on-dark);text-decoration:none;font-size:1.0625rem}
 .contacts__cta{display:flex;gap:16px;flex-wrap:wrap;margin-top:clamp(40px,4.5vw,52px)}
 
+/* соцсети — только иконки-ссылки, в ряд */
+.socials{display:flex;align-items:center;gap:12px;margin-top:clamp(28px,3vw,36px)}
+.socials a{
+  width:52px;height:52px;flex:0 0 auto;
+  display:inline-flex;align-items:center;justify-content:center;
+  border:1px solid rgba(222,212,196,.26);border-radius:var(--radius-pill);
+  color:var(--brass);cursor:pointer;
+  transition:background .25s ease,border-color .25s ease,color .25s ease;
+}
+.socials a:hover,.socials a:focus-visible{
+  background:var(--brass);border-color:var(--brass);color:#FBF7F0;
+}
+.socials svg{width:21px;height:21px;stroke:currentColor;fill:none;stroke-width:1.5}
+
 /* ============================================================
    10. РАСПОЛОЖЕНИЕ
    ============================================================ */
 .map{
   margin-top:clamp(48px,5vw,64px);position:relative;width:100%;aspect-ratio:21/9;
   background:#EFE7D8;overflow:hidden;border:1px solid var(--hairline);
+  border-radius:var(--radius-lg);
 }
 .map svg{position:absolute;inset:0;width:100%;height:100%}
 .pin{position:absolute;left:52%;top:46%;transform:translate(-50%,-100%);z-index:3}
@@ -489,6 +525,7 @@ section{padding:var(--sec-y) var(--pad);position:relative}
 .pin__label{
   position:absolute;left:50%;top:46px;transform:translateX(-50%);
   background:#FBF7F0;border:1px solid var(--hairline);padding:9px 16px;white-space:nowrap;
+  border-radius:var(--radius-pill);
   font-size:.72rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--ink);
   box-shadow:0 12px 30px -16px rgba(34,29,23,.4)}
 
@@ -505,19 +542,50 @@ section{padding:var(--sec-y) var(--pad);position:relative}
 .ftr b{font-family:var(--display);font-weight:600;color:var(--on-dark);
   font-variation-settings:'opsz' 30}
 .ftr__links{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-.ftr__links a{color:var(--on-dark-2);text-decoration:none}
+.ftr__links > a{color:var(--on-dark-2);text-decoration:none}
 .ftr__links i{font-style:normal;color:rgba(169,131,79,.7)}
+.socials--ftr{margin:0 0 0 8px;gap:10px}
+.socials--ftr a{width:40px;height:40px}
+.socials--ftr svg{width:17px;height:17px}
 
 /* ============================================================
    МОБАЙЛ
    ============================================================ */
 @media (max-width:860px){
-  :root{--pad:24px;--sec-y:clamp(80px,17vw,96px)}
-  body{font-size:1.0625rem}
-  .hdr{padding:20px var(--pad)}
-  .hdr__nav,.hdr .btn{display:none}
-  .burger{display:flex}
-  .hero__inner{padding-bottom:120px}
+  :root{--pad:24px;--sec-y:clamp(80px,17vw,96px);--radius:18px}
+
+  /* ——— типографика: мельче, просторнее по строке ——— */
+  body{font-size:.95rem;line-height:1.85}
+  h1{font-size:clamp(1.85rem,8.2vw,2.6rem);line-height:1.16;letter-spacing:-.015em}
+  h2{font-size:clamp(1.45rem,6.4vw,2rem);line-height:1.24;letter-spacing:-.01em}
+  h3{font-size:clamp(1.1rem,4.6vw,1.4rem);line-height:1.3}
+  .sub{font-size:clamp(.95rem,3.9vw,1.05rem);line-height:1.7;margin-top:18px}
+  .eyebrow{font-size:.68rem;letter-spacing:.16em}
+  .btn{font-size:.875rem;padding:15px 26px}
+  .spec li,.zone__list li,.card__list li,.pillar p{font-size:.95rem;line-height:1.75}
+  .clist a{font-size:1rem}
+  .catering{font-size:.98rem}
+  .catering b{font-size:1.05rem}
+  .ftr__in{font-size:.88rem}
+  .ph::after{font-size:.56rem;letter-spacing:.14em;padding:7px 12px}
+
+  /* шапка: логотип слева, разделы кнопками в ряд (переносятся, не бургер) */
+  .hdr{
+    flex-wrap:wrap;gap:12px;padding:14px 16px;
+    justify-content:space-between;align-items:center;
+  }
+  .hdr__brand{font-size:1rem}
+  .hdr .btn{display:none}
+  .hdr__nav{
+    order:3;flex:1 1 100%;justify-content:flex-start;
+    gap:6px;
+  }
+  .hdr__nav a{
+    font-size:.75rem;padding:8px 12px;
+    border-color:rgba(241,233,218,.16);background:rgba(241,233,218,.05);
+  }
+
+  .hero__inner{padding-bottom:88px}
   .hero h1{max-width:none}
   .hero .btn{width:100%}
   .about__grid,.house__grid,.zone,.contacts__grid{grid-template-columns:1fr;gap:40px}
@@ -535,7 +603,15 @@ section{padding:var(--sec-y) var(--pad);position:relative}
   .contacts__cta .btn{width:100%}
   .contacts__grid .ph{order:-1}
   .ftr__in{flex-direction:column;align-items:flex-start;gap:18px;line-height:2}
+  .ftr__links{flex-direction:column;align-items:flex-start;gap:4px}
+  .ftr__links i{display:none}          /* точки-разделители не нужны в столбце */
+  .socials--ftr{margin:12px 0 0}
   .map{aspect-ratio:4/5}
+  /* подпись метки на узком экране переносится, а не уезжает за карту */
+  .pin__label{
+    white-space:normal;max-width:min(76vw,240px);
+    font-size:.62rem;letter-spacing:.1em;line-height:1.5;
+  }
 }
 
 </style>
@@ -553,7 +629,6 @@ section{padding:var(--sec-y) var(--pad);position:relative}
     <a href="#contacts">Контакты</a>
   </nav>
   <a class="btn btn--ghost" href="#contacts">Забронировать</a>
-  <div class="burger"><span></span><span></span></div>
 </header>
 
 <!-- ═══════════ 2. ПЕРВЫЙ ЭКРАН ═══════════ -->
@@ -562,13 +637,11 @@ section{padding:var(--sec-y) var(--pad);position:relative}
   <div class="hero__veil"></div>
   <div class="hero__inner">
     <div class="hero__grid">
-      <p class="eyebrow">Ульяновск · посуточная аренда</p>
       <h1>Отдых, в котором есть только вы и <em class="acc">тишина</em></h1>
-      <p class="sub">Закрытая территория рядом с «Юго-Западным», где город остаётся за воротами.</p>
+      <p class="sub">Закрытая территория рядом с <span class="nb">«Юго-Западным»,</span> где город остаётся за воротами.</p>
       <div class="hero__cta"><a class="btn btn--solid" href="#contacts">Связаться с нами</a></div>
     </div>
   </div>
-  <div class="hero__scroll"><i></i>листайте вниз</div>
 </section>
 
 <!-- ═══════════ 3. О МЕСТЕ ═══════════ -->
@@ -773,51 +846,13 @@ section{padding:var(--sec-y) var(--pad);position:relative}
   </div>
 </section>
 
-<!-- ═══════════ 9. КОНТАКТЫ ═══════════ -->
-<section id="contacts" class="contacts">
-  <div class="wrap">
-    <div class="contacts__grid">
-      <div>
-        <p class="eyebrow">Контакты</p>
-        <h2 class="on-dark" style="margin-top:20px">Давайте подберём вам <em class="acc">дату</em></h2>
-        <p class="sub">Расскажите, когда хотите приехать, — подскажем свободные даты и подготовим всё к заезду. Пишите или звоните, как удобнее.</p>
-
-        <ul class="clist">
-          <li>
-            <svg width="17" height="17" viewBox="0 0 24 24"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .3 1.9.6 2.8a2 2 0 0 1-.4 2.1L8 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.5 2.8.6a2 2 0 0 1 1.8 2Z"/></svg>
-            <span>Юрий</span><a href="tel:+79176178159">+7 917 617-81-59</a>
-          </li>
-          <li>
-            <svg width="17" height="17" viewBox="0 0 24 24"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .3 1.9.6 2.8a2 2 0 0 1-.4 2.1L8 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.5 2.8.6a2 2 0 0 1 1.8 2Z"/></svg>
-            <span>Екатерина</span><a href="tel:+79673769965">+7 967 376-99-65</a>
-          </li>
-          <li>
-            <svg width="17" height="17" viewBox="0 0 24 24"><path d="M21.5 3.5 2.8 10.8c-.9.3-.9 1.5 0 1.8l4.7 1.6 1.8 5.4c.3.8 1.3 1 1.8.3l2.5-3 4.8 3.5c.7.5 1.6.1 1.8-.7l3-14.4c.2-.9-.7-1.6-1.7-1.3Z"/><path d="m7.5 14.2 11-8-8.4 9.9"/></svg>
-            <span>Telegram</span><a href="https://t.me/yugo_zapad_hall">t.me/yugo_zapad_hall</a>
-          </li>
-          <li>
-            <svg width="17" height="17" viewBox="0 0 24 24"><path d="M4 7.6c.7 5.4 4.3 9.4 9.6 9.4h1.1v-3c2 1.5 2.7 3 4.5 3H21c-.7-2.5-2.9-4.5-4.6-5.4 1.5-1.2 3-3.4 3.6-6h-2.7c-.7 2.4-2.2 4.6-3.8 5.3V5.6h-2.9v6c-2-.8-3.5-3.4-3.8-6H4Z" stroke-linejoin="round"/></svg>
-            <span>ВК</span><a href="https://vk.ru/ugo_zapad_hall">vk.ru/ugo_zapad_hall</a>
-          </li>
-        </ul>
-
-        <div class="contacts__cta">
-          <a class="btn btn--solid" href="https://t.me/yugo_zapad_hall">Написать в Telegram</a>
-          <a class="btn btn--ghost-light" href="tel:+79176178159">Позвонить</a>
-        </div>
-      </div>
-      <figure class="ph t-night" style="--ar:4/5" data-label="ФОТО · вечерний двор"></figure>
-    </div>
-  </div>
-</section>
-
-<!-- ═══════════ 10. РАСПОЛОЖЕНИЕ ═══════════ -->
+<!-- ═══════════ 9. РАСПОЛОЖЕНИЕ ═══════════ -->
 <section id="location">
   <div class="wrap">
     <div class="sec-head" style="margin-bottom:0">
       <p class="eyebrow">Расположение</p>
-      <h2 style="margin-top:20px">Рядом с «Юго-Западным», <em class="acc">но вдали от суеты</em></h2>
-      <p class="sub">Ульяновск, Засвияжье, ул. Авиационная, 2 «А». Всего 10 минут от микрорайона «Юго-Западный», в районе старого аэропорта.</p>
+      <h2 style="margin-top:20px">Рядом с <span class="nb">«Юго-Западным»,</span> <em class="acc">но вдали от суеты</em></h2>
+      <p class="sub">Ульяновск, Засвияжье, ул. Авиационная, <span class="nb">2 «А».</span> Всего 10 минут от микрорайона <span class="nb">«Юго-Западный»,</span> в районе старого аэропорта.</p>
     </div>
 
     <div class="map">
@@ -845,15 +880,60 @@ section{padding:var(--sec-y) var(--pad);position:relative}
   </div>
 </section>
 
+<!-- ═══════════ 10. КОНТАКТЫ ═══════════ -->
+<section id="contacts" class="contacts">
+  <div class="wrap">
+    <div class="contacts__grid">
+      <div>
+        <p class="eyebrow">Контакты</p>
+        <h2 class="on-dark" style="margin-top:20px">Давайте подберём вам <em class="acc">дату</em></h2>
+        <p class="sub">Расскажите, когда хотите приехать, — подскажем свободные даты и подготовим всё к заезду. Пишите или звоните, как удобнее.</p>
+
+        <ul class="clist">
+          <li>
+            <svg width="17" height="17" viewBox="0 0 24 24"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .3 1.9.6 2.8a2 2 0 0 1-.4 2.1L8 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.5 2.8.6a2 2 0 0 1 1.8 2Z"/></svg>
+            <span>Юрий</span><a href="tel:+79176178159">+7 917 617-81-59</a>
+          </li>
+          <li>
+            <svg width="17" height="17" viewBox="0 0 24 24"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .3 1.9.6 2.8a2 2 0 0 1-.4 2.1L8 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.5 2.8.6a2 2 0 0 1 1.8 2Z"/></svg>
+            <span>Екатерина</span><a href="tel:+79673769965">+7 967 376-99-65</a>
+          </li>
+        </ul>
+
+        <div class="socials">
+          <a href="https://t.me/yugo_zapad_hall" aria-label="Telegram" title="Telegram">
+            <svg viewBox="0 0 24 24"><path d="M21.5 3.5 2.8 10.8c-.9.3-.9 1.5 0 1.8l4.7 1.6 1.8 5.4c.3.8 1.3 1 1.8.3l2.5-3 4.8 3.5c.7.5 1.6.1 1.8-.7l3-14.4c.2-.9-.7-1.6-1.7-1.3Z"/><path d="m7.5 14.2 11-8-8.4 9.9"/></svg>
+          </a>
+          <a href="https://vk.ru/ugo_zapad_hall" aria-label="ВКонтакте" title="ВКонтакте">
+            <svg viewBox="0 0 24 24"><path d="M4 7.6c.7 5.4 4.3 9.4 9.6 9.4h1.1v-3c2 1.5 2.7 3 4.5 3H21c-.7-2.5-2.9-4.5-4.6-5.4 1.5-1.2 3-3.4 3.6-6h-2.7c-.7 2.4-2.2 4.6-3.8 5.3V5.6h-2.9v6c-2-.8-3.5-3.4-3.8-6H4Z" stroke-linejoin="round"/></svg>
+          </a>
+        </div>
+
+        <div class="contacts__cta">
+          <a class="btn btn--solid" href="https://t.me/yugo_zapad_hall">Написать в Telegram</a>
+          <a class="btn btn--ghost-light" href="tel:+79176178159">Позвонить</a>
+        </div>
+      </div>
+      <figure class="ph t-night" style="--ar:4/5" data-label="ФОТО · вечерний двор"></figure>
+    </div>
+  </div>
+</section>
+
 <!-- ═══════════ 11. ФУТЕР ═══════════ -->
 <footer class="ftr">
   <div class="ftr__in">
     <p style="margin:0"><b>Юго-Запад Hall</b> — закрытая площадка отдыха в Ульяновске</p>
     <div class="ftr__links">
-      <a href="https://t.me/yugo_zapad_hall">Telegram</a><i>·</i>
-      <a href="https://vk.ru/ugo_zapad_hall">ВК</a><i>·</i>
       <a href="tel:+79176178159">Юрий +7 917 617-81-59</a><i>·</i>
       <a href="tel:+79673769965">Екатерина +7 967 376-99-65</a>
+      <div class="socials socials--ftr">
+        <a href="https://t.me/yugo_zapad_hall" aria-label="Telegram" title="Telegram">
+          <svg viewBox="0 0 24 24"><path d="M21.5 3.5 2.8 10.8c-.9.3-.9 1.5 0 1.8l4.7 1.6 1.8 5.4c.3.8 1.3 1 1.8.3l2.5-3 4.8 3.5c.7.5 1.6.1 1.8-.7l3-14.4c.2-.9-.7-1.6-1.7-1.3Z"/><path d="m7.5 14.2 11-8-8.4 9.9"/></svg>
+        </a>
+        <a href="https://vk.ru/ugo_zapad_hall" aria-label="ВКонтакте" title="ВКонтакте">
+          <svg viewBox="0 0 24 24"><path d="M4 7.6c.7 5.4 4.3 9.4 9.6 9.4h1.1v-3c2 1.5 2.7 3 4.5 3H21c-.7-2.5-2.9-4.5-4.6-5.4 1.5-1.2 3-3.4 3.6-6h-2.7c-.7 2.4-2.2 4.6-3.8 5.3V5.6h-2.9v6c-2-.8-3.5-3.4-3.8-6H4Z" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
     </div>
   </div>
 </footer>
