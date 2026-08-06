@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Юго-Запад Hall — прототип</title>
+<link rel="stylesheet" href="./fonts/local.css">
+<style>
+/* ============================================================
+   ДИЗАЙН-ТОКЕНЫ
+   ============================================================ */
+:root{
+  --cream:      #F7F3EC;
+  --cream-alt:  #EFE8DB;
+  --hairline:   #DED4C4;
+  --espresso:   #1A1611;
+  --forest:     #232B23;
+  --ink:        #221D17;
+  --ink-2:      #6E655A;
+  --on-dark:    #F1E9DA;
+  --on-dark-2:  #B7AC9C;
+  --brass:      #A9834F;
+  --brass-h:    #8E6B3D;
+
+  --pad:        max(8vw, 24px);
+  --maxw:       1240px;
+  --col:        680px;
+  --sec-y:      clamp(80px, 12vw, 200px);
+
+  --display: 'Fraunces', Georgia, serif;
+  --sans:    'Manrope', system-ui, sans-serif;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+body{
+  margin:0;
+  background:var(--cream);
+  color:var(--ink);
+  font-family:var(--sans);
+  font-size:1.0625rem;
+  line-height:1.8;
+  font-weight:400;
+  position:relative;
+  overflow-x:hidden;
+}
+
+/* film grain --------------------------------------------------- */
+.grain{
+  position:absolute; inset:0; z-index:60; pointer-events:none;
+  opacity:.035;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/></filter><rect width='160' height='160' filter='url(%23n)'/></svg>");
+}
+
+/* ============================================================
+   ТИПОГРАФИКА
+   ============================================================ */
+h1,h2,h3{
+  font-family:var(--display);
+  font-weight:600;
+  font-variation-settings:'opsz' 120,'SOFT' 0,'WONK' 0;
+  margin:0;
+  color:inherit;
+}
+h1{font-size:clamp(2.75rem,7vw,6rem);line-height:1.05;letter-spacing:-.02em}
+h2{font-size:clamp(2rem,4vw,3.25rem);line-height:1.1;letter-spacing:-.015em}
+h3{font-size:clamp(1.35rem,2vw,1.75rem);line-height:1.2;letter-spacing:-.01em;
+   font-variation-settings:'opsz' 60}
+em.acc{
+  font-style:italic; font-weight:500; color:var(--brass);
+  font-variation-settings:'opsz' 120,'SOFT' 30,'WONK' 1;
+}
+.eyebrow{
+  font-size:.8rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--brass);line-height:1.4;margin:0;
+}
+.sub{
+  font-size:clamp(1.1rem,1.6vw,1.35rem);line-height:1.5;color:var(--ink-2);
+  margin:24px 0 0;max-width:var(--col);font-weight:400;
+}
+.lead{max-width:var(--col);color:var(--ink-2);margin:0}
+.on-dark  {color:var(--on-dark)}
+.on-dark-2{color:var(--on-dark-2)}
+
+/* ============================================================
+   РАСКЛАДКА
+   ============================================================ */
+section{padding:var(--sec-y) var(--pad);position:relative}
+.wrap{max-width:var(--maxw);margin:0 auto;width:100%}
+.sec-head{margin-bottom:clamp(48px,6vw,64px)}
+.sec-head .eyebrow + h2{margin-top:20px}
+.center{text-align:center}
+.center .sub{margin-left:auto;margin-right:auto}
+
+/* ============================================================
+   КНОПКИ
+   ============================================================ */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:10px;
+  font-family:var(--sans);font-size:.95rem;font-weight:500;letter-spacing:.04em;
+  padding:17px 34px;border-radius:2px;text-decoration:none;cursor:pointer;
+  border:1px solid var(--brass);white-space:nowrap;line-height:1;
+}
+.btn--solid{background:var(--brass);color:#FBF7F0;border-color:var(--brass)}
+.btn--ghost{background:transparent;color:var(--brass)}
+.btn--ghost-light{background:transparent;color:var(--on-dark);border-color:rgba(241,233,218,.38)}
+.btn--sm{padding:13px 24px;font-size:.875rem}
+
+/* ============================================================
+   ЗАГЛУШКИ ФОТО
+   ============================================================ */
+.ph{
+  position:relative;margin:0;width:100%;overflow:hidden;
+  aspect-ratio:var(--ar,4/3);
+  background:var(--ph,linear-gradient(#cbbfa8,#a08f74));
+  isolation:isolate;
+}
+.ph::before{
+  content:'';position:absolute;inset:0;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/></filter><rect width='120' height='120' filter='url(%23n)'/></svg>");
+  opacity:.16;mix-blend-mode:overlay;
+}
+.ph::after{
+  content:attr(data-label);
+  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  font-size:.62rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;
+  color:rgba(255,250,240,.82);
+  padding:9px 16px;border:1px solid rgba(255,250,240,.4);
+  white-space:nowrap;text-align:center;line-height:1.4;
+  backdrop-filter:blur(2px);background:rgba(26,22,17,.22);
+}
+/* тональные варианты «фото» */
+.t-forest{--ph:
+  radial-gradient(60% 55% at 20% 15%, rgba(122,143,104,.85), transparent 70%),
+  radial-gradient(50% 60% at 85% 30%, rgba(70,88,62,.9), transparent 72%),
+  radial-gradient(70% 60% at 50% 100%, rgba(28,34,26,.95), transparent 75%),
+  linear-gradient(160deg,#5c6b50,#33402f 55%,#212a20)}
+.t-wood{--ph:
+  radial-gradient(55% 50% at 25% 20%, rgba(212,180,140,.8), transparent 70%),
+  radial-gradient(60% 55% at 80% 75%, rgba(120,88,58,.85), transparent 72%),
+  linear-gradient(155deg,#b99b76,#8a6c4b 55%,#5d452f)}
+.t-linen{--ph:
+  radial-gradient(60% 55% at 30% 25%, rgba(246,238,224,.95), transparent 72%),
+  radial-gradient(55% 50% at 80% 80%, rgba(198,180,152,.9), transparent 70%),
+  linear-gradient(150deg,#e6dcc8,#c9bba1 60%,#a89madd)}
+.t-linen{--ph:
+  radial-gradient(60% 55% at 30% 25%, rgba(246,238,224,.95), transparent 72%),
+  radial-gradient(55% 50% at 80% 80%, rgba(198,180,152,.9), transparent 70%),
+  linear-gradient(150deg,#e6dcc8,#c9bba1 60%,#a8977c)}
+.t-ember{--ph:
+  radial-gradient(45% 45% at 50% 62%, rgba(255,176,84,.85), transparent 68%),
+  radial-gradient(70% 70% at 50% 70%, rgba(166,88,32,.55), transparent 72%),
+  linear-gradient(165deg,#2b2a22,#221f19 55%,#14120e)}
+.t-water{--ph:
+  radial-gradient(55% 50% at 30% 25%, rgba(178,201,196,.9), transparent 70%),
+  radial-gradient(60% 55% at 78% 78%, rgba(108,140,138,.9), transparent 72%),
+  linear-gradient(150deg,#b6c8c0,#83a099 55%,#5c7570)}
+.t-steam{--ph:
+  radial-gradient(55% 50% at 35% 22%, rgba(232,214,186,.9), transparent 70%),
+  radial-gradient(60% 60% at 75% 80%, rgba(140,106,70,.9), transparent 72%),
+  linear-gradient(155deg,#c3a882,#8f7250 58%,#5f4a33)}
+.t-night{--ph:
+  radial-gradient(60% 50% at 25% 20%, rgba(96,110,92,.7), transparent 70%),
+  radial-gradient(50% 50% at 75% 70%, rgba(58,52,40,.9), transparent 72%),
+  linear-gradient(160deg,#3c4438,#262b22 55%,#171a14)}
+
+/* ============================================================
+   1. ШАПКА
+   ============================================================ */
+.hdr{
+  position:fixed;top:0;left:0;right:0;z-index:50;
+  display:flex;align-items:center;justify-content:space-between;gap:32px;
+  padding:26px var(--pad);
+  border-bottom:1px solid rgba(241,233,218,.10);
+}
+.hdr__brand{
+  font-family:var(--display);font-weight:600;font-size:1.0625rem;letter-spacing:.01em;
+  color:var(--on-dark);text-decoration:none;font-variation-settings:'opsz' 30;
+  white-space:nowrap;
+}
+.hdr__nav{display:flex;gap:34px;align-items:center}
+.hdr__nav a{
+  font-size:.9rem;font-weight:500;color:rgba(241,233,218,.82);text-decoration:none;
+  letter-spacing:.01em;
+}
+.hdr .btn{padding:13px 26px;font-size:.875rem;color:var(--on-dark);border-color:rgba(169,131,79,.85)}
+.burger{display:none;flex-direction:column;gap:5px;width:26px}
+.burger span{display:block;height:1px;background:var(--on-dark);width:100%}
+.burger span:last-child{width:65%}
+
+/* ============================================================
+   2. ПЕРВЫЙ ЭКРАН
+   ============================================================ */
+.hero{
+  min-height:100vh;padding:0;display:flex;align-items:flex-end;
+  background:var(--espresso);position:relative;overflow:hidden;
+}
+.hero__bg{position:absolute;inset:0;
+  background:
+    radial-gradient(65% 55% at 22% 18%, rgba(126,146,108,.55), transparent 70%),
+    radial-gradient(55% 50% at 82% 26%, rgba(84,100,72,.5), transparent 72%),
+    radial-gradient(60% 45% at 60% 88%, rgba(255,186,104,.14), transparent 70%),
+    linear-gradient(165deg,#4c5a43,#2c3628 48%,#1a1611);
+}
+.hero__bg::before{content:'';position:absolute;inset:0;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3'/></filter><rect width='140' height='140' filter='url(%23n)'/></svg>");
+  opacity:.14;mix-blend-mode:overlay}
+.hero__veil{position:absolute;inset:0;
+  background:linear-gradient(to bottom, rgba(26,22,17,.52) 0%, rgba(26,22,17,.18) 34%, rgba(26,22,17,.72) 76%, rgba(26,22,17,.96) 100%)}
+.hero__inner{position:relative;z-index:2;width:100%;padding:0 var(--pad) clamp(88px,11vw,150px)}
+.hero__grid{max-width:var(--maxw);margin:0 auto}
+.hero h1{color:var(--on-dark);max-width:15ch}
+.hero .eyebrow{margin-bottom:26px}
+.hero .sub{color:var(--on-dark-2);max-width:44ch;margin-top:24px}
+.hero__cta{margin-top:clamp(40px,4.5vw,56px)}
+.hero__scroll{
+  position:absolute;left:50%;bottom:38px;transform:translateX(-50%);z-index:3;
+  display:flex;flex-direction:column;align-items:center;gap:14px;
+  font-size:.66rem;letter-spacing:.22em;text-transform:uppercase;font-weight:600;
+  color:rgba(183,172,156,.75);
+}
+.hero__scroll i{display:block;width:1px;height:56px;
+  background:linear-gradient(to bottom,rgba(169,131,79,.9),transparent)}
+
+/* ============================================================
+   3. О МЕСТЕ
+   ============================================================ */
+.about__grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:clamp(48px,7vw,110px);
+  align-items:center;
+}
+.about__grid .sub{margin-top:24px}
+.pillars{
+  margin-top:clamp(80px,9vw,130px);
+  display:grid;grid-template-columns:repeat(3,1fr);
+  border-top:1px solid var(--hairline);
+}
+.pillar{padding:44px 40px 0 0;border-right:1px solid var(--hairline)}
+.pillar:last-child{border-right:0;padding-right:0}
+.pillar:not(:first-child){padding-left:40px}
+.pillar__n{
+  font-family:var(--display);font-size:.85rem;font-weight:600;color:var(--brass);
+  letter-spacing:.16em;display:block;margin-bottom:18px;font-variation-settings:'opsz' 14;
+}
+.pillar p{margin:0;font-size:1.0625rem;line-height:1.7;color:var(--ink);max-width:30ch}
+.audience{
+  margin-top:clamp(56px,6vw,80px);padding-top:32px;border-top:1px solid var(--hairline);
+}
+
+/* ============================================================
+   4. ДОМ
+   ============================================================ */
+.house{background:var(--cream-alt)}
+.house__grid{
+  display:grid;grid-template-columns:1.15fr .85fr;gap:clamp(48px,6vw,90px);
+  align-items:start;
+}
+.spec{list-style:none;margin:36px 0 0;padding:0}
+.spec li{
+  position:relative;padding:0 0 22px 30px;margin-bottom:22px;
+  border-bottom:1px solid var(--hairline);font-size:1.0625rem;line-height:1.65;
+}
+.spec li:last-child{border-bottom:0;margin-bottom:0;padding-bottom:0}
+.spec li::before{
+  content:'';position:absolute;left:0;top:.72em;width:7px;height:7px;
+  background:var(--brass);transform:rotate(45deg);
+}
+.mini{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(14px,1.6vw,22px);
+  margin-top:clamp(20px,2.2vw,28px)}
+
+/* ============================================================
+   5. ТЕРРИТОРИЯ
+   ============================================================ */
+.zone{
+  display:grid;grid-template-columns:1fr 1fr;gap:clamp(44px,6vw,96px);
+  align-items:center;margin-top:clamp(72px,8vw,120px);
+}
+.zone--flip .zone__txt{order:2}
+.zone__txt .eyebrow{margin-bottom:16px}
+.zone__list{list-style:none;margin:28px 0 0;padding:0}
+.zone__list li{position:relative;padding-left:26px;margin-bottom:14px;line-height:1.7}
+.zone__list li::before{
+  content:'';position:absolute;left:0;top:.82em;width:12px;height:1px;background:var(--brass)}
+
+/* костровая — тёмная лесная, в край секции */
+#area{padding-bottom:0}
+.fire{
+  background:var(--forest);color:var(--on-dark);
+  margin-top:clamp(90px,10vw,150px);
+  padding:clamp(88px,9vw,140px) var(--pad);
+  margin-left:calc(-1 * var(--pad));margin-right:calc(-1 * var(--pad));
+  position:relative;overflow:hidden;
+}
+.fire::before{
+  content:'';position:absolute;width:900px;height:900px;left:-14%;bottom:-52%;
+  background:radial-gradient(circle,rgba(255,170,80,.16),transparent 62%);
+}
+.fire .zone{margin-top:0;position:relative;z-index:2;max-width:var(--maxw);
+  margin-left:auto;margin-right:auto}
+.fire h3{color:var(--on-dark)}
+.fire .zone__list li{color:var(--on-dark-2)}
+
+/* ============================================================
+   6. УСЛУГИ
+   ============================================================ */
+.services{background:var(--cream-alt)}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(22px,2.6vw,34px)}
+.card{
+  background:#FAF6EF;border-radius:16px;overflow:hidden;
+  box-shadow:0 1px 2px rgba(34,29,23,.04), 0 18px 46px -22px rgba(34,29,23,.18);
+  display:flex;flex-direction:column;
+}
+.card .ph{border-radius:0}
+.card__body{padding:32px 30px 36px}
+.card__body h3{margin-bottom:18px}
+.card__list{list-style:none;margin:0;padding:0}
+.card__list li{
+  position:relative;padding-left:22px;margin-bottom:11px;
+  font-size:.98rem;line-height:1.65;color:var(--ink-2);
+}
+.card__list li:last-child{margin-bottom:0}
+.card__list li::before{
+  content:'';position:absolute;left:0;top:.78em;width:9px;height:1px;background:var(--brass)}
+.catering{
+  margin-top:clamp(40px,4.5vw,56px);padding-top:30px;border-top:1px solid var(--hairline);
+  display:flex;align-items:baseline;gap:14px;justify-content:center;
+  font-size:1.0625rem;color:var(--ink-2);
+}
+.catering b{font-family:var(--display);font-weight:600;color:var(--ink);font-size:1.15rem;
+  font-variation-settings:'opsz' 30}
+
+/* ============================================================
+   7. ГАЛЕРЕЯ
+   ============================================================ */
+.masonry{columns:3;column-gap:clamp(14px,1.7vw,24px)}
+.masonry .ph{break-inside:avoid;margin-bottom:clamp(14px,1.7vw,24px)}
+
+/* ============================================================
+   8. ОТЗЫВЫ
+   ============================================================ */
+.reviews{background:var(--espresso);color:var(--on-dark);overflow:hidden}
+.reviews .sub{color:var(--on-dark-2)}
+.reviews .eyebrow{color:var(--brass)}
+.rail{
+  display:flex;gap:clamp(18px,2vw,28px);
+  width:max-content;margin-left:calc(-1 * var(--pad));
+  padding-left:var(--pad);
+}
+.rail .ph{width:clamp(210px,17vw,260px);flex:0 0 auto;--ar:3/4}
+.rail-mask{position:relative;margin:0 calc(-1 * var(--pad));padding:0 var(--pad)}
+
+/* ============================================================
+   9. КОНТАКТЫ
+   ============================================================ */
+.contacts{background:var(--forest);color:var(--on-dark)}
+.contacts .sub{color:var(--on-dark-2)}
+.contacts__grid{
+  display:grid;grid-template-columns:1fr .85fr;gap:clamp(48px,7vw,100px);align-items:center;
+}
+.clist{list-style:none;margin:clamp(40px,4.5vw,56px) 0 0;padding:0;max-width:420px}
+.clist li{
+  display:flex;align-items:center;gap:16px;padding:18px 0;
+  border-bottom:1px solid rgba(222,212,196,.16);
+}
+.clist li:first-child{border-top:1px solid rgba(222,212,196,.16)}
+.clist svg{flex:0 0 auto;stroke:var(--brass);fill:none;stroke-width:1.4}
+.clist span{font-size:.78rem;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--on-dark-2);font-weight:600;min-width:82px}
+.clist a{color:var(--on-dark);text-decoration:none;font-size:1.0625rem}
+.contacts__cta{display:flex;gap:16px;flex-wrap:wrap;margin-top:clamp(40px,4.5vw,52px)}
+
+/* ============================================================
+   10. РАСПОЛОЖЕНИЕ
+   ============================================================ */
+.map{
+  margin-top:clamp(48px,5vw,64px);position:relative;width:100%;aspect-ratio:21/9;
+  background:#EFE7D8;overflow:hidden;border:1px solid var(--hairline);
+}
+.map svg{position:absolute;inset:0;width:100%;height:100%}
+.pin{position:absolute;left:52%;top:46%;transform:translate(-50%,-100%);z-index:3}
+.pin__body{width:34px;height:34px;border-radius:50% 50% 50% 0;background:var(--brass);
+  transform:rotate(-45deg);box-shadow:0 10px 22px -8px rgba(34,29,23,.5)}
+.pin__body::after{content:'';position:absolute;left:50%;top:50%;
+  transform:translate(-50%,-50%);width:11px;height:11px;border-radius:50%;background:#F7F3EC}
+.pin__label{
+  position:absolute;left:50%;top:46px;transform:translateX(-50%);
+  background:#FBF7F0;border:1px solid var(--hairline);padding:9px 16px;white-space:nowrap;
+  font-size:.72rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--ink);
+  box-shadow:0 12px 30px -16px rgba(34,29,23,.4)}
+
+/* ============================================================
+   11. ФУТЕР
+   ============================================================ */
+.ftr{
+  background:var(--espresso);color:var(--on-dark-2);
+  border-top:1px solid rgba(169,131,79,.42);
+  padding:44px var(--pad);
+}
+.ftr__in{max-width:var(--maxw);margin:0 auto;display:flex;justify-content:space-between;
+  align-items:center;gap:32px;flex-wrap:wrap;font-size:.92rem}
+.ftr b{font-family:var(--display);font-weight:600;color:var(--on-dark);
+  font-variation-settings:'opsz' 30}
+.ftr__links{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.ftr__links a{color:var(--on-dark-2);text-decoration:none}
+.ftr__links i{font-style:normal;color:rgba(169,131,79,.7)}
+
+/* ============================================================
+   МОБАЙЛ
+   ============================================================ */
+@media (max-width:860px){
+  :root{--pad:24px;--sec-y:clamp(80px,17vw,96px)}
+  body{font-size:1.0625rem}
+  .hdr{padding:20px var(--pad)}
+  .hdr__nav,.hdr .btn{display:none}
+  .burger{display:flex}
+  .hero__inner{padding-bottom:120px}
+  .hero h1{max-width:none}
+  .hero .btn{width:100%}
+  .about__grid,.house__grid,.zone,.contacts__grid{grid-template-columns:1fr;gap:40px}
+  .about__grid .ph{order:-1}
+  .zone--flip .zone__txt{order:0}
+  .zone .ph{order:-1}
+  .pillars{grid-template-columns:1fr;margin-top:64px}
+  .pillar{border-right:0;border-bottom:1px solid var(--hairline);
+    padding:32px 0 32px 0!important}
+  .pillar:last-child{border-bottom:0;padding-bottom:0!important}
+  .cards{grid-template-columns:1fr}
+  .masonry{columns:2;column-gap:14px}
+  .mini{gap:12px}
+  .fire{margin-top:72px;padding:64px var(--pad)}
+  .contacts__cta .btn{width:100%}
+  .contacts__grid .ph{order:-1}
+  .ftr__in{flex-direction:column;align-items:flex-start;gap:18px;line-height:2}
+  .map{aspect-ratio:4/5}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════ 1. ШАПКА ═══════════ -->
+<header class="hdr">
+  <a class="hdr__brand" href="#">Юго-Запад Hall</a>
+  <nav class="hdr__nav">
+    <a href="#about">О месте</a>
+    <a href="#house">Дом</a>
+    <a href="#area">Территория</a>
+    <a href="#services">Услуги</a>
+    <a href="#gallery">Галерея</a>
+    <a href="#contacts">Контакты</a>
+  </nav>
+  <a class="btn btn--ghost" href="#contacts">Забронировать</a>
+  <div class="burger"><span></span><span></span></div>
+</header>
+
+<!-- ═══════════ 2. ПЕРВЫЙ ЭКРАН ═══════════ -->
+<section class="hero">
+  <div class="hero__bg"></div>
+  <div class="hero__veil"></div>
+  <div class="hero__inner">
+    <div class="hero__grid">
+      <p class="eyebrow">Ульяновск · посуточная аренда</p>
+      <h1>Отдых, в котором есть только вы и <em class="acc">тишина</em></h1>
+      <p class="sub">Закрытая территория рядом с «Юго-Западным», где город остаётся за воротами.</p>
+      <div class="hero__cta"><a class="btn btn--solid" href="#contacts">Связаться с нами</a></div>
+    </div>
+  </div>
+  <div class="hero__scroll"><i></i>листайте вниз</div>
+</section>
+
+<!-- ═══════════ 3. О МЕСТЕ ═══════════ -->
+<section id="about">
+  <div class="wrap">
+    <div class="about__grid">
+      <div>
+        <p class="eyebrow">О месте</p>
+        <h2 style="margin-top:20px">Наедине с теми, <em class="acc">кто дорог</em></h2>
+        <p class="sub">Ни соседей, ни посторонних — только ваш круг и покой вокруг.</p>
+      </div>
+      <figure class="ph t-forest" style="--ar:4/5" data-label="ФОТО · ворота, въезд на территорию"></figure>
+    </div>
+
+    <div class="pillars">
+      <div class="pillar">
+        <span class="pillar__n">01</span>
+        <p>Только вы и ваши близкие — от заезда до выезда</p>
+      </div>
+      <div class="pillar">
+        <span class="pillar__n">02</span>
+        <p>Уютный дом и ухоженный двор в любое время года</p>
+      </div>
+      <div class="pillar">
+        <span class="pillar__n">03</span>
+        <p>Настоящий комфорт вместо показной роскоши</p>
+      </div>
+    </div>
+
+    <div class="audience">
+      <p class="eyebrow">Для семей · пар · компаний · корпоративов</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ 4. ДОМ ═══════════ -->
+<section id="house" class="house">
+  <div class="wrap">
+    <div class="house__grid">
+      <div>
+        <figure class="ph t-wood" style="--ar:4/3" data-label="ФОТО · дом снаружи, главный кадр"></figure>
+        <div class="mini">
+          <figure class="ph t-linen" style="--ar:1/1" data-label="интерьер 1"></figure>
+          <figure class="ph t-wood"  style="--ar:1/1" data-label="интерьер 2"></figure>
+          <figure class="ph t-linen" style="--ar:1/1" data-label="интерьер 3"></figure>
+        </div>
+      </div>
+      <div>
+        <p class="eyebrow">Дом</p>
+        <h2 style="margin-top:20px">Уют, что <em class="acc">обнимает</em> с порога</h2>
+        <p class="sub">Хочется закутаться в плед и забыть о времени.</p>
+        <ul class="spec">
+          <li>До 8 гостей с ночёвкой — 4 изолированные спальни</li>
+          <li>До 12 человек за общим столом</li>
+          <li>Тёплые полы, кондиционер, смарт-ТВ, Wi-Fi</li>
+          <li>Холодильник, электрочайник, душевая, санузел</li>
+          <li>Посуда, бельё, полотенца, халаты каждому, питьевая вода</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ 5. ТЕРРИТОРИЯ ═══════════ -->
+<section id="area">
+  <div class="wrap">
+    <div class="sec-head center">
+      <p class="eyebrow">Территория</p>
+      <h2>Двор, где хочется остаться <em class="acc">до последней звезды</em></h2>
+    </div>
+
+    <div class="zone">
+      <div class="zone__txt">
+        <p class="eyebrow">01</p>
+        <h3>Веранда</h3>
+        <ul class="zone__list">
+          <li>Открытая беседка с прозрачной крышей, до 20 гостей</li>
+          <li>Мини-кухня, холодильник, санузел</li>
+          <li>В тёплый сезон</li>
+        </ul>
+      </div>
+      <figure class="ph t-linen" style="--ar:4/3" data-label="ФОТО · веранда / беседка"></figure>
+    </div>
+
+    <div class="zone zone--flip">
+      <div class="zone__txt">
+        <p class="eyebrow">02</p>
+        <h3>Мангальная зона</h3>
+        <ul class="zone__list">
+          <li>Два мангала с печью под казан</li>
+          <li>У дома — под навесом, с лёгким копчением</li>
+        </ul>
+      </div>
+      <figure class="ph t-steam" style="--ar:4/3" data-label="ФОТО · мангалы, печь под казан"></figure>
+    </div>
+  </div>
+
+  <div class="fire">
+    <div class="zone">
+      <div class="zone__txt">
+        <p class="eyebrow">03</p>
+        <h3>Костровая зона</h3>
+        <ul class="zone__list">
+          <li>Костровая чаша, кресла, тёплые пледы</li>
+          <li>Дрова предоставляем</li>
+        </ul>
+      </div>
+      <figure class="ph t-ember" style="--ar:4/3" data-label="ФОТО · костровая чаша вечером"></figure>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ 6. УСЛУГИ ═══════════ -->
+<section id="services" class="services">
+  <div class="wrap">
+    <div class="sec-head center">
+      <p class="eyebrow">Услуги</p>
+      <h2>Удовольствия, что добавляют <em class="acc">глубины</em></h2>
+      <p class="sub">Добавьте к отдыху столько, сколько хочется.</p>
+    </div>
+
+    <div class="cards">
+      <article class="card">
+        <figure class="ph t-steam" style="--ar:4/3" data-label="ФОТО · русская баня"></figure>
+        <div class="card__body">
+          <h3>Русская баня</h3>
+          <ul class="card__list">
+            <li>На дровах, комната отдыха до 6 человек</li>
+            <li>Разогрев к заезду, топка — всё время аренды</li>
+            <li>Шапочки, халаты, полотенца, травяная запарка</li>
+          </ul>
+        </div>
+      </article>
+      <article class="card">
+        <figure class="ph t-ember" style="--ar:4/3" data-label="ФОТО · банный чан"></figure>
+        <div class="card__body">
+          <h3>Банный чан</h3>
+          <ul class="card__list">
+            <li>На дровах, 6–8 человек, разогрет до +40°</li>
+            <li>Травы и хвоя по сезону</li>
+          </ul>
+        </div>
+      </article>
+      <article class="card">
+        <figure class="ph t-water" style="--ar:4/3" data-label="ФОТО · бассейны"></figure>
+        <div class="card__body">
+          <h3>Бассейны</h3>
+          <ul class="card__list">
+            <li>Большой 3×5 м → танцпол на сдвижных платформах</li>
+            <li>Малый с подогревом до +30° под куполом-сферой (01.05–30.09)</li>
+            <li>Шезлонги на деревянном настиле</li>
+          </ul>
+        </div>
+      </article>
+    </div>
+
+    <div class="catering"><b>Кейтеринг</b> — по запросу</div>
+  </div>
+</section>
+
+<!-- ═══════════ 7. ГАЛЕРЕЯ ═══════════ -->
+<section id="gallery">
+  <div class="wrap">
+    <div class="sec-head center">
+      <p class="eyebrow">Галерея</p>
+      <h2>Место, в которое влюбляются <em class="acc">с первого взгляда</em></h2>
+      <p class="sub">Загляните — и почувствуете, каким будет ваш день.</p>
+    </div>
+    <div class="masonry">
+      <figure class="ph t-forest" style="--ar:4/5" data-label="фото 01"></figure>
+      <figure class="ph t-wood"   style="--ar:4/3" data-label="фото 02"></figure>
+      <figure class="ph t-linen"  style="--ar:1/1" data-label="фото 03"></figure>
+      <figure class="ph t-water"  style="--ar:3/4" data-label="фото 04"></figure>
+      <figure class="ph t-ember"  style="--ar:4/3" data-label="фото 05"></figure>
+      <figure class="ph t-night"  style="--ar:1/1" data-label="фото 06"></figure>
+      <figure class="ph t-steam"  style="--ar:4/5" data-label="фото 07"></figure>
+      <figure class="ph t-linen"  style="--ar:4/3" data-label="фото 08"></figure>
+      <figure class="ph t-forest" style="--ar:3/4" data-label="фото 09"></figure>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ 8. ОТЗЫВЫ ═══════════ -->
+<section class="reviews">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Отзывы</p>
+      <h2 class="on-dark">Дни, которые <em class="acc">не хочется забывать</em></h2>
+      <p class="sub">Гости делятся тем, что здесь почувствовали.</p>
+    </div>
+  </div>
+  <div class="rail-mask">
+    <div class="rail">
+      <figure class="ph t-linen"  data-label="скрин отзыва 01"></figure>
+      <figure class="ph t-wood"   data-label="скрин отзыва 02"></figure>
+      <figure class="ph t-steam"  data-label="скрин отзыва 03"></figure>
+      <figure class="ph t-linen"  data-label="скрин отзыва 04"></figure>
+      <figure class="ph t-water"  data-label="скрин отзыва 05"></figure>
+      <figure class="ph t-wood"   data-label="скрин отзыва 06"></figure>
+      <figure class="ph t-linen"  data-label="скрин отзыва 07"></figure>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ 9. КОНТАКТЫ ═══════════ -->
+<section id="contacts" class="contacts">
+  <div class="wrap">
+    <div class="contacts__grid">
+      <div>
+        <p class="eyebrow">Контакты</p>
+        <h2 class="on-dark" style="margin-top:20px">Давайте подберём вам <em class="acc">дату</em></h2>
+        <p class="sub">Расскажите, когда хотите приехать, — подскажем свободные даты и подготовим всё к заезду. Пишите или звоните, как удобнее.</p>
+
+        <ul class="clist">
+          <li>
+            <svg width="17" height="17" viewBox="0 0 24 24"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .3 1.9.6 2.8a2 2 0 0 1-.4 2.1L8 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.5 2.8.6a2 2 0 0 1 1.8 2Z"/></svg>
+            <span>Юрий</span><a href="tel:+79176178159">+7 917 617-81-59</a>
+          </li>
+          <li>
+            <svg width="17" height="17" viewBox="0 0 24 24"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .3 1.9.6 2.8a2 2 0 0 1-.4 2.1L8 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.5 2.8.6a2 2 0 0 1 1.8 2Z"/></svg>
+            <span>Екатерина</span><a href="tel:+79673769965">+7 967 376-99-65</a>
+          </li>
+          <li>
+            <svg width="17" height="17" viewBox="0 0 24 24"><path d="M21.5 3.5 2.8 10.8c-.9.3-.9 1.5 0 1.8l4.7 1.6 1.8 5.4c.3.8 1.3 1 1.8.3l2.5-3 4.8 3.5c.7.5 1.6.1 1.8-.7l3-14.4c.2-.9-.7-1.6-1.7-1.3Z"/><path d="m7.5 14.2 11-8-8.4 9.9"/></svg>
+            <span>Telegram</span><a href="https://t.me/yugo_zapad_hall">t.me/yugo_zapad_hall</a>
+          </li>
+          <li>
+            <svg width="17" height="17" viewBox="0 0 24 24"><path d="M4 7.6c.7 5.4 4.3 9.4 9.6 9.4h1.1v-3c2 1.5 2.7 3 4.5 3H21c-.7-2.5-2.9-4.5-4.6-5.4 1.5-1.2 3-3.4 3.6-6h-2.7c-.7 2.4-2.2 4.6-3.8 5.3V5.6h-2.9v6c-2-.8-3.5-3.4-3.8-6H4Z" stroke-linejoin="round"/></svg>
+            <span>ВК</span><a href="https://vk.ru/ugo_zapad_hall">vk.ru/ugo_zapad_hall</a>
+          </li>
+        </ul>
+
+        <div class="contacts__cta">
+          <a class="btn btn--solid" href="https://t.me/yugo_zapad_hall">Написать в Telegram</a>
+          <a class="btn btn--ghost-light" href="tel:+79176178159">Позвонить</a>
+        </div>
+      </div>
+      <figure class="ph t-night" style="--ar:4/5" data-label="ФОТО · вечерний двор"></figure>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ 10. РАСПОЛОЖЕНИЕ ═══════════ -->
+<section id="location">
+  <div class="wrap">
+    <div class="sec-head" style="margin-bottom:0">
+      <p class="eyebrow">Расположение</p>
+      <h2 style="margin-top:20px">Рядом с «Юго-Западным», <em class="acc">но вдали от суеты</em></h2>
+      <p class="sub">Ульяновск, Засвияжье, ул. Авиационная, 2 «А». Всего 10 минут от микрорайона «Юго-Западный», в районе старого аэропорта.</p>
+    </div>
+
+    <div class="map">
+      <svg viewBox="0 0 1200 514" preserveAspectRatio="xMidYMid slice">
+        <rect width="1200" height="514" fill="#EFE7D8"/>
+        <path d="M0 340 C220 300 380 380 620 330 C860 280 1010 340 1200 300 L1200 514 L0 514Z" fill="#E4DBC7"/>
+        <path d="M120 0 L120 514" stroke="#DED4C4" stroke-width="14"/>
+        <path d="M0 190 L1200 150" stroke="#DED4C4" stroke-width="18"/>
+        <path d="M760 0 C740 160 830 300 800 514" stroke="#DED4C4" stroke-width="12" fill="none"/>
+        <path d="M0 420 L1200 400" stroke="#E7DECB" stroke-width="9"/>
+        <path d="M330 0 L360 514" stroke="#E7DECB" stroke-width="7"/>
+        <path d="M980 0 L1010 514" stroke="#E7DECB" stroke-width="7"/>
+        <circle cx="240" cy="120" r="46" fill="#DCE0CE"/>
+        <circle cx="1050" cy="440" r="60" fill="#DCE0CE"/>
+        <circle cx="520" cy="440" r="34" fill="#DCE0CE"/>
+        <text x="150" y="128" font-family="Manrope" font-size="15" letter-spacing="3" fill="#A2977F">ЮГО-ЗАПАДНЫЙ</text>
+        <text x="850" y="230" font-family="Manrope" font-size="15" letter-spacing="3" fill="#A2977F">СТАРЫЙ АЭРОПОРТ</text>
+        <text x="60" y="470" font-family="Manrope" font-size="14" letter-spacing="3" fill="#B3A891">ЗАСВИЯЖЬЕ</text>
+      </svg>
+      <div class="pin">
+        <div class="pin__body"></div>
+        <div class="pin__label">Юго-Запад Hall · Авиационная, 2 «А»</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ 11. ФУТЕР ═══════════ -->
+<footer class="ftr">
+  <div class="ftr__in">
+    <p style="margin:0"><b>Юго-Запад Hall</b> — закрытая площадка отдыха в Ульяновске</p>
+    <div class="ftr__links">
+      <a href="https://t.me/yugo_zapad_hall">Telegram</a><i>·</i>
+      <a href="https://vk.ru/ugo_zapad_hall">ВК</a><i>·</i>
+      <a href="tel:+79176178159">Юрий +7 917 617-81-59</a><i>·</i>
+      <a href="tel:+79673769965">Екатерина +7 967 376-99-65</a>
+    </div>
+  </div>
+</footer>
+
+<div class="grain"></div>
+</body>
+</html>
