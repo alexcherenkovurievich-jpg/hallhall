@@ -4,7 +4,22 @@ import { Photo } from './Photo.jsx';
 import { REVIEWS } from '../lib/content.js';
 import { prefersReducedMotion } from '../lib/motion.js';
 
-const SPEED = 26;   // пикселей в секунду
+/**
+ * Скорость ленты, пикселей в секунду. На 26 движение формально было,
+ * но карточка проезжала свою ширину за десять секунд и на глаз лента
+ * казалась стоящей.
+ */
+const SPEED = 58;
+/** При включённом «уменьшить движение» лента едет, но заметно спокойнее. */
+const SPEED_REDUCED = 22;
+
+/**
+ * Наведением ленту останавливаем только там, где есть настоящий курсор.
+ * На тачскрине касание порождает mouseenter, а mouseleave может не прийти
+ * вовсе — из-за этого после первого же тапа лента вставала намертво.
+ */
+const CAN_HOVER = typeof window !== 'undefined'
+  && window.matchMedia?.('(hover: hover) and (pointer: fine)').matches;
 
 /**
  * Лента отзывов, которая едет по кругу без конца.
@@ -22,10 +37,9 @@ export function Reviews() {
   const [grabbing, setGrabbing] = useState(false);
 
   // список дублируется: пока уезжает первая копия, её место занимает вторая
-  const items = prefersReducedMotion ? REVIEWS : [...REVIEWS, ...REVIEWS];
+  const items = [...REVIEWS, ...REVIEWS];
 
   useEffect(() => {
-    if (prefersReducedMotion) return undefined;
     const track = trackRef.current;
     if (!track) return undefined;
 
@@ -35,7 +49,8 @@ export function Reviews() {
     const step = (now) => {
       const dt = (now - last) / 1000;
       last = now;
-      if (!paused.current && !drag.current) offset.current -= SPEED * dt;
+      const speed = prefersReducedMotion ? SPEED_REDUCED : SPEED;
+      if (!paused.current && !drag.current) offset.current -= speed * dt;
 
       // ширина одной копии — точка, на которой лента незаметно повторяется
       const span = track.scrollWidth / 2;
@@ -64,6 +79,8 @@ export function Reviews() {
   };
   const pointerUp = () => {
     setGrabbing(false);
+    // на тачскрине после отпускания лента обязана поехать снова
+    paused.current = false;
     // сбрасываем не сразу: клик приходит после отпускания
     setTimeout(() => { drag.current = null; }, 0);
   };
@@ -89,7 +106,7 @@ export function Reviews() {
 
       <div
         className="rail-mask"
-        onMouseEnter={() => { paused.current = true; }}
+        onMouseEnter={() => { if (CAN_HOVER) paused.current = true; }}
         onMouseLeave={() => { paused.current = false; pointerUp(); }}
         onMouseDown={pointerDown}
         onMouseMove={pointerMove}
