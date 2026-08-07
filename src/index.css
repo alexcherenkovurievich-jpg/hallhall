@@ -1,0 +1,645 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Компонентные стили идут после утилит намеренно: классы вроде .btn и .ph
+   должны выигрывать у одиночных утилит, если те окажутся на том же узле. */
+/* ============================================================
+   ДИЗАЙН-ТОКЕНЫ
+   ============================================================ */
+:root{
+  --cream:      #F7F3EC;
+  --cream-alt:  #EFE8DB;
+  --hairline:   #DED4C4;
+  --espresso:   #1A1611;
+  --forest:     #232B23;
+  --ink:        #221D17;
+  --ink-2:      #6E655A;
+  --on-dark:    #F1E9DA;
+  --on-dark-2:  #B7AC9C;
+  --brass:      #A9834F;
+  --brass-h:    #8E6B3D;
+
+  --pad:        max(8vw, 24px);
+  --maxw:       1240px;
+  --col:        680px;
+  --sec-y:      clamp(80px, 12vw, 200px);
+
+  /* один источник скругления на весь сайт */
+  --radius:     24px;
+  --radius-sm:  calc(var(--radius) * .58);   /* кнопки, мелкие элементы */
+  --radius-lg:  calc(var(--radius) * 1.25);  /* карточки, крупные блоки */
+  --radius-pill: 999px;                      /* иконки соцсетей, пилюли меню */
+
+  --display: 'Fraunces', Georgia, serif;
+  --sans:    'Manrope', system-ui, sans-serif;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+body{
+  margin:0;
+  background:var(--cream);
+  color:var(--ink);
+  font-family:var(--sans);
+  font-size:1.0625rem;
+  line-height:1.8;
+  font-weight:400;
+  position:relative;
+  overflow-x:hidden;
+}
+
+/* film grain --------------------------------------------------- */
+.grain{
+  position:absolute; inset:0; z-index:60; pointer-events:none;
+  opacity:.035;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/></filter><rect width='160' height='160' filter='url(%23n)'/></svg>");
+}
+
+/* ============================================================
+   ТИПОГРАФИКА
+   ============================================================ */
+h1,h2,h3{
+  font-family:var(--display);
+  font-weight:600;
+  font-variation-settings:'opsz' 120,'SOFT' 0,'WONK' 0;
+  margin:0;
+  color:inherit;
+  /* переносим только между словами, никогда посреди слова */
+  text-wrap:balance;
+  hyphens:manual;
+}
+/* страховка от горизонтального скролла: длинное слово ломается,
+   но только если иначе оно вылезет за экран */
+body,p,li,a{overflow-wrap:break-word}
+h1{font-size:clamp(2.75rem,7vw,6rem);line-height:1.05;letter-spacing:-.02em}
+h2{font-size:clamp(2rem,4vw,3.25rem);line-height:1.1;letter-spacing:-.015em}
+h3{font-size:clamp(1.35rem,2vw,1.75rem);line-height:1.2;letter-spacing:-.01em;
+   font-variation-settings:'opsz' 60}
+em.acc{
+  font-style:italic; font-weight:500; color:var(--brass);
+  font-variation-settings:'opsz' 120,'SOFT' 30,'WONK' 1;
+}
+.eyebrow{
+  font-size:.8rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--brass);line-height:1.4;margin:0;
+}
+.sub{
+  font-size:clamp(1.1rem,1.6vw,1.35rem);line-height:1.5;color:var(--ink-2);
+  margin:24px 0 0;max-width:var(--col);font-weight:400;
+}
+.lead{max-width:var(--col);color:var(--ink-2);margin:0}
+/* составные названия не рвём по дефису */
+.nb{white-space:nowrap}
+.on-dark  {color:var(--on-dark)}
+.on-dark-2{color:var(--on-dark-2)}
+
+/* ============================================================
+   РАСКЛАДКА
+   ============================================================ */
+section{padding:var(--sec-y) var(--pad);position:relative}
+.wrap{max-width:var(--maxw);margin:0 auto;width:100%}
+.sec-head{margin-bottom:clamp(48px,6vw,64px)}
+.sec-head .eyebrow + h2{margin-top:20px}
+.center{text-align:center}
+.center .sub{margin-left:auto;margin-right:auto}
+
+/* ============================================================
+   КНОПКИ
+   ============================================================ */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:10px;
+  font-family:var(--sans);font-size:.95rem;font-weight:500;letter-spacing:.04em;
+  padding:17px 34px;border-radius:var(--radius-sm);text-decoration:none;cursor:pointer;
+  border:1px solid var(--brass);white-space:nowrap;line-height:1;
+}
+.btn--solid{background:var(--brass);color:#FBF7F0;border-color:var(--brass)}
+.btn--ghost{background:transparent;color:var(--brass)}
+.btn--ghost-light{background:transparent;color:var(--on-dark);border-color:rgba(241,233,218,.38)}
+.btn--sm{padding:13px 24px;font-size:.875rem}
+
+/* ============================================================
+   ЗАГЛУШКИ ФОТО
+   ============================================================ */
+.ph{
+  position:relative;margin:0;width:100%;overflow:hidden;
+  border-radius:var(--radius);
+  aspect-ratio:var(--ar,4/3);
+  background:var(--ph,linear-gradient(#cbbfa8,#a08f74));
+  isolation:isolate;
+}
+.ph::before{
+  content:'';position:absolute;inset:0;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/></filter><rect width='120' height='120' filter='url(%23n)'/></svg>");
+  opacity:.16;mix-blend-mode:overlay;
+}
+.ph::after{
+  content:attr(data-label);
+  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  font-size:.62rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;
+  color:rgba(255,250,240,.82);
+  padding:9px 16px;border:1px solid rgba(255,250,240,.4);
+  border-radius:var(--radius-pill);
+  max-width:84%;text-align:center;line-height:1.4;
+  backdrop-filter:blur(2px);background:rgba(26,22,17,.22);
+}
+/* реальные фото в тех же рамках, что и заглушки */
+.ph--photo{background:#e2d8c4}
+/* вертикальный кадр не растягиваем во всю колонку — ставим по центру */
+.ph--tall{max-width:min(100%,520px);margin-inline:auto}
+.ph--photo::after{content:none}          /* подпись-заглушка не нужна */
+.ph--photo::before{opacity:.07}          /* зерно поверх фото — чуть слабее */
+.ph img{
+  position:absolute;inset:0;display:block;
+  width:100%;height:100%;object-fit:cover;
+  object-position:var(--pos,center);
+}
+
+/* тональные варианты «фото» */
+.t-forest{--ph:
+  radial-gradient(60% 55% at 20% 15%, rgba(122,143,104,.85), transparent 70%),
+  radial-gradient(50% 60% at 85% 30%, rgba(70,88,62,.9), transparent 72%),
+  radial-gradient(70% 60% at 50% 100%, rgba(28,34,26,.95), transparent 75%),
+  linear-gradient(160deg,#5c6b50,#33402f 55%,#212a20)}
+.t-wood{--ph:
+  radial-gradient(55% 50% at 25% 20%, rgba(212,180,140,.8), transparent 70%),
+  radial-gradient(60% 55% at 80% 75%, rgba(120,88,58,.85), transparent 72%),
+  linear-gradient(155deg,#b99b76,#8a6c4b 55%,#5d452f)}
+.t-linen{--ph:
+  radial-gradient(60% 55% at 30% 25%, rgba(246,238,224,.95), transparent 72%),
+  radial-gradient(55% 50% at 80% 80%, rgba(198,180,152,.9), transparent 70%),
+  linear-gradient(150deg,#e6dcc8,#c9bba1 60%,#a89madd)}
+.t-linen{--ph:
+  radial-gradient(60% 55% at 30% 25%, rgba(246,238,224,.95), transparent 72%),
+  radial-gradient(55% 50% at 80% 80%, rgba(198,180,152,.9), transparent 70%),
+  linear-gradient(150deg,#e6dcc8,#c9bba1 60%,#a8977c)}
+.t-ember{--ph:
+  radial-gradient(45% 45% at 50% 62%, rgba(255,176,84,.85), transparent 68%),
+  radial-gradient(70% 70% at 50% 70%, rgba(166,88,32,.55), transparent 72%),
+  linear-gradient(165deg,#2b2a22,#221f19 55%,#14120e)}
+.t-water{--ph:
+  radial-gradient(55% 50% at 30% 25%, rgba(178,201,196,.9), transparent 70%),
+  radial-gradient(60% 55% at 78% 78%, rgba(108,140,138,.9), transparent 72%),
+  linear-gradient(150deg,#b6c8c0,#83a099 55%,#5c7570)}
+.t-steam{--ph:
+  radial-gradient(55% 50% at 35% 22%, rgba(232,214,186,.9), transparent 70%),
+  radial-gradient(60% 60% at 75% 80%, rgba(140,106,70,.9), transparent 72%),
+  linear-gradient(155deg,#c3a882,#8f7250 58%,#5f4a33)}
+.t-night{--ph:
+  radial-gradient(60% 50% at 25% 20%, rgba(96,110,92,.7), transparent 70%),
+  radial-gradient(50% 50% at 75% 70%, rgba(58,52,40,.9), transparent 72%),
+  linear-gradient(160deg,#3c4438,#262b22 55%,#171a14)}
+
+/* ============================================================
+   1. ШАПКА
+   ============================================================ */
+/* липкая, во всю ширину: боковые поля уже, чем у секций */
+.hdr{
+  position:fixed;top:0;left:0;right:0;z-index:50;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:clamp(16px,2.5vw,40px);
+  padding:16px clamp(20px,3vw,44px);
+  background:rgba(26,22,17,.55);
+  backdrop-filter:blur(14px) saturate(1.1);
+  -webkit-backdrop-filter:blur(14px) saturate(1.1);
+  border-bottom:1px solid rgba(241,233,218,.10);
+}
+.hdr__brand{
+  font-family:var(--display);font-weight:600;font-size:1.0625rem;letter-spacing:.01em;
+  color:var(--on-dark);text-decoration:none;font-variation-settings:'opsz' 30;
+  white-space:nowrap;flex:0 0 auto;
+}
+.hdr .btn{
+  padding:11px 22px;font-size:.85rem;color:var(--on-dark);
+  border-color:rgba(169,131,79,.85);flex:0 0 auto;
+}
+
+/* кнопка «Меню» + стрелка */
+.menu-btn{
+  display:inline-flex;align-items:center;gap:10px;cursor:pointer;
+  font-family:var(--sans);font-size:.85rem;font-weight:500;letter-spacing:.04em;
+  padding:11px 20px;border-radius:var(--radius-pill);line-height:1;
+  color:var(--on-dark);background:transparent;
+  border:1px solid rgba(169,131,79,.85);
+  transition:background .25s ease,border-color .25s ease;
+}
+.menu-btn:hover,.menu-btn:focus-visible{background:rgba(169,131,79,.16)}
+.menu-btn svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:1.8;
+  transition:transform .3s ease-in-out}
+.menu-btn[aria-expanded="true"] svg{transform:rotate(180deg)}
+
+/* выпадающая панель: выезжает сверху вниз */
+.menu-panel{
+  position:absolute;top:calc(100% + 10px);right:clamp(20px,3vw,44px);left:auto;
+  width:min(300px,calc(100vw - 40px));
+  background:rgba(22,19,14,.97);
+  backdrop-filter:blur(16px) saturate(1.1);
+  -webkit-backdrop-filter:blur(16px) saturate(1.1);
+  border:1px solid rgba(241,233,218,.12);
+  border-radius:var(--radius-lg);
+  box-shadow:0 30px 64px -26px rgba(0,0,0,.75);
+  overflow:hidden;
+  max-height:0;opacity:0;transform:translateY(-12px);
+  pointer-events:none;visibility:hidden;
+  transition:max-height .3s ease-in-out, opacity .3s ease-in-out,
+             transform .3s ease-in-out, visibility 0s linear .3s;
+}
+.menu-panel.is-open{
+  max-height:520px;opacity:1;transform:translateY(0);
+  pointer-events:auto;visibility:visible;
+  transition:max-height .3s ease-in-out, opacity .3s ease-in-out,
+             transform .3s ease-in-out, visibility 0s;
+}
+.menu-panel nav{
+  display:flex;flex-direction:column;
+  padding:6px 26px 14px;
+}
+/* пункты — без рамок, просто текст */
+.menu-panel a{
+  font-size:1.0625rem;font-weight:500;letter-spacing:.01em;text-decoration:none;
+  color:rgba(241,233,218,.78);padding:13px 0;
+  border-bottom:1px solid rgba(241,233,218,.08);
+  transition:color .25s ease,padding-left .25s ease;
+}
+.menu-panel a:last-child{border-bottom:0}
+.menu-panel a:hover,.menu-panel a:focus-visible{color:var(--brass);padding-left:8px}
+.menu-panel a.is-cta{color:var(--brass);margin-top:6px;
+  border-top:1px solid rgba(169,131,79,.35)}
+
+@media (prefers-reduced-motion:reduce){
+  .menu-panel,.menu-btn svg,.menu-panel a{transition-duration:.01ms}
+}
+
+/* ============================================================
+   2. ПЕРВЫЙ ЭКРАН
+   ============================================================ */
+.hero{
+  min-height:100vh;padding:0;display:flex;align-items:flex-end;
+  background:var(--espresso);position:relative;overflow:hidden;
+}
+.hero__photo{position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;object-position:center 62%;display:block}
+.hero__bg{position:absolute;inset:0;
+  background:
+    radial-gradient(65% 55% at 22% 18%, rgba(126,146,108,.55), transparent 70%),
+    radial-gradient(55% 50% at 82% 26%, rgba(84,100,72,.5), transparent 72%),
+    radial-gradient(60% 45% at 60% 88%, rgba(255,186,104,.14), transparent 70%),
+    linear-gradient(165deg,#4c5a43,#2c3628 48%,#1a1611);
+}
+.hero__bg::before{content:'';position:absolute;inset:0;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3'/></filter><rect width='140' height='140' filter='url(%23n)'/></svg>");
+  opacity:.14;mix-blend-mode:overlay}
+.hero__veil{position:absolute;inset:0;
+  background:linear-gradient(to bottom, rgba(26,22,17,.52) 0%, rgba(26,22,17,.18) 34%, rgba(26,22,17,.72) 76%, rgba(26,22,17,.96) 100%)}
+.hero__inner{position:relative;z-index:2;width:100%;padding:0 var(--pad) clamp(88px,11vw,150px)}
+.hero__grid{max-width:var(--maxw);margin:0 auto}
+.hero h1{color:var(--on-dark);max-width:15ch}
+.hero .sub{color:var(--on-dark-2);max-width:44ch;margin-top:24px}
+.hero__cta{margin-top:clamp(40px,4.5vw,56px)}
+
+/* ============================================================
+   3. О МЕСТЕ
+   ============================================================ */
+/* заголовок по центру над фото, под фото — короткий текст в колонке */
+.prose{
+  max-width:var(--col);margin:clamp(44px,5vw,64px) auto 0;
+  text-align:center;
+}
+.prose p{
+  margin:0;color:var(--ink-2);
+  font-size:clamp(1.05rem,1.4vw,1.2rem);line-height:1.75;
+}
+.audience{
+  margin-top:clamp(56px,6vw,80px);padding-top:32px;
+  border-top:1px solid var(--hairline);text-align:center;
+}
+
+/* ============================================================
+   4. ДОМ
+   ============================================================ */
+.house{background:var(--cream-alt)}
+.house__grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:clamp(44px,6vw,90px);
+  align-items:start;margin-top:clamp(28px,3vw,40px);
+}
+.spec{list-style:none;margin:0;padding:0}
+.spec li{
+  position:relative;padding:0 0 22px 30px;margin-bottom:22px;
+  border-bottom:1px solid var(--hairline);font-size:1.0625rem;line-height:1.65;
+}
+.spec li:last-child{border-bottom:0;margin-bottom:0;padding-bottom:0}
+.spec li::before{
+  content:'';position:absolute;left:0;top:.72em;width:7px;height:7px;
+  background:var(--brass);transform:rotate(45deg);
+}
+.mini{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(12px,1.4vw,18px)}
+
+/* ============================================================
+   5. ТЕРРИТОРИЯ
+   ============================================================ */
+.zone{
+  display:grid;grid-template-columns:1fr 1fr;gap:clamp(44px,6vw,96px);
+  align-items:center;margin-top:clamp(72px,8vw,120px);
+}
+.zone--flip .zone__txt{order:2}
+.zone__txt .eyebrow{margin-bottom:16px}
+.zone__list{list-style:none;margin:28px 0 0;padding:0}
+.zone__list li{position:relative;padding-left:26px;margin-bottom:14px;line-height:1.7}
+.zone__list li::before{
+  content:'';position:absolute;left:0;top:.82em;width:12px;height:1px;background:var(--brass)}
+
+/* костровая — тёмная лесная, в край секции */
+#area{padding-bottom:0}
+.fire{
+  background:var(--forest);color:var(--on-dark);
+  margin-top:clamp(90px,10vw,150px);
+  padding:clamp(88px,9vw,140px) var(--pad);
+  margin-left:calc(-1 * var(--pad));margin-right:calc(-1 * var(--pad));
+  border-radius:var(--radius-lg) var(--radius-lg) 0 0;
+  position:relative;overflow:hidden;
+}
+.fire::before{
+  content:'';position:absolute;width:900px;height:900px;left:-14%;bottom:-52%;
+  background:radial-gradient(circle,rgba(255,170,80,.16),transparent 62%);
+}
+.fire .zone{margin-top:0;position:relative;z-index:2;max-width:var(--maxw);
+  margin-left:auto;margin-right:auto}
+.fire h3{color:var(--on-dark)}
+.fire .zone__list li{color:var(--on-dark-2)}
+
+/* ============================================================
+   6. УСЛУГИ
+   ============================================================ */
+.services{background:var(--cream-alt)}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(22px,2.6vw,34px)}
+.card{
+  background:#FAF6EF;border-radius:var(--radius-lg);overflow:hidden;
+  box-shadow:0 1px 2px rgba(34,29,23,.04), 0 18px 46px -22px rgba(34,29,23,.18);
+  display:flex;flex-direction:column;
+}
+.card .ph{border-radius:0}
+.card__body{padding:32px 30px 36px}
+.card__body h3{margin-bottom:18px}
+.card__list{list-style:none;margin:0;padding:0}
+.card__list li{
+  position:relative;padding-left:22px;margin-bottom:11px;
+  font-size:.98rem;line-height:1.65;color:var(--ink-2);
+}
+.card__list li:last-child{margin-bottom:0}
+.card__list li::before{
+  content:'';position:absolute;left:0;top:.78em;width:9px;height:1px;background:var(--brass)}
+.catering{
+  margin-top:clamp(40px,4.5vw,56px);padding-top:30px;border-top:1px solid var(--hairline);
+  display:flex;align-items:baseline;gap:14px;justify-content:center;
+  font-size:1.0625rem;color:var(--ink-2);
+}
+.catering b{font-family:var(--display);font-weight:600;color:var(--ink);font-size:1.15rem;
+  font-variation-settings:'opsz' 30}
+
+/* ============================================================
+   7. ГАЛЕРЕЯ
+   ============================================================ */
+/* Ровная сетка вместо masonry: 10 ячеек делятся без остатка только
+   на 2 и на 5, поэтому 5 в ряд на десктопе и 2 на мобильном —
+   при 3 колонках последняя всегда свисала, а в соседних зияли дыры. */
+.masonry{
+  display:grid;grid-template-columns:repeat(5,1fr);
+  gap:clamp(14px,1.7vw,24px);
+}
+.masonry .ph{--ar:4/5}
+
+/* ============================================================
+   8. ОТЗЫВЫ
+   ============================================================ */
+.reviews{background:var(--espresso);color:var(--on-dark);overflow:hidden}
+.reviews .sub{color:var(--on-dark-2)}
+.reviews .eyebrow{color:var(--brass)}
+.rail{
+  display:flex;gap:clamp(18px,2vw,28px);
+  width:max-content;margin-left:calc(-1 * var(--pad));
+  padding-left:var(--pad);
+}
+.rail .ph{width:clamp(210px,17vw,260px);flex:0 0 auto;--ar:3/4}
+.rail-mask{position:relative;margin:0 calc(-1 * var(--pad));padding:0 var(--pad)}
+
+/* ============================================================
+   9. КОНТАКТЫ
+   ============================================================ */
+.contacts{background:var(--forest);color:var(--on-dark)}
+.contacts .sub{color:var(--on-dark-2)}
+.contacts__grid{
+  display:grid;grid-template-columns:1fr .85fr;gap:clamp(48px,7vw,100px);align-items:center;
+}
+.clist{list-style:none;margin:clamp(40px,4.5vw,56px) 0 0;padding:0;max-width:420px}
+.clist li{
+  display:flex;align-items:center;gap:16px;padding:18px 0;
+  border-bottom:1px solid rgba(222,212,196,.16);
+}
+.clist li:first-child{border-top:1px solid rgba(222,212,196,.16)}
+.clist svg{flex:0 0 auto;stroke:var(--brass);fill:none;stroke-width:1.4}
+.clist span{font-size:.78rem;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--on-dark-2);font-weight:600;min-width:82px}
+.clist a{color:var(--on-dark);text-decoration:none;font-size:1.0625rem}
+.contacts__cta{display:flex;gap:16px;flex-wrap:wrap;margin-top:clamp(40px,4.5vw,52px)}
+
+/* соцсети — только иконки-ссылки, в ряд */
+.socials{display:flex;align-items:center;gap:12px;margin-top:clamp(28px,3vw,36px)}
+.socials a{
+  width:52px;height:52px;flex:0 0 auto;
+  display:inline-flex;align-items:center;justify-content:center;
+  border:1px solid rgba(222,212,196,.26);border-radius:var(--radius-pill);
+  color:var(--brass);cursor:pointer;
+  transition:background .25s ease,border-color .25s ease,color .25s ease;
+}
+.socials a:hover,.socials a:focus-visible{
+  background:var(--brass);border-color:var(--brass);color:#FBF7F0;
+}
+.socials svg{width:21px;height:21px;stroke:currentColor;fill:none;stroke-width:1.5}
+
+/* ============================================================
+   10. РАСПОЛОЖЕНИЕ
+   ============================================================ */
+.map{
+  margin-top:clamp(48px,5vw,64px);position:relative;width:100%;
+  height:clamp(380px,40vw,560px);
+  background:#EFE7D8;overflow:hidden;border:1px solid var(--hairline);
+  border-radius:var(--radius-lg);
+}
+.map__canvas{position:absolute;inset:0}
+.map__fallback{
+  position:absolute;inset:0;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:18px;text-align:center;
+  padding:32px;background:#EFE7D8;
+}
+.map__fallback p{margin:0;color:var(--ink-2);line-height:1.7}
+.map__actions{margin-top:clamp(20px,2.4vw,28px);display:flex;justify-content:center}
+/* балун Яндекса приводим к типографике сайта */
+.map .ymaps-2-1-79-balloon__content,
+.map .ymaps-2-1-79-hint__text{font-family:var(--sans)!important}
+
+/* ============================================================
+   11. ФУТЕР
+   ============================================================ */
+.ftr{
+  background:var(--espresso);color:var(--on-dark-2);
+  border-top:1px solid rgba(169,131,79,.42);
+  padding:44px var(--pad);
+}
+.ftr__in{max-width:var(--maxw);margin:0 auto;display:flex;justify-content:space-between;
+  align-items:center;gap:32px;flex-wrap:wrap;font-size:.92rem}
+.ftr b{font-family:var(--display);font-weight:600;color:var(--on-dark);
+  font-variation-settings:'opsz' 30}
+.ftr__links{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.ftr__links > a{color:var(--on-dark-2);text-decoration:none}
+.ftr__links i{font-style:normal;color:rgba(169,131,79,.7)}
+.socials--ftr{margin:0 0 0 8px;gap:10px}
+.socials--ftr a{width:40px;height:40px}
+.socials--ftr svg{width:17px;height:17px}
+
+/* ============================================================
+   МОБАЙЛ
+   ============================================================ */
+@media (max-width:860px){
+  :root{--pad:24px;--sec-y:clamp(80px,17vw,96px);--radius:18px}
+
+  /* ——— типографика: мельче, просторнее по строке ——— */
+  body{font-size:.95rem;line-height:1.85}
+  h1{font-size:clamp(1.85rem,8.2vw,2.6rem);line-height:1.16;letter-spacing:-.015em}
+  h2{font-size:clamp(1.45rem,6.4vw,2rem);line-height:1.24;letter-spacing:-.01em}
+  h3{font-size:clamp(1.1rem,4.6vw,1.4rem);line-height:1.3}
+  .sub{font-size:clamp(.95rem,3.9vw,1.05rem);line-height:1.7;margin-top:18px}
+  .eyebrow{font-size:.68rem;letter-spacing:.16em}
+  .btn{font-size:.875rem;padding:15px 26px}
+  .spec li,.zone__list li,.card__list li,.pillar p{font-size:.95rem;line-height:1.75}
+  .clist a{font-size:1rem}
+  .catering{font-size:.98rem}
+  .catering b{font-size:1.05rem}
+  .ftr__in{font-size:.88rem}
+  .ph::after{font-size:.56rem;letter-spacing:.14em;padding:7px 12px}
+
+  /* шапка: тот же принцип — логотип + «Меню» */
+  .hdr{padding:12px 16px}
+  .hdr__brand{font-size:1rem}
+  .menu-btn{font-size:.8rem;padding:10px 16px}
+  .menu-panel{left:16px;right:16px;width:auto}
+  .menu-panel nav{padding:6px 20px 14px}
+  .menu-panel a{font-size:1rem;padding:12px 0}
+
+  .hero__inner{padding-bottom:88px}
+  .hero h1{max-width:none}
+  .hero .btn{width:100%}
+  .house__grid,.zone,.contacts__grid{grid-template-columns:1fr;gap:40px}
+  .zone--flip .zone__txt{order:0}
+  .zone .ph{order:-1}
+  .prose p{font-size:1rem;line-height:1.8}
+  .cards{grid-template-columns:1fr}
+  .masonry{grid-template-columns:repeat(2,1fr);gap:12px}
+  .mini{gap:12px}
+  .fire{margin-top:72px;padding:64px var(--pad)}
+  .contacts__cta .btn{width:100%}
+  .contacts__grid .ph{order:-1}
+  .ftr__in{flex-direction:column;align-items:flex-start;gap:18px;line-height:2}
+  .ftr__links{flex-direction:column;align-items:flex-start;gap:4px}
+  .ftr__links i{display:none}          /* точки-разделители не нужны в столбце */
+  .socials--ftr{margin:12px 0 0}
+  .map{height:340px}          /* фиксированная высота карты на мобильном */
+}
+
+/* ============================================================
+   12. АНИМАЦИИ, HOVER, ИНТЕРАКТИВ
+   ============================================================ */
+
+/* фото в рамке приближается на наведении */
+.ph--zoom img{transition:transform .8s cubic-bezier(0.16,1,0.3,1)}
+.ph--zoom:hover img,
+.ph--zoom:focus-visible img{transform:scale(1.05)}
+
+/* кнопки — заливка слева направо */
+.btn{position:relative;overflow:hidden;isolation:isolate}
+.btn::before{
+  content:'';position:absolute;inset:0;z-index:-1;
+  background:var(--brass);
+  transform:scaleX(0);transform-origin:left center;
+  transition:transform .5s cubic-bezier(0.16,1,0.3,1);
+}
+.btn--ghost:hover::before,.btn--ghost:focus-visible::before,
+.btn--ghost-light:hover::before,.btn--ghost-light:focus-visible::before{transform:scaleX(1)}
+.btn--ghost:hover,.btn--ghost:focus-visible,
+.btn--ghost-light:hover,.btn--ghost-light:focus-visible{color:#FBF7F0;border-color:var(--brass)}
+.btn--solid::before{background:var(--brass-h)}
+.btn--solid:hover::before,.btn--solid:focus-visible::before{transform:scaleX(1)}
+
+/* ссылки — подчёркивание растёт от центра */
+.link-u{position:relative;text-decoration:none}
+.link-u::after{
+  content:'';position:absolute;left:50%;bottom:-3px;height:1px;width:0;
+  background:currentColor;transform:translateX(-50%);
+  transition:width .45s cubic-bezier(0.16,1,0.3,1);
+}
+.link-u:hover::after,.link-u:focus-visible::after{width:100%}
+
+/* костровая зона — мягко пульсирующее тёплое свечение */
+@keyframes emberPulse{
+  0%,100%{opacity:.75;transform:scale(1)}
+  50%    {opacity:1;transform:scale(1.06)}
+}
+.fire::before{animation:emberPulse 7s ease-in-out infinite}
+
+/* лента отзывов — бесконечная петля */
+@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.rail--auto{animation:marquee 50s linear infinite;will-change:transform}
+.rail-mask:hover .rail--auto{animation-play-state:paused}
+.rail--drag{cursor:grab}
+.rail--drag:active{cursor:grabbing}
+
+/* лайтбокс галереи */
+.lightbox{
+  position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;
+  background:rgba(16,13,10,.94);backdrop-filter:blur(6px);padding:24px;
+}
+.lightbox img{max-width:min(1100px,92vw);max-height:86vh;object-fit:contain;
+  border-radius:var(--radius);display:block}
+.lightbox__close,.lightbox__nav{
+  position:absolute;display:inline-flex;align-items:center;justify-content:center;
+  width:52px;height:52px;border-radius:var(--radius-pill);cursor:pointer;
+  background:rgba(241,233,218,.10);border:1px solid rgba(241,233,218,.24);
+  color:var(--on-dark);transition:background .25s ease,border-color .25s ease;
+}
+.lightbox__close:hover,.lightbox__nav:hover{background:var(--brass);border-color:var(--brass)}
+.lightbox__close{top:24px;right:24px}
+.lightbox__nav--prev{left:24px;top:50%;transform:translateY(-50%)}
+.lightbox__nav--next{right:24px;top:50%;transform:translateY(-50%)}
+.lightbox__count{
+  position:absolute;bottom:26px;left:50%;transform:translateX(-50%);
+  color:var(--on-dark-2);font-size:.8rem;letter-spacing:.18em;
+  font-variant-numeric:tabular-nums;
+}
+
+/* иконка лупы поверх кадра галереи */
+.masonry .ph--photo{cursor:pointer}
+.masonry .ph--photo .zoom-hint{
+  position:absolute;inset:0;z-index:3;display:flex;align-items:center;justify-content:center;
+  background:rgba(26,22,17,.42);opacity:0;transition:opacity .5s cubic-bezier(0.16,1,0.3,1);
+}
+.masonry .ph--photo:hover .zoom-hint,
+.masonry .ph--photo:focus-within .zoom-hint{opacity:1}
+.zoom-hint svg{width:30px;height:30px;stroke:var(--brass);fill:none;stroke-width:1.4}
+
+/* видимый фокус для клавиатуры */
+a:focus-visible,button:focus-visible,[tabindex]:focus-visible{
+  outline:2px solid var(--brass);outline-offset:3px;border-radius:4px;
+}
+
+@media (prefers-reduced-motion:reduce){
+  .rail--auto{animation:none}
+  .fire::before{animation:none}
+  .ph--zoom img{transition:none}
+  .ph--zoom:hover img{transform:none}
+  .btn::before{transition:none}
+  *{scroll-behavior:auto !important}
+}
+
+/* слой параллакса первого экрана: чуть выше кадра, чтобы при сдвиге
+   снизу не открывался фон секции */
+.hero__parallax{position:absolute;inset:-12% 0 -12%;will-change:transform}
+.hero__parallax .hero__photo{position:absolute;inset:0}

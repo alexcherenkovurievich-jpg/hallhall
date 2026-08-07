@@ -1,35 +1,28 @@
-# Настройки деплоя на Netlify.
-# Сайт статический: HTML, CSS и JS отдаются как есть, поэтому
-# команды сборки нет — только каталог публикации.
-
+# Сборка Vite. Публикуется dist/, исходники в репозитории.
 [build]
-  # Публикуем корень репозитория: index.html лежит именно там.
-  publish = "."
+  command = "npm run build"
+  publish = "dist"
 
-  # Команда сборки намеренно пустая. Собирать нечего:
-  # ни npm, ни препроцессоров в проекте нет.
-  command = ""
+[build.environment]
+  NODE_VERSION = "20"
 
-# Заголовки безопасности. К внешнему виду сайта отношения не имеют,
-# но закрывают базовые претензии сканеров и почтовых фильтров.
+# Одностраничник: любой путь отдаёт index.html
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
 [[headers]]
-  for = "/*"
-
-  [headers.values]
-    # Запрет встраивать сайт в чужой iframe (защита от кликджекинга)
-    X-Frame-Options = "SAMEORIGIN"
-
-    # Браузер не пытается угадывать тип файла вопреки заголовку
-    X-Content-Type-Options = "nosniff"
-
-    # При переходе по внешней ссылке отдаём только домен, не полный адрес
-    Referrer-Policy = "strict-origin-when-cross-origin"
-
-# Шрифты и иконки не меняются между деплоями — их можно кэшировать
-# надолго. HTML, CSS и JS намеренно не кэшируем агрессивно: иначе
-# после правки текста посетители ещё сутки видели бы старую версию.
-[[headers]]
-  for = "/*.woff2"
-
+  for = "/assets/*"
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/fonts/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/images/*"
+  [headers.values]
+    Cache-Control = "public, max-age=2592000"
