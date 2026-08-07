@@ -97,6 +97,7 @@ export function Footer() {
           </a>
           <Socials className="socials--ftr" />
         </div>
+        <p className="ftr__copy">© 2026. Все права защищены.</p>
       </div>
     </footer>
   );

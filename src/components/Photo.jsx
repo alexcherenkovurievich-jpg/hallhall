@@ -45,15 +45,6 @@ export function Photo({
         decoding="async"
         {...(eager ? { fetchPriority: 'high' } : null)}
       />
-      {clickable && (
-        <span className="zoom-hint" aria-hidden="true">
-          <svg viewBox="0 0 24 24">
-            <circle cx="11" cy="11" r="7" />
-            <path d="m16.5 16.5 4 4" strokeLinecap="round" />
-            <path d="M11 8v6M8 11h6" strokeLinecap="round" />
-          </svg>
-        </span>
-      )}
       {children}
     </figure>
   );

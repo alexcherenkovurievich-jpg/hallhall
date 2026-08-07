@@ -348,24 +348,29 @@ section{padding:var(--sec-y) var(--pad);position:relative}
 .zone__list li::before{
   content:'';position:absolute;left:0;top:.82em;width:12px;height:1px;background:var(--brass)}
 
-/* костровая — тёмная лесная, в край секции */
+/* Все три подзоны на тёмно-лесном фоне; свечение — только у костровой. */
 #area{padding-bottom:0}
-.fire{
+.zone-block{
   background:var(--forest);color:var(--on-dark);
-  margin-top:clamp(90px,10vw,150px);
-  padding:clamp(88px,9vw,140px) var(--pad);
-  margin-left:calc(-1 * var(--pad));margin-right:calc(-1 * var(--pad));
-  border-radius:var(--radius-lg) var(--radius-lg) 0 0;
+  padding:clamp(64px,7vw,110px) var(--pad);
   position:relative;overflow:hidden;
 }
-.fire::before{
+.zone-block + .zone-block{border-top:1px solid rgba(241,233,218,.09)}
+.zone-block:first-of-type{
+  margin-top:clamp(48px,6vw,80px);
+  border-radius:var(--radius-lg) var(--radius-lg) 0 0;
+}
+.zone-block__in{max-width:var(--maxw);margin:0 auto;position:relative;z-index:2}
+.zone-block h3{color:var(--on-dark)}
+.zone-block .zone__list li{color:var(--on-dark-2)}
+.zone-block .zone{margin-top:0}
+.zone__mini{margin-top:clamp(28px,3.2vw,44px)}
+
+/* мягко пульсирующее тёплое свечение у костровой */
+.zone-block--fire::before{
   content:'';position:absolute;width:900px;height:900px;left:-14%;bottom:-52%;
   background:radial-gradient(circle,rgba(255,170,80,.16),transparent 62%);
 }
-.fire .zone{margin-top:0;position:relative;z-index:2;max-width:var(--maxw);
-  margin-left:auto;margin-right:auto}
-.fire h3{color:var(--on-dark)}
-.fire .zone__list li{color:var(--on-dark-2)}
 
 /* ============================================================
    6. УСЛУГИ
@@ -422,13 +427,12 @@ section{padding:var(--sec-y) var(--pad);position:relative}
 .rail .ph{width:clamp(210px,17vw,260px);flex:0 0 auto;--ar:3/4}
 .rail-mask{
   position:relative;margin:0 calc(-1 * var(--pad));padding:0 var(--pad);
-  /* Прокрутка нужна дважды: она обрезает ленту по краю секции и без неё
-     не работает перетаскивание — scrollLeft на неprокручиваемом блоке
-     молча ничего не делает. Полосу прячем, тянут мышью и пальцем. */
-  overflow-x:auto;overscroll-behavior-x:contain;
-  scrollbar-width:none;-ms-overflow-style:none;
+  /* Лента едет трансформом и заворачивается сама, поэтому прокрутка
+     контейнеру не нужна — только обрезка по краю секции. */
+  overflow:hidden;cursor:grab;
+  touch-action:pan-y;
 }
-.rail-mask::-webkit-scrollbar{display:none}
+.rail-mask:active{cursor:grabbing}
 
 /* ============================================================
    9. КОНТАКТЫ
@@ -474,12 +478,7 @@ section{padding:var(--sec-y) var(--pad);position:relative}
   border-radius:var(--radius-lg);
 }
 .map__canvas{position:absolute;inset:0}
-.map__fallback{
-  position:absolute;inset:0;display:flex;flex-direction:column;
-  align-items:center;justify-content:center;gap:18px;text-align:center;
-  padding:32px;background:#EFE7D8;
-}
-.map__fallback p{margin:0;color:var(--ink-2);line-height:1.7}
+.map__widget{position:absolute;inset:0;width:100%;height:100%;border:0;display:block}
 .map__actions{margin-top:clamp(20px,2.4vw,28px);display:flex;justify-content:center}
 /* балун Яндекса приводим к типографике сайта */
 .map .ymaps-2-1-79-balloon__content,
@@ -495,6 +494,11 @@ section{padding:var(--sec-y) var(--pad);position:relative}
 }
 .ftr__in{max-width:var(--maxw);margin:0 auto;display:flex;justify-content:space-between;
   align-items:center;gap:32px;flex-wrap:wrap;font-size:.92rem}
+.ftr__copy{
+  flex:1 1 100%;margin:0;padding-top:20px;
+  border-top:1px solid rgba(241,233,218,.10);
+  font-size:.82rem;color:rgba(183,172,156,.75);
+}
 .ftr b{font-family:var(--display);font-weight:600;color:var(--on-dark);
   font-variation-settings:'opsz' 30}
 .ftr__links{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
@@ -543,7 +547,7 @@ section{padding:var(--sec-y) var(--pad);position:relative}
   .cards{grid-template-columns:1fr}
   .masonry{grid-template-columns:repeat(2,1fr);gap:12px}
   .mini{gap:12px}
-  .fire{margin-top:72px;padding:64px var(--pad)}
+  .zone-block{padding:56px var(--pad)}
   .contacts__cta .btn{width:100%}
   .contacts__grid .ph{order:-1}
   .ftr__in{flex-direction:column;align-items:flex-start;gap:18px;line-height:2}
@@ -591,14 +595,11 @@ section{padding:var(--sec-y) var(--pad);position:relative}
   0%,100%{opacity:.75;transform:scale(1)}
   50%    {opacity:1;transform:scale(1.06)}
 }
-.fire::before{animation:emberPulse 7s ease-in-out infinite}
+.zone-block--fire::before{animation:emberPulse 7s ease-in-out infinite}
 
-/* лента отзывов — бесконечная петля */
-@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-.rail--auto{animation:marquee 50s linear infinite;will-change:transform}
-.rail-mask:hover .rail--auto{animation-play-state:paused}
-.rail--drag{cursor:grab}
-.rail--drag:active{cursor:grabbing}
+/* лента отзывов: сдвиг задаёт скрипт, здесь только подготовка слоя */
+.rail{will-change:transform}
+.rail--grabbing{cursor:grabbing}
 
 /* лайтбокс галереи */
 .lightbox{
@@ -623,15 +624,8 @@ section{padding:var(--sec-y) var(--pad);position:relative}
   font-variant-numeric:tabular-nums;
 }
 
-/* кликабельный кадр: затемнение и лупа на наведении */
+/* кликабельный кадр: только курсор, без иконки поверх фото */
 .ph--clickable{cursor:pointer}
-.ph--clickable .zoom-hint{
-  position:absolute;inset:0;z-index:3;display:flex;align-items:center;justify-content:center;
-  background:rgba(26,22,17,.42);opacity:0;transition:opacity .5s cubic-bezier(0.16,1,0.3,1);
-}
-.ph--clickable:hover .zoom-hint,
-.ph--clickable:focus-visible .zoom-hint{opacity:1}
-.zoom-hint svg{width:30px;height:30px;stroke:var(--brass);fill:none;stroke-width:1.4}
 
 /* скриншоты отзывов очень вытянутые: в рамке показываем верх,
    где шапка и первый отзыв, целиком читается в лайтбоксе */
@@ -643,8 +637,7 @@ a:focus-visible,button:focus-visible,[tabindex]:focus-visible{
 }
 
 @media (prefers-reduced-motion:reduce){
-  .rail--auto{animation:none}
-  .fire::before{animation:none}
+  .zone-block--fire::before{animation:none}
   .ph--zoom img{transition:none}
   .ph--zoom:hover img{transform:none}
   .btn::before{transition:none}

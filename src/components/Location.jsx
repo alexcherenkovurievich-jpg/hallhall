@@ -5,21 +5,41 @@ import { Reveal, MaskedHeading } from './Reveal.jsx';
 export const YANDEX_MAPS_API_KEY = '12b4f2cc-e850-4735-a329-bc49a259c93f';
 export const VENUE_COORDS = [54.272215, 48.248568];   // [широта, долгота]
 export const VENUE_ZOOM = 16;
-/* в ссылке Яндекса порядок обратный: долгота, широта */
-export const YANDEX_MAPS_LINK =
-  `https://yandex.ru/maps/?pt=${VENUE_COORDS[1]},${VENUE_COORDS[0]}&z=${VENUE_ZOOM}&l=map`;
 
-/** Подключает скрипт API один раз на страницу. */
+const [LAT, LON] = VENUE_COORDS;
+
+/* в ссылках Яндекса порядок обратный карте: долгота, широта */
+export const YANDEX_MAPS_LINK =
+  `https://yandex.ru/maps/?pt=${LON},${LAT}&z=${VENUE_ZOOM}&l=map`;
+
+/** Готовый виджет Яндекса: работает без ключа и без JS API. */
+export const YANDEX_WIDGET_SRC =
+  `https://yandex.ru/map-widget/v1/?ll=${LON}%2C${LAT}&z=${VENUE_ZOOM}` +
+  `&pt=${LON},${LAT},pm2rdm&l=map`;
+
+const SCRIPT_TIMEOUT = 8000;
+
+/**
+ * Подключает JS API один раз на страницу.
+ * Таймаут нужен, чтобы висящий запрос не оставил пустой прямоугольник:
+ * без него страница просто ждёт вечно и запасной вариант не включается.
+ */
 function loadYandexMaps() {
-  if (window.ymaps) return Promise.resolve(window.ymaps);
+  if (window.ymaps?.Map) return Promise.resolve(window.ymaps);
   if (window.__ymapsPromise) return window.__ymapsPromise;
 
   window.__ymapsPromise = new Promise((resolve, reject) => {
     const s = document.createElement('script');
     s.src = `https://api-maps.yandex.ru/2.1/?apikey=${YANDEX_MAPS_API_KEY}&lang=ru_RU`;
     s.async = true;
-    s.onload = () => (window.ymaps ? window.ymaps.ready(() => resolve(window.ymaps)) : reject(new Error('ymaps missing')));
-    s.onerror = () => reject(new Error('yandex maps failed'));
+
+    const timer = setTimeout(() => reject(new Error('таймаут загрузки API')), SCRIPT_TIMEOUT);
+    s.onerror = () => { clearTimeout(timer); reject(new Error('скрипт API не загрузился')); };
+    s.onload = () => {
+      clearTimeout(timer);
+      if (!window.ymaps) { reject(new Error('API загрузился, но ymaps не появился')); return; }
+      window.ymaps.ready(() => resolve(window.ymaps));
+    };
     document.head.appendChild(s);
   });
   return window.__ymapsPromise;
@@ -27,7 +47,8 @@ function loadYandexMaps() {
 
 export function Location() {
   const holder = useRef(null);
-  const [failed, setFailed] = useState(false);
+  // 'loading' | 'ok' | 'widget' — виджет включается, когда JS API недоступен
+  const [state, setState] = useState('loading');
 
   useEffect(() => {
     let map;
@@ -36,6 +57,7 @@ export function Location() {
     loadYandexMaps()
       .then((ymaps) => {
         if (cancelled || !holder.current) return;
+
         map = new ymaps.Map(holder.current, {
           center: VENUE_COORDS,
           zoom: VENUE_ZOOM,
@@ -53,8 +75,17 @@ export function Location() {
           preset: 'islands#circleIcon',
           iconColor: '#A9834F',
         }));
+
+        // блок появляется с анимацией, и карта могла измерить себя
+        // до того, как контейнер встал на место
+        map.container.fitToViewport();
+        setState('ok');
       })
-      .catch(() => { if (!cancelled) setFailed(true); });
+      .catch((err) => {
+        if (cancelled) return;
+        console.warn('Яндекс.Карты: JS API недоступен —', err.message, '· включаю виджет');
+        setState('widget');
+      });
 
     return () => {
       cancelled = true;
@@ -79,14 +110,16 @@ export function Location() {
         </div>
 
         <Reveal className="map">
-          <div className="map__canvas" ref={holder} hidden={failed} />
-          {failed && (
-            <div className="map__fallback">
-              <p className="eyebrow">Мы здесь</p>
-              <p>Ульяновск, Засвияжье,<br />ул. Авиационная, <span className="nb">2 «А»</span></p>
-              <a className="btn btn--ghost" target="_blank" rel="noopener"
-                 href={YANDEX_MAPS_LINK}>Открыть в Яндекс.Картах</a>
-            </div>
+          <div className="map__canvas" ref={holder} hidden={state === 'widget'} />
+
+          {state === 'widget' && (
+            <iframe
+              className="map__widget"
+              src={YANDEX_WIDGET_SRC}
+              title="Юго-Запад Hall на Яндекс.Картах"
+              loading="lazy"
+              allowFullScreen
+            />
           )}
         </Reveal>
 

@@ -88,19 +88,34 @@ export function House() {
 }
 
 /* ═══════════ 5. ТЕРРИТОРИЯ ═══════════ */
-function Zone({ zone }) {
+/** Все три подзоны на тёмно-лесном фоне; свечение — только у костровой. */
+function Zone({ zone, glow = false }) {
   return (
-    <div className={`zone ${zone.flip ? 'zone--flip' : ''}`}>
-      <RevealGroup className="zone__txt">
-        <RevealItem as="p" className="eyebrow">{zone.n}</RevealItem>
-        <RevealItem as="h3">{zone.title}</RevealItem>
-        <RevealItem as="ul" className="zone__list">
-          {zone.items.map((t) => <li key={t}>{t}</li>)}
-        </RevealItem>
-      </RevealGroup>
-      <Reveal>
-        <Photo src={zone.photo.src} w={zone.photo.w} h={zone.photo.h} alt={zone.photo.alt} />
-      </Reveal>
+    <div className={`zone-block ${glow ? 'zone-block--fire' : ''}`}>
+      <div className="zone-block__in">
+        <div className={`zone ${zone.flip ? 'zone--flip' : ''}`}>
+          <RevealGroup className="zone__txt">
+            <RevealItem as="p" className="eyebrow">{zone.n}</RevealItem>
+            <RevealItem as="h3">{zone.title}</RevealItem>
+            <RevealItem as="ul" className="zone__list">
+              {zone.items.map((t) => <li key={t}>{t}</li>)}
+            </RevealItem>
+          </RevealGroup>
+          <Reveal>
+            <Photo src={zone.photo.src} w={zone.photo.w} h={zone.photo.h} alt={zone.photo.alt} />
+          </Reveal>
+        </div>
+
+        {zone.gallery && (
+          <RevealGroup className="mini zone__mini">
+            {zone.gallery.map((g) => (
+              <RevealItem key={g.src}>
+                <Photo src={g.src} w={g.w} h={g.h} ar="1/1" alt={g.alt} />
+              </RevealItem>
+            ))}
+          </RevealGroup>
+        )}
+      </div>
     </div>
   );
 }
@@ -115,24 +130,10 @@ export function Area() {
             Здесь вечер длиннее, <em className="acc">а небо ближе</em>
           </MaskedHeading>
         </div>
-        {ZONES.map((z) => <Zone key={z.n} zone={z} />)}
       </div>
 
-      <div className="fire">
-        <div className="zone">
-          <RevealGroup className="zone__txt">
-            <RevealItem as="p" className="eyebrow">{FIRE_ZONE.n}</RevealItem>
-            <RevealItem as="h3">{FIRE_ZONE.title}</RevealItem>
-            <RevealItem as="ul" className="zone__list">
-              {FIRE_ZONE.items.map((t) => <li key={t}>{t}</li>)}
-            </RevealItem>
-          </RevealGroup>
-          <Reveal>
-            <Photo src={FIRE_ZONE.photo.src} w={FIRE_ZONE.photo.w} h={FIRE_ZONE.photo.h}
-                   alt={FIRE_ZONE.photo.alt} />
-          </Reveal>
-        </div>
-      </div>
+      {ZONES.map((z) => <Zone key={z.n} zone={z} />)}
+      <Zone zone={FIRE_ZONE} glow />
     </section>
   );
 }
