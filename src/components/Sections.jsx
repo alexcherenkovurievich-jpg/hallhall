@@ -1,5 +1,5 @@
 import { Reveal, RevealGroup, RevealItem, MaskedHeading } from './Reveal.jsx';
-import { Photo, PhotoStub } from './Photo.jsx';
+import { Photo } from './Photo.jsx';
 import { HOUSE_SPECS, ZONES, FIRE_ZONE, SERVICES } from '../lib/content.js';
 
 /* ═══════════ 3. О МЕСТЕ ═══════════ */
@@ -60,22 +60,19 @@ export function House() {
 
         <div className="house__grid">
           <RevealGroup className="mini">
-            <RevealItem as="figure" className="ph ph--photo ph--zoom" style={{ '--ar': '1/1' }}>
-              <img src="/images/photos/04-house-interior-1.jpg" width={2000} height={1500}
-                   loading="lazy" decoding="async"
-                   alt="Гостиная: обеденный стол на шесть персон, кресло-качели, зеркало с лампами" />
+            <RevealItem>
+              <Photo src="/images/photos/04-house-interior-1.jpg" w={2000} h={1500} ar="1/1"
+                     alt="Гостиная: обеденный стол на шесть персон, кресло-качели, зеркало с лампами" />
             </RevealItem>
-            <RevealItem as="figure" className="ph ph--photo ph--zoom"
-                        style={{ '--ar': '1/1', '--pos': 'center 40%' }}>
-              <img src="/images/photos/05-house-interior-2.jpg" width={1500} height={2000}
-                   loading="lazy" decoding="async"
-                   alt="Второй этаж под скатом крыши: спальное место у перил и подвесной светильник" />
+            <RevealItem>
+              <Photo src="/images/photos/05-house-interior-2.jpg" w={1500} h={2000} ar="1/1"
+                     pos="center 40%"
+                     alt="Второй этаж под скатом крыши: спальное место у перил и подвесной светильник" />
             </RevealItem>
-            <RevealItem as="figure" className="ph ph--photo ph--zoom"
-                        style={{ '--ar': '1/1', '--pos': 'center 55%' }}>
-              <img src="/images/photos/06-house-interior-3.jpg" width={1500} height={2000}
-                   loading="lazy" decoding="async"
-                   alt="Кухонный уголок: сушилка с посудой, раковина, утварь на рейлинге" />
+            <RevealItem>
+              <Photo src="/images/photos/06-house-interior-3.jpg" w={1500} h={2000} ar="1/1"
+                     pos="center 55%"
+                     alt="Кухонный уголок: сушилка с посудой, раковина, утварь на рейлинге" />
             </RevealItem>
           </RevealGroup>
 
@@ -156,10 +153,8 @@ export function Services() {
         <RevealGroup className="cards">
           {SERVICES.map((s) => (
             <RevealItem as="article" className="card" key={s.title}>
-              {s.photo
-                ? <Photo src={s.photo.src} w={s.photo.w} h={s.photo.h}
-                         pos={s.photo.pos} alt={s.photo.alt} />
-                : <PhotoStub tone={s.tone} label={s.label} />}
+              <Photo src={s.photo.src} w={s.photo.w} h={s.photo.h}
+                     pos={s.photo.pos} alt={s.photo.alt} />
               <div className="card__body">
                 <h3>{s.title}</h3>
                 <ul className="card__list">

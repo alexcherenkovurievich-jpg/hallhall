@@ -420,7 +420,15 @@ section{padding:var(--sec-y) var(--pad);position:relative}
   padding-left:var(--pad);
 }
 .rail .ph{width:clamp(210px,17vw,260px);flex:0 0 auto;--ar:3/4}
-.rail-mask{position:relative;margin:0 calc(-1 * var(--pad));padding:0 var(--pad)}
+.rail-mask{
+  position:relative;margin:0 calc(-1 * var(--pad));padding:0 var(--pad);
+  /* Прокрутка нужна дважды: она обрезает ленту по краю секции и без неё
+     не работает перетаскивание — scrollLeft на неprокручиваемом блоке
+     молча ничего не делает. Полосу прячем, тянут мышью и пальцем. */
+  overflow-x:auto;overscroll-behavior-x:contain;
+  scrollbar-width:none;-ms-overflow-style:none;
+}
+.rail-mask::-webkit-scrollbar{display:none}
 
 /* ============================================================
    9. КОНТАКТЫ
@@ -615,15 +623,19 @@ section{padding:var(--sec-y) var(--pad);position:relative}
   font-variant-numeric:tabular-nums;
 }
 
-/* иконка лупы поверх кадра галереи */
-.masonry .ph--photo{cursor:pointer}
-.masonry .ph--photo .zoom-hint{
+/* кликабельный кадр: затемнение и лупа на наведении */
+.ph--clickable{cursor:pointer}
+.ph--clickable .zoom-hint{
   position:absolute;inset:0;z-index:3;display:flex;align-items:center;justify-content:center;
   background:rgba(26,22,17,.42);opacity:0;transition:opacity .5s cubic-bezier(0.16,1,0.3,1);
 }
-.masonry .ph--photo:hover .zoom-hint,
-.masonry .ph--photo:focus-within .zoom-hint{opacity:1}
+.ph--clickable:hover .zoom-hint,
+.ph--clickable:focus-visible .zoom-hint{opacity:1}
 .zoom-hint svg{width:30px;height:30px;stroke:var(--brass);fill:none;stroke-width:1.4}
+
+/* скриншоты отзывов очень вытянутые: в рамке показываем верх,
+   где шапка и первый отзыв, целиком читается в лайтбоксе */
+.rail .ph--photo{--pos:center top}
 
 /* видимый фокус для клавиатуры */
 a:focus-visible,button:focus-visible,[tabindex]:focus-visible{

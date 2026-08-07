@@ -6,6 +6,7 @@ import { Gallery } from './components/Gallery.jsx';
 import { Reviews } from './components/Reviews.jsx';
 import { Location } from './components/Location.jsx';
 import { Contacts, Footer } from './components/Contacts.jsx';
+import { LightboxProvider } from './components/Lightbox.jsx';
 import { useLenis } from './lib/useLenis.js';
 
 export default function App() {
@@ -34,7 +35,7 @@ export default function App() {
   }, []);
 
   return (
-    <>
+    <LightboxProvider>
       <Header onNavigate={navigate} />
       <main>
         <Hero onNavigate={navigate} />
@@ -49,6 +50,6 @@ export default function App() {
       </main>
       <Footer />
       <div className="grain" aria-hidden="true" />
-    </>
+    </LightboxProvider>
   );
 }

@@ -17,8 +17,16 @@ const mime = (f) => ({
   '.png': 'image/png', '.webp': 'image/webp', '.svg': 'image/svg+xml',
 }[path.extname(f).toLowerCase()] ?? 'application/octet-stream');
 
+// Фотографии берём из уменьшённых копий, если они есть: оригиналы
+// весят 42 МБ и в один HTML не поместятся. На сайт это не влияет —
+// там отдаются файлы из public/ как есть.
+const SMALL = '/tmp/preview-images';
 const dataUri = (rel) => {
-  const abs = path.join(DIST, rel.replace(/^\//, ''));
+  const name = path.basename(rel);
+  const small = path.join(SMALL, name);
+  const abs = rel.includes('/images/photos/') && fs.existsSync(small)
+    ? small
+    : path.join(DIST, rel.replace(/^\//, ''));
   return `data:${mime(abs)};base64,${fs.readFileSync(abs).toString('base64')}`;
 };
 

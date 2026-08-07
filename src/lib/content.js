@@ -71,8 +71,8 @@ export const SERVICES = [
   {
     title: 'Банный чан',
     items: ['На дровах, 6–8 человек, разогрет до +40°', 'Травы и хвоя по сезону'],
-    tone: 't-ember',
-    label: 'ФОТО · банный чан',
+    photo: { src: '/images/photos/1w8JWyDyYYU.jpg', w: 1920, h: 2560, pos: 'center 58%',
+      alt: 'Банный чан на дровах: топится печь, над трубой дым, рядом деревянная лестница' },
   },
   {
     title: 'Бассейны',
@@ -81,19 +81,49 @@ export const SERVICES = [
       'Малый с подогревом до +30° под куполом-сферой (01.05–30.09)',
       'Шезлонги на деревянном настиле',
     ],
-    tone: 't-water',
-    label: 'ФОТО · бассейны',
+    photo: { src: '/images/photos/IMG_20260304_095603_157.jpg', w: 1280, h: 1213, pos: 'center 62%',
+      alt: 'Бассейн с голубой водой, деревянный настил, шезлонги и пергола' },
   },
 ];
 
-/** Галерея: реальных кадров пока нет — только рамки под будущие фото. */
-export const GALLERY = Array.from({ length: 10 }, (_, i) => ({
-  tone: ['t-forest', 't-wood', 't-linen', 't-water', 't-ember',
-         't-night', 't-steam', 't-linen', 't-forest', 't-wood'][i],
-  label: `фото ${String(i + 1).padStart(2, '0')}`,
-}));
+/** Галерея. Порядок — как в загрузке на GitHub. */
+export const GALLERY = [
+  { src: '/images/photos/IMG_20260304_095556_873.jpg', w: 1280, h: 960,
+    alt: 'Бассейн и шезлонги на настиле, за забором виден дом-шалаш' },
+  { src: '/images/photos/IMG_20260304_095603_619.jpg', w: 960, h: 1280,
+    alt: 'Малый бассейн под прозрачным куполом-сферой, гости в воде' },
+  { src: '/images/photos/IMG_20260304_095603_676.jpg', w: 1280, h: 960,
+    alt: 'Горящая костровая чаша и деревянные кресла вокруг' },
+  { src: '/images/photos/IMG_20260304_095608_842.jpg', w: 1280, h: 960,
+    alt: 'Шашлык и овощи на шампурах над углями мангала' },
+  { src: '/images/photos/IMG_20260304_095616_737.jpg', w: 1280, h: 960,
+    alt: 'Двор с мангальной зоной и костровым кругом среди деревьев' },
+  { src: '/images/photos/KbGFEaqzHpI.jpg', w: 1920, h: 2560,
+    alt: 'Бассейн с надувным кругом, шезлонги и пергола у забора' },
+  { src: '/images/photos/KkrBdCjwHKo.jpg', w: 1920, h: 2560,
+    alt: 'Беседка с решётчатыми стенами среди высоких деревьев' },
+  { src: '/images/photos/SVl4J-eOs0A.jpg', w: 1920, h: 2560,
+    alt: 'Банный чан с травяным настоем и дымящей трубой' },
+  { src: '/images/photos/i07SJaBGmTA.jpg', w: 1920, h: 2560,
+    alt: 'Подвесное кресло-кокон на настиле у стены дома-шалаша' },
+  { src: '/images/photos/qV1mEKTwwfk.jpg', w: 1920, h: 2560,
+    alt: 'Двор с баней-бочкой и деревянными дорожками под кронами' },
+];
 
-export const REVIEWS = Array.from({ length: 7 }, (_, i) => ({
-  tone: ['t-linen', 't-wood', 't-steam', 't-linen', 't-water', 't-wood', 't-linen'][i],
-  label: `скрин отзыва ${String(i + 1).padStart(2, '0')}`,
-}));
+/** Отзывы гостей — скриншоты, порядок как в загрузке. */
+export const REVIEWS = [
+  { src: '/images/photos/23l3Xysx95I.jpg', w: 1080, h: 2400, alt: 'Отзыв гостя на карточке площадки' },
+  { src: '/images/photos/DkchXV2pN1g.jpg', w: 1080, h: 2400, alt: 'Оценка 5,0 и отзывы гостей' },
+  { src: '/images/photos/E9SwbxxX98Y.jpg', w: 1080, h: 1080, alt: 'Благодарность гостей за отдых на площадке' },
+  { src: '/images/photos/hFaOIgc0pkM.jpg', w: 1080, h: 2400, alt: 'Отзывы гостей о доме и территории' },
+  { src: '/images/photos/o1E3qhDoVt8.jpg', w: 1080, h: 2400, alt: 'Переписка с гостьей после отдыха' },
+  { src: '/images/photos/wWCJh3qM8Gw.jpg', w: 1080, h: 2400, alt: 'Отзывы о дне рождения и семейном отдыхе' },
+  { src: '/images/photos/xBrgqWhM3B8.jpg', w: 1080, h: 2400, alt: 'Отзывы гостей о чане и уюте дома' },
+];
+
+/** Кадр в блоке контактов, перед футером. */
+export const CONTACTS_PHOTO = {
+  src: '/images/photos/gw3fx04ERtuJyNL08ufegAYjkRtNQNnM95s4Uvudb3z7DeKBBuvnEcoBEjX9xRmUtC6--jH9NceKJ-mVp2r_92VM.jpg',
+  w: 1920, h: 2560, pos: 'center 62%',
+  alt: 'Бассейн с шезлонгами на настиле, над ним зелёные ветви',
+};

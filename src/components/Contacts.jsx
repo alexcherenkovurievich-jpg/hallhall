@@ -1,7 +1,6 @@
 import { Reveal, RevealGroup, RevealItem, MaskedHeading } from './Reveal.jsx';
 import { Photo } from './Photo.jsx';
-import { PhotoStub } from './Photo.jsx';
-import { CONTACTS } from '../lib/content.js';
+import { CONTACTS, CONTACTS_PHOTO } from '../lib/content.js';
 
 const PhoneIcon = () => (
   <svg width="17" height="17" viewBox="0 0 24 24" aria-hidden="true">
@@ -73,7 +72,9 @@ export function Contacts() {
           </div>
 
           <Reveal>
-            <PhotoStub tone="t-night" label="ФОТО · вечерний двор" ar="4/5" />
+            <Photo src={CONTACTS_PHOTO.src} alt={CONTACTS_PHOTO.alt}
+                   w={CONTACTS_PHOTO.w} h={CONTACTS_PHOTO.h}
+                   pos={CONTACTS_PHOTO.pos} ar="4/5" />
           </Reveal>
         </div>
       </div>
