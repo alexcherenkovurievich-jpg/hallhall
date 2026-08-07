@@ -352,6 +352,12 @@ section{padding:var(--sec-y) var(--pad);position:relative}
 #area{padding-bottom:0}
 .zone-block{
   background:var(--forest);color:var(--on-dark);
+  /* Секция сама даёт боковые поля, и внутри них по краям тёмного блока
+     просвечивал светлый фон. Вытягиваем блок ровно на эти поля, а текст
+     держим отступом самого блока — он остаётся на той же линии, что
+     и содержимое соседних секций. */
+  margin-left:calc(-1 * var(--pad));
+  margin-right:calc(-1 * var(--pad));
   padding:clamp(64px,7vw,110px) var(--pad);
   position:relative;overflow:hidden;
 }
