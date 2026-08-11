@@ -61,7 +61,7 @@ export function Price() {
         <div className="sec-head center">
           <Reveal as="p" className="eyebrow">Прайс</Reveal>
           <MaskedHeading className="on-dark">
-            Цены — сразу и <em className="acc">начистоту</em>
+            Цены — честно и <em className="acc">без сюрпризов</em>
           </MaskedHeading>
         </div>
 
