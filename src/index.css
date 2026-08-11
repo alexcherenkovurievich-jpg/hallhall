@@ -654,3 +654,142 @@ a:focus-visible,button:focus-visible,[tabindex]:focus-visible{
    снизу не открывался фон секции */
 .hero__parallax{position:absolute;inset:-12% 0 -12%;will-change:transform}
 .hero__parallax .hero__photo{position:absolute;inset:0}
+
+/* ============================================================
+   13. ПРАЙС
+   ============================================================ */
+.price{background:var(--espresso);color:var(--on-dark)}
+.price .sec-head{margin-bottom:clamp(32px,4vw,44px)}
+
+/* переключатель сезона */
+.season{
+  display:flex;flex-direction:column;align-items:center;gap:14px;
+  margin-bottom:clamp(44px,5vw,64px);
+}
+.season__pills{
+  display:flex;gap:6px;padding:6px;
+  border:1px solid rgba(241,233,218,.16);border-radius:var(--radius-pill);
+  background:rgba(241,233,218,.04);
+  max-width:100%;
+}
+.season__pill{
+  font-family:var(--sans);font-size:.9rem;font-weight:500;letter-spacing:.02em;
+  padding:11px 24px;border-radius:var(--radius-pill);border:0;cursor:pointer;
+  background:transparent;color:var(--on-dark-2);line-height:1;white-space:nowrap;
+  transition:background .35s cubic-bezier(0.16,1,0.3,1),color .35s cubic-bezier(0.16,1,0.3,1);
+}
+.season__pill:hover{color:var(--on-dark)}
+.season__pill.is-active{background:var(--brass);color:#FBF7F0}
+.season__caption{
+  margin:0;font-size:.85rem;letter-spacing:.04em;color:var(--on-dark-2);text-align:center;
+}
+
+/* карточки */
+.price-card{
+  background:rgba(241,233,218,.045);
+  border:1px solid rgba(241,233,218,.10);
+  border-radius:var(--radius-lg);
+  padding:clamp(24px,3vw,40px);
+}
+.price-card + .price-card{margin-top:0}
+.price-card h3{color:var(--on-dark);margin-bottom:10px}
+.price-note{
+  margin:0 0 22px;font-size:.95rem;line-height:1.65;color:var(--on-dark-2);max-width:60ch;
+}
+.price-subnote{
+  margin:26px 0 12px;font-size:.9rem;letter-spacing:.02em;color:var(--on-dark-2);
+}
+.price-foot{
+  margin:22px 0 0;padding-top:18px;
+  border-top:1px solid rgba(241,233,218,.10);
+  font-size:.9rem;line-height:1.7;color:var(--on-dark-2);
+}
+.price-grid{
+  display:grid;grid-template-columns:1.35fr 1fr;gap:clamp(18px,2vw,28px);
+  margin-top:clamp(18px,2vw,28px);
+  align-items:start;   /* короткая карточка не тянется под высокую */
+}
+.price-card--wide{margin-bottom:clamp(40px,4.5vw,56px)}
+
+/* строка «название … цена» */
+.price-list{list-style:none;margin:0;padding:0}
+.price-row{
+  display:flex;align-items:baseline;gap:10px;
+  padding:13px 0;border-bottom:1px solid rgba(241,233,218,.08);
+}
+.price-row:last-child{border-bottom:0}
+.price-list--tight .price-row{padding:9px 0}
+.price-row__name{color:var(--on-dark);font-size:.98rem;line-height:1.5;flex:0 1 auto;min-width:0}
+/* точки-выноска: тянутся ровно на остаток строки */
+.price-row__dots{
+  flex:1 1 auto;min-width:14px;height:1px;align-self:flex-end;margin-bottom:.32em;
+  background-image:radial-gradient(circle,rgba(241,233,218,.32) 1px,transparent 1px);
+  background-size:5px 1px;background-repeat:repeat-x;
+}
+/* цена не переносится и не растягивается */
+.price-val{
+  flex:0 0 auto;white-space:nowrap;
+  color:var(--brass);font-weight:600;font-size:1rem;
+  font-variant-numeric:tabular-nums;
+}
+.price-val--swap{display:inline-block;position:relative}
+.price-val--name{color:inherit;font-weight:400;font-size:inherit;white-space:normal}
+.price-val--flow{white-space:normal;color:inherit;font-weight:400;font-size:inherit}
+.price-val--tile{font-size:1.05rem}
+
+/* плитки «Дополнительно» */
+.price-subhead{
+  color:var(--on-dark);margin:0 0 clamp(18px,2vw,26px);
+  font-size:clamp(1.15rem,1.6vw,1.4rem);
+}
+/* пять плиток: по три в ряд ложатся как 3+2, по четыре — как 4+1
+   с одинокой плиткой во второй строке */
+.price-tiles{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:clamp(12px,1.4vw,18px);
+}
+.price-tile{
+  background:rgba(241,233,218,.045);
+  border:1px solid rgba(241,233,218,.10);
+  border-radius:var(--radius);
+  padding:22px 24px;
+  display:flex;flex-direction:column;gap:10px;justify-content:space-between;
+}
+.price-tile__name{color:var(--on-dark);font-size:.95rem;line-height:1.5}
+
+/* чипы «что входит» */
+.price-included{margin:clamp(36px,4vw,52px) 0 clamp(40px,4.5vw,56px)}
+.price-included__title{
+  margin:0 0 16px;font-size:.8rem;font-weight:600;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--brass);
+}
+.chips{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+.chip{
+  padding:9px 16px;border-radius:var(--radius-pill);
+  border:1px solid rgba(241,233,218,.16);background:rgba(241,233,218,.04);
+  font-size:.88rem;color:var(--on-dark-2);line-height:1;
+}
+
+@media (max-width:860px){
+  .price-grid{grid-template-columns:1fr}
+  .price-tiles{grid-template-columns:1fr}
+  .season__pills{width:100%}
+  .season__pill{flex:1 1 0;padding:11px 12px;font-size:.82rem}
+  /* Длинные значения вроде «1 000 ₽/час, минимум 5 часов» не переносятся
+     внутри себя, и на узком экране распирали карточку за край. Разрешаем
+     переносить строку целиком: значение уходит под название, но само
+     остаётся неразрывным. */
+  .price-row{gap:4px 10px;flex-wrap:wrap;justify-content:space-between}
+  .price-row__name{font-size:.92rem;flex:0 1 auto}
+  /* у перенесённой строки пунктир повисал хвостом — на узком экране
+     название и цену просто разводим по краям */
+  .price-row__dots{display:none}
+  .price-val{max-width:100%}   /* само значение по-прежнему неразрывно */
+  .price-val{font-size:.95rem}
+  .price-val--tile{font-size:1rem}
+  .chip{font-size:.82rem;padding:8px 13px}
+}
+
+@media (prefers-reduced-motion:reduce){
+  .season__pill{transition:none}
+}

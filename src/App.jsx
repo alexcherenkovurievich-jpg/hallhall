@@ -2,6 +2,7 @@ import { useCallback, useRef } from 'react';
 import { Header } from './components/Header.jsx';
 import { Hero } from './components/Hero.jsx';
 import { About, House, Area, Services } from './components/Sections.jsx';
+import { Price } from './components/Price.jsx';
 import { Gallery } from './components/Gallery.jsx';
 import { Reviews } from './components/Reviews.jsx';
 import { Location } from './components/Location.jsx';
@@ -43,6 +44,7 @@ export default function App() {
         <House />
         <Area />
         <Services />
+        <Price />
         <Gallery />
         <Reviews />
         <Location />
