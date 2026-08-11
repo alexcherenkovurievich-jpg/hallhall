@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useId, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Reveal, RevealGroup, RevealItem, MaskedHeading } from './Reveal.jsx';
 import { EASE, prefersReducedMotion } from '../lib/motion.js';
@@ -48,6 +48,65 @@ function Row({ name, value, season }) {
       <span className="price-row__dots" aria-hidden="true" />
       <Value value={value} season={season} />
     </li>
+  );
+}
+
+/**
+ * Сворачиваемый пункт. Закрыт по умолчанию: вторичные блоки не должны
+ * растягивать секцию. Заголовок — настоящая кнопка, поэтому клавиатура
+ * и screen reader работают без дополнительных обработчиков.
+ */
+function Accordion({ title, children }) {
+  const [open, setOpen] = useState(false);
+  // useId выдаёт ':r3:' — двоеточия ломают querySelector, чистим
+  const uid = useId().replace(/:/g, '');
+  const headId = `acc-${uid}-head`;
+  const panelId = `acc-${uid}-panel`;
+
+  return (
+    <div className={`price-acc__item ${open ? 'is-open' : ''}`}>
+      <h3 className="price-acc__h">
+        <button
+          type="button"
+          id={headId}
+          className="price-acc__head"
+          aria-expanded={open}
+          aria-controls={panelId}
+          onClick={() => setOpen((v) => !v)}
+        >
+          <span className="price-acc__title">{title}</span>
+          <span className="price-acc__chev" aria-hidden="true">
+            <svg viewBox="0 0 20 20" width="20" height="20" focusable="false">
+              <path
+                d="M4.5 7.5 10 13l5.5-5.5"
+                fill="none" stroke="currentColor" strokeWidth="1.7"
+                strokeLinecap="round" strokeLinejoin="round"
+              />
+            </svg>
+          </span>
+        </button>
+      </h3>
+
+      <AnimatePresence initial={false}>
+        {open && (
+          <motion.div
+            key="panel"
+            id={panelId}
+            role="region"
+            aria-labelledby={headId}
+            className="price-acc__panel"
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={prefersReducedMotion
+              ? { duration: 0 }
+              : { height: { duration: 0.45, ease: EASE }, opacity: { duration: 0.3, ease: EASE } }}
+          >
+            <div className="price-acc__inner">{children}</div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
   );
 }
 
@@ -118,33 +177,31 @@ export function Price() {
           </RevealItem>
         </RevealGroup>
 
-        {/* нижняя пара карточек */}
-        <div className="price-grid">
-          <RevealGroup className="price-card">
-            <RevealItem as="h3">{PRICE_DAY.title}</RevealItem>
-            <RevealItem as="p" className="price-note">{PRICE_DAY.note}</RevealItem>
-            <RevealItem as="ul" className="price-list">
+        {/* вторичные блоки — свёрнуты, чтобы главная цена читалась сразу */}
+        <Reveal className="price-acc">
+          <Accordion title={PRICE_DAY.title}>
+            <p className="price-note">{PRICE_DAY.note}</p>
+            <ul className="price-list">
               {PRICE_DAY.rows.map((r) => (
                 <Row key={r.name} name={r.name} value={r.value} season={season} />
               ))}
-            </RevealItem>
-            <RevealItem as="p" className="price-subnote">{PRICE_DAY.subTitle}</RevealItem>
-            <RevealItem as="ul" className="price-list price-list--tight">
+            </ul>
+            <p className="price-subnote">{PRICE_DAY.subTitle}</p>
+            <ul className="price-list price-list--tight">
               {PRICE_DAY.subRows.map((r) => (
                 <Row key={r.name} name={r.name} value={r.value} season={season} />
               ))}
-            </RevealItem>
-          </RevealGroup>
+            </ul>
+          </Accordion>
 
-          <RevealGroup className="price-card">
-            <RevealItem as="h3">{PRICE_ACCESSORIES.title}</RevealItem>
-            <RevealItem as="ul" className="price-list">
+          <Accordion title={PRICE_ACCESSORIES.title}>
+            <ul className="price-list">
               {PRICE_ACCESSORIES.rows.map((r) => (
                 <Row key={r.name} name={r.name} value={r.value} season={season} />
               ))}
-            </RevealItem>
-          </RevealGroup>
-        </div>
+            </ul>
+          </Accordion>
+        </Reveal>
       </div>
     </section>
   );
